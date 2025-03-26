@@ -401,18 +401,18 @@ app
     }
   });
 
-const blog = {
-  image,
-  category,
-  title,
-  intrudduction,
-  subtitle1,
-  paragraph1,
-  subtitle2,
-  paragraph2,
-  concl,
-  paragraph3,
-};
+// const blog = {
+//   image,
+//   category,
+//   title,
+//   intrudduction,
+//   subtitle1,
+//   paragraph1,
+//   subtitle2,
+//   paragraph2,
+//   concl,
+//   paragraph3,
+// };
 
 const updateBlogIntoDatabase = async (table, data) => {
   // Aqui lo diferente es que agregue la columna image y el parametro data.image para q lo pueda insertar en la debe en el get hay como extraerla
