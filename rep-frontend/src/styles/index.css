@@ -1,0 +1,277 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: "Inter", sans-serif;
+  }
+}
+
+@layer components {
+  input[type="checkbox"]:checked ~ label span svg {
+    @apply inline-flex;
+  }
+
+  .sticky .header-logo {
+    @apply py-5 lg:py-2;
+  }
+
+  .sticky .menu-scroll.active {
+    @apply opacity-70;
+  }
+
+  input#togglePlan:checked ~ .dot {
+    @apply translate-x-full;
+  }
+
+  input#checkboxLabel:checked ~ .box span {
+    @apply opacity-100;
+  }
+}
+
+.trofeo-image {
+  border-radius: 15px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.trofeo-image:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 8px 20px rgb(197, 197, 206);
+}
+
+/* animaciones*/
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes bounceTwo {
+  0%, 100% {
+    transform: translateY(-10px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+}
+
+.custom-img-animation {
+  animation: bounce 2s infinite;
+}
+
+.custom-img-center {
+  animation: bounceTwo 2s infinite;
+}
+
+
+/* additional media queries  */
+
+
+@media (max-width: 1132px) {
+  .trophy-box {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 1000px) {
+  .imgs-staff{
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 1000px) {
+  .staff{
+    display: none;
+  }
+}
+
+@media (max-width: 1000px) {
+  .repsell-staff{
+    width: 300px;
+  }
+}
+
+@media (max-width: 1132px) {
+  .delete-text {
+    display: none;
+  }
+}
+
+@media (max-width: 1200px) {
+  .medals-colors{
+   height: 980px;
+  }
+}
+
+@media (max-width: 990px) {
+  .medals-colors{
+    height: auto;
+  }
+}
+
+@media (max-width: 991px) {
+  .products-box {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .history-img{
+    height: 100px;
+  }
+}
+
+@media (max-width: 430px) {
+  .history-img{
+    height: 70px;
+  }
+}
+
+@media (max-width: 1400px) {
+  .products-box {
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media (max-width: 1200px) {
+  .product-main {
+    width: 350px;
+  }
+}
+
+@media (max-width: 380px) {
+  .product-main {
+    width: 330px;
+  }
+}
+
+@media (max-width: 768px) {
+  .name-company {
+    display: none;
+  }
+}
+
+@media (max-width: 780px) {
+  .products-names {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+}
+
+
+@media (max-width: 780px) {
+  .add-product {
+    padding-top: 0;
+  }
+}
+
+
+@media (max-width: 1250px) {
+  .cart-main {
+    flex-direction: column;
+  }
+}
+@media (max-width: 665px) {
+  .cart-products {
+    width: 100%;
+  }
+}
+
+@media (max-width: 390px) {
+  .cart-product{
+    border: none;
+  }
+}
+
+@media (max-width: 770px) {
+  .change-color{
+    display: none;
+  }
+}
+
+@media (max-width: 830px) {
+  .repsell-name{
+    width: 500px;
+    height: 300px;
+  }
+}
+
+@media (max-width: 430px) {
+  .repsell-name{
+    width: 330px;
+    height: 150px;
+  }
+}
+
+@media (max-width: 574px) {
+  .repsell-img{
+    display: none;
+  }
+}
+
+@media (max-width: 450px) {
+  .repsell-img-box{
+    margin: 10px;
+  }
+}
+
+@media (min-width: 800px) {
+  .bumbles-edition{
+    display: none;
+  }
+}
+
+@media (max-width: 800px) {
+  .title-lidership{
+    width: 300px;
+  }
+}
+
+@media (max-width: 800px) {
+  .contact-form{
+    height: 1200px;
+  }
+}
+
+@media (max-width: 800px) {
+  .img-{
+    height: 750px;
+  }
+}
+
+@keyframes star {
+  0% {
+    transform: translateX(0) translateY(0) scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateX(-30px) translateY(10px) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-60px) translateY(20px) scale(1);
+    opacity: 0.3;
+  }
+}
+
+.animate-star {
+  animation: star 6s linear infinite;
+}
+
+.delay-1000 {
+  animation-delay: 1s;
+}
+.delay-2000 {
+  animation-delay: 2s;
+}
