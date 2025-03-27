@@ -12,7 +12,7 @@ const UPLOAD_DIR = process.env.UPLOAD_DIR || "uploads/";
 
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 min
-  max: 100, // Limit each IP to 100 requests per window
+  max: 1000, // Limit each IP to 100 requests per window
 });
 
 // Middlewares

@@ -6,6 +6,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { colorMapping } from "@/utils/colorMapping";
 import Image from "next/image";
 import gold from "public/images/products/color/golden.jpeg";
+import {api} from "@/utils/config";
 
 const SingleImpression = () => {
   const [impressions, setImpressions] = useState([]);
@@ -23,7 +24,7 @@ const SingleImpression = () => {
     const fetchImpression = async () => {
       try {
         const response = await axios.get(
-          "https://repsell-international-backend.onrender.com/impresion",
+          `${api}/products/impresion`,
         );
         const uniqueImpression = response.data.data.filter(
           (impression, index, self) =>

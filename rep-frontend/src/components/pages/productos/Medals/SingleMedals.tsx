@@ -9,6 +9,7 @@ import error from "public/images/hero/error.png";
 import white from "public/images/products/color/white.jpeg";
 
 import { colorMapping } from "@/utils/colorMapping";
+import {api} from "@/utils/config";
 
 const SingleMedals = () => {
   const [medals, setMedals] = useState([]);
@@ -27,7 +28,7 @@ const SingleMedals = () => {
     const fetchMedals = async () => {
       try {
         const response = await axios.get(
-          "https://repsell-international-backend.onrender.com/medals",
+          `${api}/products/medals`,
         );
 
         const uniquePromotional = response.data.data.filter(

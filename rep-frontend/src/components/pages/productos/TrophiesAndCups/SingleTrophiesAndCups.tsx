@@ -7,6 +7,7 @@ import { colorMapping } from "@/utils/colorMapping";
 import { FaCheckCircle } from "react-icons/fa";
 import error from "public/images/hero/error.png";
 import transp from "public/images/products/color/transparent.png";
+import {api} from "@/utils/config";
 
 const SingleTrophiesAndCups = () => {
   const [trophies, setTrophies] = useState([]);
@@ -15,7 +16,6 @@ const SingleTrophiesAndCups = () => {
   const [backgroundColor, setBackgroundColor] = useState("#004AAD");
 
   useEffect(() => {
-    // Obtener el color desde localStorage
     const savedColors = JSON.parse(localStorage.getItem("backgroundColors"));
     if (savedColors && savedColors.trophies) {
       setBackgroundColor(savedColors.trophies);
@@ -24,7 +24,7 @@ const SingleTrophiesAndCups = () => {
     const fetchTrophies = async () => {
       try {
         const response = await axios.get(
-          "https://repsell-international-backend.onrender.com/trophies",
+          `${api}/products/trophies`,
         );
         setTrophies(response.data.data);
       } catch (error) {
@@ -41,10 +41,9 @@ const SingleTrophiesAndCups = () => {
     const fetchTrophies = async () => {
       try {
         const response = await axios.get(
-          "https://repsell-international-backend.onrender.com/trophies",
+          `${api}/products/trophies`,
         );
 
-        // Filtrar productos únicos
         const uniquePromotional = response.data.data.filter(
           (promotional, index, self) =>
             index === self.findIndex((m) => m.name === promotional.name),

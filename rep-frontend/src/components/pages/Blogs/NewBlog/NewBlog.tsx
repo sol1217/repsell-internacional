@@ -4,28 +4,12 @@ import React, { useRef, useState } from "react";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
 import Image from "next/image";
 import logo from "../../../../../public/images/hero/logo-repsell-icono.png";
+import {categorias} from "@/config/constants";
 
 const NewBlog = () => {
   const [message, setMessage] = useState("");
   const [preview, setPreview] = useState(null);
   const fileInputRef = useRef(null);
-
-  const categorias = [
-    { value: "", label: "Elegir Categoria", href: "" },
-    { value: "medallas", label: "medallas", href: "/medals" },
-    {
-      value: "recognitions",
-      label: "Reconocimientos",
-      href: "/recognitions",
-    },
-    {
-      value: "trophiesAndCups",
-      label: "Trofeos y Copas",
-      href: "/trophiesAndCups",
-    },
-    { value: "promotional", label: "Promocionales", href: "/promotiona´" },
-    { value: "impression", label: "Impresiones", href: "/impression" },
-  ];
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];

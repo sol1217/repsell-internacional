@@ -1,7 +1,8 @@
 "use client";
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import axios from "axios/index";
+import axios from "axios";
+import {api} from "@/utils/config";
 
 const EditProductsPage = () => {
   const [editNombre, setEditNombre] = useState(false);
@@ -16,9 +17,9 @@ const EditProductsPage = () => {
     try {
       const product = (
         await axios.get(
-          `https://repsell-international-backend.onrender.com/product/${data.get("id")}/${data.get("category")}`,
+          `${api}/products/${data.get("category")}/${data.get("id")}`,
         )
-      ).data.data[0];
+      ).data.data;
       setDataSelected(
         product || {
           name: "",
@@ -67,8 +68,7 @@ const EditProductsPage = () => {
     formData.append("category", data.get("category"));
     try {
       const response = await fetch(
-        `https://repsell-international-backend.onrender.com/product/${data.get("id")}/${data.get("category")}`,
-        {
+        `${api}/products/${data.get("category")}/${data.get("id")}`,        {
           method: "PUT",
           body: formData,
         },

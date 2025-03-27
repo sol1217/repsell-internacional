@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaCheckCircle } from "react-icons/fa";
+import {api} from "@/utils/config";
 
 const SinglePromotional = () => {
   const [promotionals, setPromotionals] = useState([]);
@@ -22,10 +23,9 @@ const SinglePromotional = () => {
     const fetchPromotional = async () => {
       try {
         const response = await axios.get(
-          "https://repsell-international-backend.onrender.com/promotional",
+          `${api}/products/promotional`,
         );
 
-        // Filtrar productos únicos
         const uniquePromotional = response.data.data.filter(
           (promotional, index, self) =>
             index === self.findIndex((m) => m.name === promotional.name),

@@ -6,6 +6,7 @@ import axios from "axios";
 import { FaCheckCircle } from "react-icons/fa";
 import { colorMapping } from "@/utils/colorMapping";
 import gold from "public/images/products/color/golden.jpeg";
+import {api} from "@/utils/config";
 
 const SingleRecognitions = () => {
   const [recognitions, setRecognitions] = useState([]);
@@ -24,10 +25,9 @@ const SingleRecognitions = () => {
     const fetchRecognitions = async () => {
       try {
         const response = await axios.get(
-          "https://repsell-international-backend.onrender.com/recognitions",
+          `${api}/products/recognitions`,
         );
 
-        // Filtrar productos únicos
         const uniquePromotional = response.data.data.filter(
           (promotional, index, self) =>
             index === self.findIndex((m) => m.name === promotional.name),

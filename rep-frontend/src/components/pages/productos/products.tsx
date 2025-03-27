@@ -4,8 +4,9 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
-import logo from "../../../../public/images/hero/logo-repsell-icono.png";
+import logo from "public/images/hero/logo-repsell-icono.png";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
+import {api} from "@/utils/config";
 
 const ProductMain = () => {
   const [trophies, setTrophies] = useState([]);
@@ -79,35 +80,62 @@ const ProductMain = () => {
     fetchProducts();
   }, []);
 
+  type BackgroundColors = {
+    trophies: string;
+    recognitions: string;
+    promotional: string;
+    medals: string;
+    impresion: string;
+  };
+
   const fetchProducts = async () => {
     try {
-      const [
-        trophiesRes,
-        recognitionsRes,
-        promotionalRes,
-        medalsRes,
-        impresionRes,
-      ] = await Promise.all([
-        axios.get("https://repsell-international-backend.onrender.com/trophies"),
-        axios.get("https://repsell-international-backend.onrender.com/recognitions"),
-        axios.get("https://repsell-international-backend.onrender.com/promotional"),
-        axios.get("https://repsell-international-backend.onrender.com/medals"),
-        axios.get("https://repsell-international-backend.onrender.com/impresion"),
-      ]);
+      const categories = [
+        { key: "trophies", endpoint: "trophies", setter: setTrophies },
+        {
+          key: "recognitions",
+          endpoint: "recognitions",
+          setter: setRecognitions,
+        },
+        { key: "promotional", endpoint: "promotional", setter: setPromotional },
+        { key: "medals", endpoint: "medals", setter: setMedals },
+        { key: "impresion", endpoint: "impresion", setter: setImpresion },
+      ];
 
-      setTrophies(trophiesRes.data.data || []);
-      setRecognitions(recognitionsRes.data.data || []);
-      setPromotional(promotionalRes.data.data || []);
-      setMedals(medalsRes.data.data || []);
-      setImpresion(impresionRes.data.data || []);
+      const endpoints = [
+        ...categories.map(({ endpoint }) =>
+          axios.get(`${api}/products/${endpoint}`),
+        ),
+        axios.get(`${api}/backgrounds`),
+      ];
 
-      const newColors = {
-        trophies: trophiesRes.data.data[0]?.background || "#004AAD",
-        recognitions: recognitionsRes.data.data[0]?.background || "#E72603",
-        promotional: promotionalRes.data.data[0]?.background || "#004AAD",
-        medals: medalsRes.data.data[0]?.background || "#E72603",
-        impresion: impresionRes.data.data[0]?.background || "#BFBFBF",
+      const allResponses = await Promise.all(endpoints);
+      const backgroundRes = allResponses.pop()!;
+      const productResponses = allResponses;
+
+      categories.forEach(({ setter }, index) => {
+        setter(productResponses[index]?.data?.data || []);
+      });
+
+      const backgroundData = backgroundRes.data.data;
+      const defaultColors: BackgroundColors = {
+        trophies: "#000000",
+        recognitions: "#E72603",
+        promotional: "#004AAD",
+        medals: "#E72603",
+        impresion: "#BFBFBF",
       };
+
+      const apiColors = backgroundData.reduce((colorMap, item) => {
+        colorMap[item.category] = item.color;
+        return colorMap;
+      }, {} as Record<keyof BackgroundColors, string | undefined>);
+
+      const newColors = categories.reduce((colorsObject, category) => {
+        const categoryKey = category.key;
+        colorsObject[categoryKey] = apiColors[categoryKey] || defaultColors[categoryKey];
+        return colorsObject;
+      }, {} as BackgroundColors);
 
       setBackgroundColors(newColors);
       localStorage.setItem("backgroundColors", JSON.stringify(newColors));
@@ -121,7 +149,7 @@ const ProductMain = () => {
   const deleteProduct = async (id, category) => {
     try {
       const response = await axios.delete(
-        "https://repsell-international-backend.onrender.com/delete-product",
+        `${api}/products/${category}/${id}`,
         {
           data: { id, category },
         }

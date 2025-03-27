@@ -4,6 +4,8 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import logo from "../../../../../public/images/hero/logo-repsell-icono.png";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
+import {api} from "@/utils/config";
+import {categoriesProducts, stylesProducts} from "@/config/constants";
 
 const NewProduct = () => {
   const [selectedCategoria, setSelectedCategoria] = useState("");
@@ -11,44 +13,6 @@ const NewProduct = () => {
   const [preview, setPreview] = useState(null);
   const fileInputRef = useRef(null);
 
-  const categorias = [
-    { value: "", label: "Elegir Categoria" },
-    { value: "medals", label: "Medallas" },
-    { value: "recognitions", label: "Reconocimientos" },
-    { value: "trophies", label: "Trofeos y Copas" },
-    { value: "promotionals", label: "Promocionales" },
-    { value: "prints", label: "Impresiones" },
-  ];
-
-  const styles = [
-    { value: "", label: "Elegir Estilo" },
-    { value: "Cristales", label: "Cristales" },
-    { value: "Acrilico", label: "Acrilico" },
-    { value: "Madera", label: "Madera" },
-    { value: "Promotionales", label: "Promocionales" },
-    { value: "Trofeos", label: "Trofeos" },
-    { value: "Figuras", label: "Figuras" },
-    { value: "Resinas", label: "Resinas" },
-    { value: "Laurel", label: "Laurel" },
-    { value: "Deportivas", label: "Deportivas" },
-    { value: "Ecologica", label: "Ecologica" },
-    { value: "Fundida", label: "Fundida" },
-    { value: "ROLLER UP", label: "ROLLER UP" },
-    { value: "LONAS", label: "LONAS" },
-    { value: "STICKERS", label: "STICKERS" },
-    { value: "GRÁFICAS", label: "Graficas" },
-    { value: "Madera", label: "Madera" },
-  ];
-
-  const endpoints = {
-    medals: "https://repsell-international-backend.onrender.com/new-medal",
-    recognitions:
-      "https://repsell-international-backend.onrender.com/new-recognition",
-    trophies: "https://repsell-international-backend.onrender.com/new-trophy",
-    promotionals:
-      "https://repsell-international-backend.onrender.com/new-promotional",
-    prints: "https://repsell-international-backend.onrender.com/new-print",
-  };
   const handleChange = (event) => {
     setSelectedCategoria(event.target.value);
   };
@@ -91,7 +55,7 @@ const NewProduct = () => {
       return;
     }
 
-    const endpoint = endpoints[selectedCategoria];
+    const endpoint = `${api}/products/${selectedCategoria}`;
 
     if (!endpoint) {
       alert("Endpoint no encontrado para la categoría seleccionada.");
@@ -153,7 +117,7 @@ const NewProduct = () => {
                   value={selectedCategoria}
                   onChange={handleChange}
                 >
-                  {categorias.map((categoria) => (
+                  {categoriesProducts.map((categoria) => (
                     <option key={categoria.value} value={categoria.value}>
                       {categoria.label}
                     </option>
@@ -245,7 +209,7 @@ const NewProduct = () => {
                         onChange={handleChangeStyle}
                         className="w-full rounded-md bg-[#1a1f33] px-6 py-3 text-sm text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#4A6CF7]"
                       >
-                        {styles.map((style) => (
+                        {stylesProducts.map((style) => (
                           <option key={style.value} value={style.value}>
                             {style.label}
                           </option>
