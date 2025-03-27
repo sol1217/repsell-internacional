@@ -10,6 +10,7 @@ import white from "public/images/products/color/white.jpeg";
 
 import { colorMapping } from "@/utils/colorMapping";
 import {api} from "@/utils/config";
+import BubbleDecoration from "@/components/Common/BubbleDecoration";
 
 const SingleMedals = () => {
   const [medals, setMedals] = useState([]);
@@ -56,108 +57,96 @@ const SingleMedals = () => {
   };
 
   return (
-    <div className="container">
-      {loading ? (
-        <p className="text-dark">Cargando...</p>
-      ) : (
-        <div className="products-box flex w-[80vw] flex-wrap items-center justify-center gap-3">
-          {medals.length > 0 ? (
-            medals.map((medal) => (
-              <div
-                key={medal.id}
-                style={{ background: medal.background || "#004AAD" }}
-                className="product-main medals-colors group relative mb-8 h-[740px] w-[400px] flex-wrap overflow-hidden rounded-2xl bg-white shadow-one duration-300  dark:hover:shadow-gray-dark"
-              >
+    <div
+      className="w-full py-20"
+      style={{
+        background: "#0A0F24",
+      }}
+    >
+
+      <BubbleDecoration/>
+
+      <div className="container">
+        {loading ? (
+          <p className="text-center text-white">Cargando...</p>
+        ) : (
+          <div className="flex flex-wrap items-center justify-center gap-16">
+            {medals.length > 0 ? (
+              medals.map((medal) => (
                 <div
-                  style={{ background: medal.background || "#004AAD" }}
-                  className="relative block aspect-[37/22] w-full rounded-t-2xl "
+                  key={medal.id}
+                  className="w-[360px] rounded-xl bg-[#101933]/60 text-white shadow-xl backdrop-blur-md transition shadow-blue-500/30 hover:shadow-red-500/30"
                 >
-                  <span className="absolute right-6 top-6 z-20 inline-flex items-center justify-center rounded-full bg-blue-950 px-4 py-2 text-sm font-semibold capitalize text-white">
-                    {medal.category}
-                  </span>
-                  <img
-                    className="mx-auto object-contain"
-                    src={medal.image || error}
-                    alt={medal.name}
-                    style={{ width: "300px", height: "300px" }}
-                  />
-                </div>
-                <div
-                  style={{ background: medal.background || "#004AAD" }}
-                  className="h-full  p-6 sm:p-8 md:px-6 md:py-8 lg:p-8 xl:px-5 xl:py-8 2xl:p-8"
-                >
-                  <h3>
-                    <Link
-                      href="/blog-details"
-                      className="mb-4 block text-xl font-bold text-white dark:hover:text-primary sm:text-2xl"
-                    >
-                      {medal.name}
-                    </Link>
-                  </h3>
-                  <p className="mb-6 border-b border-body-color border-opacity-10 pb-6 font-medium text-white">
-                    {medal.description}
-                  </p>
-                  <div className="flex items-center">
-                    <div className=" mr-5 flex flex-col items-center gap-3 border-r border-body-color border-opacity-60 pr-5 dark:border-white dark:border-opacity-10 xl:mr-3 xl:pr-3 2xl:mr-5 2xl:pr-5">
-                      <div className="w-full">
-                        <div className="mb-1 text-sm font-medium text-white">
-                          <p>Tamaño: {medal.height} CM</p>
-                          <b className="border-b-2">Aproximadamente</b>
-                        </div>
-                      </div>
-                      <button
-                        onClick={() => handleAddToLocalStorage(medal)}
-                        className="rounded-sm bg-[#e11b24] px-9 py-2 text-center text-base font-medium text-white shadow-submit duration-300 hover:bg-[#e11b25]/90 dark:shadow-submit-dark"
-                      >
-                        Añadir
-                      </button>
+                  <div className="relative rounded-t-xl overflow-hidden" style={{ background: medal.background || "radial-gradient(circle at bottom right, #1E3A8A 0%, #0A0F24 80%)"}}>
+                    <div className="absolute top-4 right-4 z-10 rounded-full bg-red-700 px-4 py-2.5 text-sm font-semibold text-white">
+                      {medal.category}
                     </div>
-                    <div className="flex flex-col items-center gap-3">
-                      <div className="mb-1 w-full text-sm font-medium text-white">
-                        Colores:
-                      </div>
-                      <div className="mr-4 flex w-full flex-row  flex-wrap gap-5">
-                        {(medal.color || "").split(",").map((color, index) => {
+                    <img
+                      src={medal.image || error}
+                      alt={medal.name}
+                      className="h-[230px] w-[230px] object-contain m-auto"
+                    />
+                  </div>
+
+                  <div className="p-6 rounded-b-xl" style={{ background: medal.background || "radial-gradient(circle at bottom right, #1E3A8A 0%, #0A0F24 80%)" }}>
+                    <h3 className="mb-2 text-xl font-bold text-white">
+                      {medal.name}
+                    </h3>
+                    <p className="mb-4 border-b border-white/20 pb-4 text-sm text-white/80">
+                      {medal.description}
+                    </p>
+
+                    <div className="mb-4 text-sm">
+                      <p className="mb-2 font-semibold text-white">Tamaño:</p>
+                      <p className="text-white/80">{medal.height} CM</p>
+                    </div>
+
+                    <div className="mb-4 text-sm">
+                      <p className="mb-2 font-semibold text-white">Colores:</p>
+                      <div className="flex flex-wrap gap-2">
+                        {(medal.color || "").split(",").map((color, i) => {
                           const colorKey = color.trim().toLowerCase();
                           const imageSrc = colorMapping[colorKey] || white;
-
                           return (
-                            <div
-                              key={index}
-                              className="flex w-[70px] items-center gap-3"
-                            >
+                            <div key={i} className="flex items-center gap-2">
                               <Image
                                 src={imageSrc}
                                 alt={color.trim()}
-                                width={24}
-                                height={24}
-                                className="rounded-full border-body-color dark:border-white"
-                                style={{ width: "24px", height: "24px" }}
+                                width={20}
+                                height={20}
+                                className="rounded-full"
                               />
-                              <span className="text-xs font-bold text-white">
+                              <span className="text-xs text-white/80">
                                 {color.trim()}
                               </span>
                             </div>
                           );
                         })}
                       </div>
+                    </div>
 
+                    <div className="mt-4 flex flex-col items-center">
+                      <button
+                        onClick={() => handleAddToLocalStorage(medal)}
+                        className="rounded-full bg-[#e11b24] px-16 py-2 text-sm font-medium text-white shadow-md transition hover:bg-[#c8101c]"
+                      >
+                        Añadir
+                      </button>
                       {addedMedalId === medal.id && (
-                        <p className="mt-2 flex flex-col items-center justify-center gap-3 text-center text-sm font-medium text-green-600">
-                          Añadido correctamente
-                          <FaCheckCircle color="white" fontSize={16} />
+                        <p className="mt-3 flex items-center gap-2 text-sm text-green-400">
+                          Añadido correctamente <FaCheckCircle size={16} />
                         </p>
                       )}
                     </div>
                   </div>
                 </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-dark">No se encontraron medallas.</p>
-          )}
-        </div>
-      )}
+              ))
+            ) : (
+              <p className="text-center text-white">No se encontraron medallas.</p>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

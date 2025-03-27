@@ -3,6 +3,7 @@ import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import {api} from "@/utils/config";
+import BubbleDecoration from "@/components/Common/BubbleDecoration";
 
 const EditProductsPage = () => {
   const [editNombre, setEditNombre] = useState(false);
@@ -10,6 +11,7 @@ const EditProductsPage = () => {
   const [editImage, setEditImage] = useState(false);
   const [editColor, setEditColor] = useState(false);
   const [dataSelected, setDataSelected] = useState(null);
+  const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
   const [preview, setPreview] = useState(null);
   const data = useSearchParams();
 
@@ -75,146 +77,101 @@ const EditProductsPage = () => {
       );
 
       if (response.ok) {
-        alert("Producto actualizado correctamente.");
+        setGlobalMessage({ text: "✅ Producto actualizado correctamente.", type: "success" });
       } else {
-        alert("Error al actualizar el producto.");
+        setGlobalMessage({ text: "⚠️ Error al actualizar el producto.", type: "error" });
       }
     } catch (error) {
-      alert("Error en la conexión.");
+      setGlobalMessage({ text: "❌ Error en la conexión al servidor.", type: "error" });
+    } finally {
+      setTimeout(() => setGlobalMessage(null), 3000);
     }
   };
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <section className="relative z-10 overflow-hidden pb-16 pt-36 md:pb-20 lg:pb-28 lg:pt-[180px]">
+      <section
+        className="relative mt-20 z-10 overflow-hidden py-24"
+        style={{ background: "radial-gradient(circle at top left, #1E3A8A 0%, #0A0F24 100%)" }}
+      >
+
+        <BubbleDecoration/>
+
         <div className="container">
-          <div className="-mx-4 flex flex-wrap ">
-            <div className="flex w-full justify-center px-4">
-              <div className="mx-auto flex w-[1200px] flex-col justify-center rounded bg-white px-6 py-10 shadow-three dark:bg-dark sm:p-[60px]">
-                <h3 className="mb-3 text-center text-2xl font-bold text-black dark:text-white sm:text-3xl">
-                  Datos del producto
-                </h3>
-                <p className="mb-11 text-center text-base font-medium text-body-color">
-                  Proceda a ingresar los nuevos datos correspondientes al
-                  producto
+          <div className="flex flex-wrap justify-center">
+            <div className="w-full px-4 lg:w-10/12 xl:w-8/12">
+              <div className="mx-auto rounded-xl bg-[#101933]/60 px-6 py-10 text-white shadow-xl backdrop-blur-md sm:p-[60px]">
+                <h3 className="mb-3 text-center text-3xl font-bold">Datos del producto</h3>
+                <p className="mb-8 text-center text-white/80">
+                  Por favor, proceda a ingresar la información actualizada correspondiente al nuevo producto, asegurándose de completar todos los campos requeridos con datos precisos y verificados.
                 </p>
 
-                <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
-                  {dataSelected ? (
-                    <div className=" m-2 flex flex-row items-center justify-evenly ">
-                      <input
-                        type="file"
-                        name="image"
-                        onChange={handleFileChange}
-                        className="border-stroke mb-6 flex w-full items-center justify-center rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none"
-                      />
-                    </div>
-                  ) : (
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <input
+                    type="file"
+                    name="image"
+                    onChange={handleFileChange}
+                    className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
+                  />
+
+                  {dataSelected && (
                     <>
-                      <p></p>
+                      <input
+                        type="text"
+                        name="name"
+                        defaultValue={dataSelected.name}
+                        placeholder="Nuevo nombre"
+                        className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
+                      />
+                      <input
+                        type="text"
+                        name="description"
+                        defaultValue={dataSelected.description}
+                        placeholder="Nueva descripción"
+                        className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
+                      />
+                      <input
+                        type="text"
+                        name="height"
+                        defaultValue={dataSelected.height}
+                        placeholder="Nuevo tamaño"
+                        className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
+                      />
+                      <input
+                        type="text"
+                        name="color"
+                        defaultValue={dataSelected.color}
+                        placeholder="Nuevo color"
+                        className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
+                      />
                     </>
                   )}
-                  <div className="rounded-3xl p-2 ">
-                    <div className="flex w-full flex-row items-center justify-around gap-3 ">
-                      {dataSelected ? (
-                        <>
-                          <input
-                            type="text"
-                            name="name"
-                            defaultValue={
-                              dataSelected.name
-                                ? dataSelected.name
-                                : "Nuevo Nombre"
-                            }
-                            className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                          />
-                        </>
-                      ) : (
-                        <>
-                          <p></p>
-                        </>
-                      )}
-                    </div>
-                  </div>
 
-                  <div className="rounded-3xl p-2 ">
-                    <div className="flex w-full flex-row items-center justify-around gap-3 ">
-                      {dataSelected ? (
-                        <>
-                          <input
-                            type="text"
-                            name="description"
-                            defaultValue={
-                              dataSelected.description
-                                ? dataSelected.description
-                                : "Nueva Descripcion"
-                            }
-                            className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                          />
-                        </>
-                      ) : (
-                        <>
-                          <p></p>
-                        </>
-                      )}
+                  {globalMessage && (
+                    <div
+                      className={`rounded-md px-4 py-3 text-center text-sm font-medium ${
+                        globalMessage.type === "success"
+                          ? "bg-green-800 text-green-200"
+                          : "bg-red-800 text-red-200"
+                      }`}
+                    >
+                      {globalMessage.text}
                     </div>
-                  </div>
+                  )}
 
-                  <div className="rounded-3xl p-2 ">
-                    <div className="flex w-full flex-row items-center justify-around gap-3 ">
-                      {dataSelected ? (
-                        <>
-                          <input
-                            type="text"
-                            name="height"
-                            defaultValue={
-                              dataSelected.height
-                                ? dataSelected.height
-                                : "Nuevo tamaño"
-                            }
-                            className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                          />
-                        </>
-                      ) : (
-                        <p>Cargando datos del producto...</p>
-                      )}
-                    </div>
-                  </div>
-                  <div className="rounded-3xl p-2 ">
-                    <div className="flex w-full flex-row items-center justify-around gap-3 ">
-                      {dataSelected ? (
-                        <>
-                          <input
-                            type="text"
-                            name="color"
-                            defaultValue={
-                              dataSelected.color
-                                ? dataSelected.color
-                                : "Nuevo color"
-                            }
-                            className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                          />
-                        </>
-                      ) : (
-                        <>
-                          <p></p>
-                        </>
-                      )}
-                    </div>
-                  </div>
                   <div className="mt-6 flex items-center justify-center">
                     <button
-                      className="inline-flex w-[100px] items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white"
                       type="submit"
+                      className="rounded-full bg-[#e11b24] px-32 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-[#c8101c]"
                     >
                       Guardar
                     </button>
                   </div>
                 </form>
 
-                <p className="mt-6 text-center text-base font-medium text-body-color">
-                  Volver a productos
-                  <a href="/products" className="text-primary hover:underline">
+                <p className="mt-6 text-center text-sm text-white/80">
+                  Volver a productos {" "}
+                  <a href="/products" className="text-red-700 hover:underline font-semibold">
                     Productos
                   </a>
                 </p>

@@ -146,25 +146,27 @@ const ProductMain = () => {
     }
   };
 
+  const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
+
   const deleteProduct = async (id, category) => {
     try {
-      const response = await axios.delete(
-        `${api}/products/${category}/${id}`,
-        {
-          data: { id, category },
-        }
-      );
+      const response = await axios.delete(`${api}/products/${category}/${id}`, {
+        data: { id, category },
+      });
       if (response.status === 200) {
-        alert("Producto eliminado correctamente.");
+        setGlobalMessage({ text: "✅ Producto eliminado correctamente.", type: "success" });
         fetchProducts();
       } else {
-        alert("Error al eliminar el producto.");
+        setGlobalMessage({ text: "⚠️ Error al eliminar el producto.", type: "error" });
       }
     } catch (error) {
       console.error("Error eliminando el producto:", error);
-      alert("Error en el servidor.");
+      setGlobalMessage({ text: "❌ Error en el servidor al eliminar.", type: "error" });
+    } finally {
+      setTimeout(() => setGlobalMessage(null), 3000);
     }
   };
+
 
   const renderProducts = (products, title, category) => (
     <>
@@ -209,6 +211,16 @@ const ProductMain = () => {
 
       <BubbleDecoration/>
 
+      {globalMessage && (
+        <div
+          className={`fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2 rounded-md px-6 py-4 text-center text-base font-medium shadow-lg backdrop-blur-md ${
+            globalMessage.type === "success" ? "bg-green-800 text-green-200" : "bg-red-800 text-red-200"
+          }`}
+        >
+          {globalMessage.text}
+        </div>
+      )}
+
       <div className="container">
         <div className="-mx-4 flex flex-wrap">
           <div className="w-full px-4">
@@ -224,10 +236,10 @@ const ProductMain = () => {
                   style={{ width: 80, height: 80, margin: "auto", marginBottom: 20 }}
                 />
                 <h3 className="mb-3 text-center text-3xl font-bold">PRODUCTOS DISPONIBLES</h3>
-                <div className="mb-11 text-center text-white/80">
-                  Estos son todos los productos ingresados y disponibles en la página.
+                <div className="mb-11 mx-28 text-center text-white/80">
+                  A continuación, se presenta el listado completo de todos los productos que han sido ingresados y que actualmente se encuentran disponibles en la página.
                   <br /> ¿Deseas añadir uno nuevo? {" "}
-                  <Link href="/newProduct" className="text-[#4A6CF7] hover:underline">
+                  <Link href="/newProduct" className="text-red-700 font-bold  hover:underline">
                     Añadir producto
                   </Link>
                 </div>

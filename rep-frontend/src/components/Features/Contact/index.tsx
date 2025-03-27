@@ -8,6 +8,8 @@ const Contact = () => {
   const form = useRef<HTMLFormElement>(null);
   const [buttonText, setButtonText] = useState("Enviar Mensaje");
   const [isSent, setIsSent] = useState(false);
+  const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "warning" } | null>(null);
+
 
   const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,12 +26,17 @@ const Contact = () => {
           () => {
             setIsSent(true);
             setButtonText("Enviado ✅");
+            setGlobalMessage({ text: "✅ Mensaje enviado correctamente.", type: "success" });
           },
           (error) => {
             console.error("FAILED...", error.text);
             setButtonText("Error al enviar mensaje");
-          },
-        );
+            setGlobalMessage({ text: "⚠️ Error al enviar el mensaje. Intenta nuevamente.", type: "warning" });
+          }
+        )
+        .finally(() => {
+          setTimeout(() => setGlobalMessage(null), 3000);
+        });
     }
   };
 
@@ -174,14 +181,25 @@ const Contact = () => {
                       {buttonText}
                     </button>
                   </div>
+                  {globalMessage && (
+                    <div
+                      className={`px-6 py-4 text-center text-base font-medium shadow-lg ${
+                        globalMessage.type === "success" ? "bg-green-800 text-green-200" : "bg-yellow-700 text-yellow-100"
+                      }`}
+                    >
+                      {globalMessage.text}
+                    </div>
+                  )}
+
                 </div>
               </form>
             </div>
           </div>
 
-          <div className="w-full px-4 lg:w-5/12 xl:w-4/12">
+          <div className="w-full px-4 lg:w-5/12 xl:w-4/12 mt-10 lg:mt-0">
             <NewsLatterBox />
           </div>
+
         </div>
       </div>
     </section>

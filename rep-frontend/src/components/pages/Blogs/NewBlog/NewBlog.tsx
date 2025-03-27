@@ -7,9 +7,9 @@ import logo from "../../../../../public/images/hero/logo-repsell-icono.png";
 import {categorias} from "@/config/constants";
 
 const NewBlog = () => {
-  const [message, setMessage] = useState("");
   const [preview, setPreview] = useState(null);
   const fileInputRef = useRef(null);
+  const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -48,18 +48,14 @@ const NewBlog = () => {
       );
 
       if (response.ok) {
-        const data = await response.json();
-        console.log("Blog creado exitosamente:", data);
-        setMessage("Blog creado exitosamente!");
+        setGlobalMessage({ text: "✅ Blog creado exitosamente.", type: "success" });
       } else {
-        console.error("Error al crear el blog");
-        setMessage("Error al crear el blog. Por favor, intenta nuevamente.");
+        setGlobalMessage({ text: "⚠️ Error al crear el blog. Por favor, intenta nuevamente.", type: "error" });
       }
     } catch (error) {
-      console.error("Error al conectarse al backend:", error);
-      setMessage(
-        "Error al conectarse al backend. Por favor, intenta nuevamente.",
-      );
+      setGlobalMessage({ text: "❌ Error al conectarse al backend. Intenta nuevamente.", type: "error" });
+    } finally {
+      setTimeout(() => setGlobalMessage(null), 3000);
     }
   };
 
@@ -87,8 +83,7 @@ const NewBlog = () => {
                 AÑADIR NUEVO BLOG
               </h3>
               <p className="mb-10 mx-16 text-center text-white/80">
-                Completa los siguientes campos para crear una entrada de blog informativa, atractiva y alineada con los intereses de tus clientes.
-              </p>
+                Por favor, complete los siguientes campos para crear una entrada de blog informativa, atractiva y alineada con los intereses y necesidades de su audiencia.              </p>
 
               <p className="text-lg font-bold text-center text-white/80">
                 Nota:
@@ -211,6 +206,16 @@ const NewBlog = () => {
                     ></textarea>
                   </div>
 
+                  {globalMessage && (
+                    <div
+                      className={` rounded-md px-4 py-3 text-center text-sm font-medium ${
+                        globalMessage.type === "success" ? "bg-green-800 text-green-200" : "bg-red-800 text-red-200"
+                      }`}
+                    >
+                      {globalMessage.text}
+                    </div>
+                  )}
+
                   <button
                     type="submit"
                     className="w-full rounded-full bg-[#e11b24] px-6 py-4 font-semibold text-white shadow-lg transition hover:bg-[#c8101c]"
@@ -218,19 +223,13 @@ const NewBlog = () => {
                     Publicar Blog
                   </button>
 
-                  {message && (
-                    <div
-                      className={`mt-6 text-center text-sm font-medium ${message.includes("exitosamente") ? "text-green-500" : "text-red-500"}`}
-                    >
-                      {message}
-                    </div>
-                  )}
+
                 </div>
               </form>
 
               <p className="mt-10 text-center text-sm text-white/80">
                 ¿Quieres ver tus blogs publicados? {" "}
-                <a href="/blog" className="text-[#4A6CF7] hover:underline">
+                <a href="/blog" className="text-red-700 font-bold hover:underline">
                   Ir al Blog
                 </a>
               </p>

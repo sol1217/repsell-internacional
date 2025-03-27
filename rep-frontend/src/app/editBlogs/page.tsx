@@ -7,6 +7,8 @@ const EditBlogsPage = () => {
   const [dataSelected, setDataSelected] = useState(null);
   const [preview, setPreview] = useState(null);
   const data = useSearchParams();
+  const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
+
   const fetchProduct = async () => {
     try {
       const product = (
@@ -66,12 +68,14 @@ const EditBlogsPage = () => {
       );
 
       if (response.ok) {
-        alert("Producto actualizado correctamente.");
+        setGlobalMessage({ text: "✅ Blog actualizado correctamente.", type: "success" });
       } else {
-        alert("Error al actualizar el producto.");
+        setGlobalMessage({ text: "⚠️ Error al actualizar el blog.", type: "error" });
       }
     } catch (error) {
-      alert("Error en la conexión.");
+      setGlobalMessage({ text: "❌ Error en la conexión al servidor.", type: "error" });
+    } finally {
+      setTimeout(() => setGlobalMessage(null), 3000);
     }
   };
 
@@ -303,6 +307,15 @@ const EditBlogsPage = () => {
                         )}
                       </div>
                     </div>
+                    {globalMessage && (
+                      <div
+                        className={` rounded-md px-4 py-3 text-center text-sm font-medium ${
+                          globalMessage.type === "success" ? "bg-green-800 text-green-200" : "bg-red-800 text-red-200"
+                        }`}
+                      >
+                        {globalMessage.text}
+                      </div>
+                    )}
                     <div className="mt-6 flex items-center justify-center">
                       <button
                         className="inline-flex w-[100px] items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white"

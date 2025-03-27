@@ -12,6 +12,8 @@ const NewProduct = () => {
   const [selectedStyles, setSelectedStyles] = useState("");
   const [preview, setPreview] = useState(null);
   const fileInputRef = useRef(null);
+  const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
+
 
   const handleChange = (event) => {
     setSelectedCategoria(event.target.value);
@@ -58,7 +60,8 @@ const NewProduct = () => {
     const endpoint = `${api}/products/${selectedCategoria}`;
 
     if (!endpoint) {
-      alert("Endpoint no encontrado para la categoría seleccionada.");
+      setGlobalMessage({ text: "❌ Endpoint no encontrado para esta categoría.", type: "error" });
+      setTimeout(() => setGlobalMessage(null), 3000);
       return;
     }
 
@@ -73,12 +76,14 @@ const NewProduct = () => {
       });
 
       if (response.ok) {
-        alert("Producto enviado correctamente.");
+        setGlobalMessage({ text: "✅ Producto enviado correctamente.", type: "success" });
       } else {
-        alert("Error al enviar el producto.");
+        setGlobalMessage({ text: "⚠️ Error al enviar el producto.", type: "error" });
       }
     } catch (error) {
-      alert("Error en la conexión.");
+      setGlobalMessage({ text: "❌ Error en la conexión.", type: "error" });
+    } finally {
+      setTimeout(() => setGlobalMessage(null), 3000);
     }
   };
 
@@ -109,7 +114,7 @@ const NewProduct = () => {
                   AÑADE UN NUEVO PRODUCTO
                 </h3>
                 <p className="mb-10 text-center text-base font-medium text-white/80">
-                  Ingresa todos los datos necesarios para brindarle al cliente una información detallada.
+                  Ingresa todos los datos: Una vez completados todos los campos, verifique que los datos sean correctos y estén actualizados para garantizar su correcta visualización en la plataforma.
                 </p>
 
                 <select
@@ -218,11 +223,22 @@ const NewProduct = () => {
                     </div>
                   </div>
 
+                  {globalMessage && (
+                    <div
+                      className={`my-6 rounded-md px-4 py-3 text-center text-sm font-medium ${
+                        globalMessage.type === "success" ? "bg-green-800 text-green-200" : "bg-red-800 text-red-200"
+                      }`}
+                    >
+                      {globalMessage.text}
+                    </div>
+                  )}
+
+
                   <button
                     type="submit"
                     className="mt-10 w-full rounded-full bg-[#e11b24] px-6 py-4 font-semibold text-white shadow-lg transition hover:bg-[#c8101c]"
                   >
-                    Enviar Producto
+                    Guardar producto
                   </button>
                 </form>
 

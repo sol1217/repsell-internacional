@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import Link from "next/link";
 import axios from "axios";
@@ -12,7 +12,7 @@ import Image from "next/image";
 const BlogPageCheck = () => {
   const [blog, setBlog] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState("");
+  const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
 
   useEffect(() => {
     fetchBlogs();
@@ -41,15 +41,18 @@ const BlogPageCheck = () => {
         `https://repsell-international-backend.onrender.com/delete-blog/${id}`
       );
       if (response.status === 200) {
-        setMessage("✅ Blog eliminado correctamente.");
+        setGlobalMessage({ text: "✅ Blog eliminado correctamente.", type: "success" });
         fetchBlogs();
       } else {
-        setMessage("❌ Error al eliminar el blog.");
+        setGlobalMessage({ text: "❌ Error al eliminar el blog.", type: "error" });
       }
     } catch (error) {
-      setMessage("❌ Error en el servidor.");
+      setGlobalMessage({ text: "❌ Error en el servidor al eliminar.", type: "error" });
+    } finally {
+      setTimeout(() => setGlobalMessage(null), 3000);
     }
   };
+
 
   const renderBlogs = (blogs, title, category) => (
     <>
@@ -113,19 +116,12 @@ const BlogPageCheck = () => {
                 <h3 className="mb-3 text-center text-3xl font-bold drop-shadow">
                   BLOGS PUBLICADOS
                 </h3>
-                <p className="mb-8 text-center text-white/80">
-                  Estos son todos los blogs ingresados y publicados en la página.
-                  <br /> ¿Deseas añadir uno nuevo?
-                  <Link href="/newBlog" className="text-[#4A6CF7] hover:underline">
+                <p className="mb-8 mx-32 text-center text-white/80">
+                  A continuación, se muestra el listado completo de todas las entradas de blog que han sido ingresadas y publicadas en la página.                  <br /> ¿Deseas añadir uno nuevo?
+                  <Link href="/newBlog" className="text-red-700 hover:underline">
                     Añadir Blog
                   </Link>
                 </p>
-
-                {message && (
-                  <div className="mb-6 text-center text-sm font-medium text-green-400">
-                    {message}
-                  </div>
-                )}
 
                 {loading ? (
                   <p className="text-center text-white/80">Cargando...</p>
@@ -133,6 +129,15 @@ const BlogPageCheck = () => {
                   renderBlogs(blog, "Blogs Publicados", "blogs")
                 )}
               </div>
+              {globalMessage && (
+                <div
+                  className={` rounded-md px-4 py-3 text-center text-sm font-medium ${
+                    globalMessage.type === "success" ? "bg-green-800 text-green-200" : "bg-red-800 text-red-200"
+                  }`}
+                >
+                  {globalMessage.text}
+                </div>
+              )}
             </div>
           </div>
         </div>
