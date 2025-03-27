@@ -57,6 +57,7 @@ const SCHEMAS = {
     "category",
   ],
   ADMIN: ["user", "password"],
+  BACKGROUND: ["category", "color"],
 };
 
 /**
@@ -65,6 +66,7 @@ const SCHEMAS = {
 const ALLOWED_TABLES = {
   PRODUCTS: ["trophies", "recognitions", "promotional", "medals", "impresion"],
   BLOGS: ["blogs"],
+  BACKGROUNDS: ["backgrouds"],
 };
 
 /**
@@ -189,7 +191,7 @@ const productService = {
   },
 };
 
-// Product routes (complete implementation)
+// Product routes
 app
   .route("/products/:category")
   .get(async (req, res) => {
@@ -222,7 +224,7 @@ app
   });
 
 app
-  .route("/products/:category/:id") //
+  .route("/products/:category/:id")
   .get(async (req, res) => {
     try {
       if (!ALLOWED_TABLES.PRODUCTS.includes(req.params.category)) {
@@ -400,6 +402,79 @@ app
       res.status(500).json({ error: "Delete operation failed" });
     }
   });
+
+/**
+ * Background Service Module
+ */
+const backgroundService = {
+  /**
+   * Gets all background colors
+   * @returns {Promise} Database results
+   */
+  getAll: async () => {
+    const sql = `SELECT * FROM backgrouds`;
+    return dbAll(sql);
+  },
+
+  /**
+   * Gets a single background color by category
+   * @param {string} category - Background category
+   * @returns {Promise} Database result
+   */
+  getByCategory: async (category) => {
+    const sql = `SELECT * FROM backgrouds WHERE category = ?`;
+    return dbGet(sql, [category]);
+  },
+
+  /**
+   * Updates an existing background color
+   * @param {string} category - Background category
+   * @param {string} color - Background color
+   * @returns {Promise} Update operation result
+   */
+  update: async (category, color) => {
+    const record = await backgroundService.getByCategory(category);
+    if (record) {
+      const sql = `UPDATE backgrouds SET color = ? WHERE category = ?`;
+      return dbQuery(sql, [color, category]);
+    } else {
+      const sql = `INSERT INTO backgrouds (category, color) VALUES (?, ?)`;
+      return dbQuery(sql, [category, color]);
+    }
+  },
+};
+
+// background routes
+app.put("/backgrounds/:category", async (req, res) => {
+  const category = req.params.category;
+  const { color } = req.body;
+  if (!color) {
+    return res.status(400).json({ error: "Color is required" });
+  }
+  // Validar que la categoría pertenezca a la lista de productos permitidos
+  if (!ALLOWED_TABLES.PRODUCTS.includes(category)) {
+    return res.status(400).json({ error: "Invalid category" });
+  }
+  try {
+    const result = await backgroundService.update(category, color);
+    res.json({ message: "Background updated successfully", result });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ error: "Error updating background", details: err.message });
+  }
+});
+
+app.get("/backgrounds", async (req, res) => {
+  try {
+    const results = await backgroundService.getAll();
+    res.json({ data: results });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ error: "Error fetching backgrounds", details: err.message });
+  }
+});
 
 // const blog = {
 //   image,
