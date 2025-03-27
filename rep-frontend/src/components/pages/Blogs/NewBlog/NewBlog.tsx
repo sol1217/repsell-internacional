@@ -1,6 +1,9 @@
 "use client";
 
 import React, { useRef, useState } from "react";
+import BubbleDecoration from "@/components/Common/BubbleDecoration";
+import Image from "next/image";
+import logo from "../../../../../public/images/hero/logo-repsell-icono.png";
 
 const NewBlog = () => {
   const [message, setMessage] = useState("");
@@ -77,192 +80,173 @@ const NewBlog = () => {
   };
 
   return (
-    <section className="relative z-10 overflow-hidden pb-16 pt-36 md:pb-20 lg:pb-28 lg:pt-[10px]">
+    <section
+      className="relative z-10 overflow-hidden py-24"
+      style={{
+        background: "radial-gradient(circle at top left, #1E3A8A 0%, #0A0F24 100%)",
+      }}
+    >
+      <BubbleDecoration/>
+
       <div className="container">
-        <div className="-mx-4 flex flex-wrap">
-          <div className="w-full px-4">
-            <div className="mx-auto max-w-[1200px] rounded bg-white px-6 py-10 shadow-three dark:bg-dark sm:p-[60px]">
-              <h3 className="mb-3 text-center text-2xl font-bold text-black dark:text-white sm:text-3xl">
+        <div className="-mx-4 flex flex-wrap justify-center">
+          <div className="w-full px-4 lg:w-10/12 xl:w-9/12">
+            <div className="mx-auto rounded-xl bg-[#101933]/60 px-6 py-10 text-white shadow-xl backdrop-blur-md sm:p-[60px]">
+              <Image
+                src={logo}
+                alt="logo"
+                width={50}
+                height={50}
+                style={{ width: 80, height: 80, margin: "auto", marginBottom: 20 }}
+              />
+              <h3 className="mb-3 text-center text-3xl font-bold drop-shadow">
                 AÑADIR NUEVO BLOG
               </h3>
-              <p className="mb-11 text-center text-base font-medium text-body-color">
-                Completa los siguientes campos para crear una entrada de blog
-                informativa y atractiva para tus clientes.
+              <p className="mb-10 mx-16 text-center text-white/80">
+                Completa los siguientes campos para crear una entrada de blog informativa, atractiva y alineada con los intereses de tus clientes.
+              </p>
+
+              <p className="text-lg font-bold text-center text-white/80">
+                Nota:
+              </p>
+
+              <p className="mb-10 text-center text-green-600">
+                ¡Recuerda para dividir en saltos de linea los parrafos y/o textos usar ( ; ) punto y coma!
               </p>
 
               <form onSubmit={handleSubmit}>
-                <div className="mb-8">
-                  <label
-                    htmlFor="image"
-                    className="mb-3 block text-sm text-dark dark:text-white"
-                  >
-                    Imagen:
-                  </label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    ref={fileInputRef}
-                    className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                  />
-                </div>
-
-                {preview && (
-                  <div className="mb-8">
-                    <img
-                      src={preview}
-                      alt="Vista previa"
-                      className="h-auto max-w-full"
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-sm mb-2">Imagen:</label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      ref={fileInputRef}
+                      className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-white placeholder-white/50"
                     />
                   </div>
-                )}
-                <select
-                  name="category"
-                  className="border-stroke mb-8 flex w-full items-center justify-center rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none"
-                >
-                  {categorias.map((categoria) => (
-                    <option key={categoria.value} value={categoria.value}>
-                      {categoria.label}
-                    </option>
-                  ))}
-                </select>
 
-                <div className="mb-8">
-                  <label
-                    htmlFor="title"
-                    className="mb-3 block text-sm text-dark dark:text-white"
-                  >
-                    Título del Blog:
-                  </label>
-                  <input
-                    maxLength={300}
-                    required
-                    type="text"
-                    name="title"
-                    placeholder="Ingresa un título"
-                    className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                  />
-                </div>
-                <div className="mb-8">
-                  <label
-                    htmlFor="description"
-                    className="mb-3 block text-sm text-dark dark:text-white"
-                  >
-                    Introducción:
-                  </label>
-                  <textarea
-                    maxLength={5000}
-                    required
-                    name="description"
-                    placeholder="Ingresa una Introducción"
-                    className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                  ></textarea>
-                </div>
-                <div className="mb-8">
-                  <label
-                    htmlFor="additionalTitle"
-                    className="mb-3 block text-sm text-dark dark:text-white"
-                  >
-                    Subtítulo 1:
-                  </label>
-                  <input
-                    required
-                    type="text"
-                    name="additionalTitle"
-                    placeholder="Ingresa un Subtitulo"
-                    className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                  />
-                </div>
-                <div className="mb-8">
-                  <label
-                    htmlFor="additionalText"
-                    className="mb-3 block text-sm text-dark dark:text-white"
-                  >
-                    Párrafo:
-                  </label>
-                  <textarea
-                    maxLength={5000}
-                    name="additionalText"
-                    placeholder="Ingresa un párrafo"
-                    className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                  ></textarea>
-                </div>
-                <div className="mb-8">
-                  <label
-                    htmlFor="subtitle"
-                    className="mb-3 block text-sm text-dark dark:text-white"
-                  >
-                    Subtítulo 2:
-                  </label>
-                  <input
-                    type="text"
-                    name="subtitle"
-                    placeholder="Ingresa un Subtitulo 2"
-                    className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                  />
-                </div>
-                <div className="mb-8">
-                  <label
-                    htmlFor="paragraph"
-                    className="mb-3 block text-sm text-dark dark:text-white"
-                  >
-                    Párrafo 2:
-                  </label>
-                  <textarea
-                    maxLength={5000}
-                    name="paragraph"
-                    placeholder="Ingresa un párrafo 2"
-                    className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                  ></textarea>
-                </div>
-                <div className="mb-8">
-                  <label
-                    htmlFor="important-points"
-                    className="mb-3 block text-sm text-dark dark:text-white"
-                  >
-                    Conclusión (Subtítulos 3):
-                  </label>
-                  <input
-                    name="list"
-                    maxLength={700}
-                    required
-                    placeholder="Ingresa Conclusiones"
-                    className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                  />
-                </div>
+                  {preview && (
+                    <div className="mb-6">
+                      <img src={preview} alt="Vista previa" className="mx-auto rounded-md shadow-md" />
+                    </div>
+                  )}
 
-                <div className="mb-8">
-                  <label
-                    htmlFor="phrase"
-                    className="mb-3 block text-sm text-dark dark:text-white"
-                  >
-                    Párrafo:
-                  </label>
-                  <textarea
-                    required
-                    maxLength={700}
-                    name="phrase"
-                    placeholder="Ingresa un párrafo"
-                    className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                  ></textarea>
-                </div>
+                  <div>
+                    <label className="block text-sm mb-2">Categoría:</label>
+                    <select
+                      name="category"
+                      className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-white"
+                    >
+                      {categorias.map((categoria) => (
+                        <option key={categoria.value} value={categoria.value}>
+                          {categoria.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-                <div className="mb-6">
-                  <button className="flex w-full items-center justify-center rounded-sm bg-red-700 px-9 py-4 text-base font-medium text-white shadow-submit duration-300 hover:bg-red-800/90 dark:shadow-submit-dark">
+                  <div>
+                    <label className="block text-sm mb-2">Título del Blog:</label>
+                    <input
+                      type="text"
+                      name="title"
+                      required
+                      placeholder="Ingresa un título"
+                      className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-white placeholder-white/50"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm mb-2">Introducción:</label>
+                    <textarea
+                      name="description"
+                      required
+                      className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-white placeholder-white/50"
+                      placeholder="Escribe la introducción"
+                    ></textarea>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm mb-2">Subtítulo 1:</label>
+                    <input
+                      type="text"
+                      name="additionalTitle"
+                      required
+                      className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-white placeholder-white/50"
+                      placeholder="Ingresa un subtítulo"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm mb-2">Párrafo:</label>
+                    <textarea
+                      name="additionalText"
+                      className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-white placeholder-white/50"
+                      placeholder="Texto del párrafo"
+                    ></textarea>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm mb-2">Subtítulo 2:</label>
+                    <input
+                      type="text"
+                      name="subtitle"
+                      className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-white placeholder-white/50"
+                      placeholder="Subtítulo adicional"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm mb-2">Párrafo 2:</label>
+                    <textarea
+                      name="paragraph"
+                      className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-white placeholder-white/50"
+                      placeholder="Segundo párrafo"
+                    ></textarea>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm mb-2">Conclusión:</label>
+                    <input
+                      name="list"
+                      required
+                      className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-white placeholder-white/50"
+                      placeholder="Escribe la conclusión"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm mb-2">Frase final:</label>
+                    <textarea
+                      name="phrase"
+                      required
+                      className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-white placeholder-white/50"
+                      placeholder="Frase o párrafo final"
+                    ></textarea>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full rounded-full bg-[#e11b24] px-6 py-4 font-semibold text-white shadow-lg transition hover:bg-[#c8101c]"
+                  >
                     Publicar Blog
                   </button>
+
+                  {message && (
+                    <div
+                      className={`mt-6 text-center text-sm font-medium ${message.includes("exitosamente") ? "text-green-500" : "text-red-500"}`}
+                    >
+                      {message}
+                    </div>
+                  )}
                 </div>
-                {message && (
-                  <div
-                    className={`mb-6 text-center ${message.includes("exitosamente") ? "text-green-600" : "text-red-600"}`}
-                  >
-                    {message}
-                  </div>
-                )}
               </form>
-              <p className="text-center text-base font-medium text-body-color">
-                ¿Quieres ver tus blogs publicados?
-                <a href="/blog" className="text-primary hover:underline">
+
+              <p className="mt-10 text-center text-sm text-white/80">
+                ¿Quieres ver tus blogs publicados? {" "}
+                <a href="/blog" className="text-[#4A6CF7] hover:underline">
                   Ir al Blog
                 </a>
               </p>

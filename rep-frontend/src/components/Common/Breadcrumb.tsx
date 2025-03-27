@@ -24,17 +24,19 @@ const Breadcrumb = ({
 
   return (
     <section
-      className="relative z-10 overflow-hidden pt-40 lg:pt-[150px]"
+      className="relative z-10 overflow-hidden lg:pt-[150px]"
       style={{
         background:
           "radial-gradient(circle at top left, #f5f7fa 0%, #dbe7ff 50%, #ffffff 100%)",
       }}
     >
-      <div className="container">
+      <div className="container pt-6">
         <div className="-mx-4 flex flex-wrap items-center">
           <div className="w-full px-4 md:w-8/12 lg:w-7/12">
             <div className="mb-8 max-w-[570px] md:mb-0 lg:mb-12">
-
+              <p className=" font-mono text-4xl font-bold leading-relaxed text-[#0A0F24] drop-shadow">
+                {pageName}
+              </p>
               <p className="text-base font-medium leading-relaxed text-[#0A0F24]/80">
                 {description}
               </p>

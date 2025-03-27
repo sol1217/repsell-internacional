@@ -9,13 +9,11 @@ import logo from "public/images/hero/logo-repsell-icono.png";
 import menuData from "@/components/layout/Header/menuData";
 
 const Header = () => {
-  // Navbar toggle
   const [navbarOpen, setNavbarOpen] = useState(false);
   const navbarToggleHandler = () => {
     setNavbarOpen(!navbarOpen);
   };
 
-  // Sticky Navbar
   const [sticky, setSticky] = useState(false);
   const handleStickyNavbar = () => {
     if (window.scrollY >= 80) {
@@ -28,7 +26,6 @@ const Header = () => {
     window.addEventListener("scroll", handleStickyNavbar);
   });
 
-  // submenu handler
   const [openIndex, setOpenIndex] = useState(-1);
   const handleSubmenu = (index) => {
     if (openIndex === index) {
@@ -97,11 +94,12 @@ const Header = () => {
                 </button>
                 <nav
                   id="navbarCollapse"
-                  className={`navbar absolute right-0 z-30 w-[250px] rounded border-[.5px] border-body-color/50 bg-dark px-6 py-4 duration-300   lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 ${
+                  className={` navbar absolute right-0 z-30 w-[250px] rounded-lg   px-6 py-4 duration-300   lg:visible lg:static lg:w-auto bg-white lg:!bg-transparent lg:p-0 lg:opacity-100 ${
                     navbarOpen
                       ? "visibility top-full opacity-100"
                       : "invisible top-[120%] opacity-0"
                   }`}
+
                 >
                   <ul className="block rounded-sm lg:flex lg:space-x-12">
                     {menuData.map((menuItem, index) => (
@@ -109,9 +107,9 @@ const Header = () => {
                         {menuItem.path ? (
                           <Link
                             href={menuItem.path}
-                            className={`flex py-2 text-gray-500 lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 ${
+                            className={`font-bold flex py-2 text-gray-500 lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 ${
                               usePathName === menuItem.path
-                                ? "font-bold text-red-800  "
+                                ? "font-bold text-red-500 "
                                 : "font-bold text-gray-500   "
                             }`}
                           >
@@ -135,21 +133,26 @@ const Header = () => {
                                 </svg>
                               </span>
                             </p>
+
                             <div
-                              className={`submenu relative left-0 top-full rounded-sm bg-dark transition-[top] duration-300 group-hover:opacity-100 lg:invisible lg:absolute lg:top-[110%] lg:block lg:w-[250px] lg:p-4 lg:opacity-0 lg:shadow-lg lg:group-hover:visible lg:group-hover:top-full ${
+                              className={`submenu absolute z-50 mt-2 w-[250px] rounded-xl bg-[#101933]/90 p-4 shadow-xl ring-1 ring-white/10 backdrop-blur-md transition-all duration-300 lg:invisible lg:opacity-0 lg:group-hover:visible lg:group-hover:opacity-100 ${
                                 openIndex === index ? "block" : "hidden"
                               }`}
+                              style={{
+                                background: "radial-gradient(circle at top left, #1E3A8A 0%, #0A0F24 100%)",
+                              }}
                             >
-                              {menuItem.submenu.map((submenuItem, index) => (
+                              {menuItem.submenu.map((submenuItem, subIndex) => (
                                 <Link
                                   href={submenuItem.path}
-                                  key={index}
-                                  className="block rounded py-2.5 text-sm text-white hover:text-red-400  lg:px-3"
+                                  key={subIndex}
+                                  className="block rounded-md px-3 py-2 text-sm text-white hover:bg-[#1f2e4a] transition"
                                 >
                                   {submenuItem.title}
                                 </Link>
                               ))}
                             </div>
+
                           </div>
                         )}
                       </li>
@@ -160,13 +163,13 @@ const Header = () => {
               <div className="flex items-center justify-end pr-16 lg:pr-0">
                 <Link
                   href="/cart"
-                  className="px-7 py-3 text-base font-medium text-dark hover:opacity-70 dark:text-white md:block"
+                  className="px-7 py-3 text-base font-medium text-dark   md:block"
                 >
                   <BsFillCartPlusFill size={28} color="#000" />
                 </Link>
                 <Link
                   href="/blog"
-                  className="ease-in-up rounded-sm bg-[#e11b24] px-8 py-3 text-base font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 hover:shadow-btn-hover md:block md:px-9 lg:px-6 xl:px-9"
+                  className="ease-in-up rounded-full bg-[#e11b24] px-8 py-3 text-base font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 hover:shadow-btn-hover md:block md:px-9 lg:px-6 xl:px-9"
                 >
                   Blog
                 </Link>

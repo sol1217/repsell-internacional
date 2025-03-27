@@ -88,7 +88,7 @@ const Cart = () => {
       <Breadcrumb
         color="text-black"
         pageName="Repsell International (Cotización)"
-        description="Cotice sus reconocimientos, promocionales e impresión a gran formato."
+        description="Solicite su cotización personalizada para reconocimientos, artículos promocionales e impresión en gran formato."
       />
 
       <div className="relative flex flex-row items-center justify-center py-28">
@@ -107,6 +107,10 @@ const Cart = () => {
         <div className="mr-10 w-1/2 max-w-5xl rounded-xl bg-[#101933] p-8 text-white shadow-xl backdrop-blur-md">
           <h3 className="mb-4 text-center text-2xl font-bold">
             Productos Seleccionados
+          </h3>
+
+          <h3 className="mb-4 text-center text-red-700 text-base font-bold">
+            ¿Deseas realizar una cotización?
           </h3>
 
           {cartItems.length > 0 ? (
@@ -208,8 +212,8 @@ const Cart = () => {
             </div>
           )}
 
-          <p className="mt-6 text-center text-sm text-white/70">
-            Una de nuestras agentes de ventas pronto se contactará con usted
+          <p className="mt-6 text-green-600 text-base font-bold text-center ">
+            Un@ de nuestr@s agentes de ventas pronto se contactará con usted
             para brindarle la información solicitada.
           </p>
         </div>

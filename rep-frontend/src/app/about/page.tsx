@@ -16,8 +16,8 @@ const AboutPage = () => {
     <div className="border-2 bg-white">
       <Breadcrumb
         color="text-[#1e242e]"
-        pageName="Sobre Nosotros"
-        description="Nuestra misión es brindar un servicio excepcional y garantizar que cada cliente reciba un producto que exceda sus expectativas."
+        pageName="Repsell Internacional"
+        description="Nuestra misión es ofrecer un servicio excepcional, comprometido con la calidad, la innovación y la atención al detalle. Trabajamos con pasión para garantizar que cada cliente reciba un producto personalizado que no solo cumpla, sino que supere sus expectativas."
       />
 
       <AboutUsHistory />

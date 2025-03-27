@@ -16,7 +16,7 @@ const ProductPage = () => {
       <Breadcrumb
         color="text-[#000000]"
         pageName="Lista de Productos"
-        description="Reconocimientos, Medallas, Promocionales, Trofeos, Copas y Impresiones."
+        description="Listado de productos actuales: Reconocimientos • Medallas • Artículos Promocionales • Trofeos • Copas • Impresión en Gran Formato."
       />
 
       <ProductMain />
