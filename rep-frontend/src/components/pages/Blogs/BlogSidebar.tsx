@@ -80,7 +80,7 @@ const BlogSidebar = () => {
 
   return (
     <>
-      <section className="overflow-hidden bg-white pb-[120px] pt-[180px]">
+      <section className="overflow-hidden bg-white py-20 ">
         {loading ? (
           <p className="m-20 text-dark">Cargando...</p>
         ) : (

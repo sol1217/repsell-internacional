@@ -53,7 +53,7 @@ const Testimonials = () => {
           />
         </div>
         <h2 className="mb-6 font-mono text-4xl font-bold drop-shadow">
-          Lo Que Dicen Nuestros Clientes
+          Lo que dicen nuestros clientes
         </h2>
         <p className="mx-auto mb-12 max-w-2xl text-white/80">
           En Repsell Internacional, la calidad no es solo un objetivo, es

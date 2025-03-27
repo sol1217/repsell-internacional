@@ -3,6 +3,9 @@ import Link from "next/link";
 import { FaRegTrashAlt } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Image from "next/image";
+import logo from "../../../../public/images/hero/logo-repsell-icono.png";
+import BubbleDecoration from "@/components/Common/BubbleDecoration";
 
 const ProductMain = () => {
   const [trophies, setTrophies] = useState([]);
@@ -45,7 +48,7 @@ const ProductMain = () => {
         {
           category,
           background: color,
-        },
+        }
       );
 
       const updatedColors = { ...backgroundColors, [category]: color };
@@ -85,19 +88,11 @@ const ProductMain = () => {
         medalsRes,
         impresionRes,
       ] = await Promise.all([
-        axios.get(
-          "https://repsell-international-backend.onrender.com/trophies",
-        ),
-        axios.get(
-          "https://repsell-international-backend.onrender.com/recognitions",
-        ),
-        axios.get(
-          "https://repsell-international-backend.onrender.com/promotional",
-        ),
+        axios.get("https://repsell-international-backend.onrender.com/trophies"),
+        axios.get("https://repsell-international-backend.onrender.com/recognitions"),
+        axios.get("https://repsell-international-backend.onrender.com/promotional"),
         axios.get("https://repsell-international-backend.onrender.com/medals"),
-        axios.get(
-          "https://repsell-international-backend.onrender.com/impresion",
-        ),
+        axios.get("https://repsell-international-backend.onrender.com/impresion"),
       ]);
 
       setTrophies(trophiesRes.data.data || []);
@@ -129,7 +124,7 @@ const ProductMain = () => {
         "https://repsell-international-backend.onrender.com/delete-product",
         {
           data: { id, category },
-        },
+        }
       );
       if (response.status === 200) {
         alert("Producto eliminado correctamente.");
@@ -145,7 +140,7 @@ const ProductMain = () => {
 
   const renderProducts = (products, title, category) => (
     <>
-      <h2 className="mb-8 text-center" style={{ fontSize: "26px" }}>
+      <h2 className="mb-8 text-center text-2xl font-bold text-white drop-shadow">
         {title}
       </h2>
       <div>
@@ -155,172 +150,112 @@ const ProductMain = () => {
               key={product.id}
               className="mb-6 flex flex-col items-center justify-center gap-3"
             >
-              <div className="border-stroke flex w-full justify-between rounded-sm border border-primary bg-[#f8f8f8] bg-primary/5 px-6 py-3 text-base outline-none transition-all duration-300 dark:border-primary dark:border-transparent dark:bg-[#2C303B] dark:bg-primary/5 dark:text-body-color-dark dark:text-primary dark:shadow-two dark:hover:shadow-none">
+              <div
+                className="flex w-full justify-between rounded-md border border-white/10 bg-[#101933]/60 px-6 py-3 text-base text-white shadow-md backdrop-blur-md"
+                style={{ background: backgroundColors[category] }}
+              >
                 {product.name || "No Name"}
-
-                <div className="flex flex-row items-center justify-center gap-3">
-                  <button
-                    className="cursor-pointer"
-                    onClick={() => deleteProduct(product.id, category)}
-                  >
-                    <FaRegTrashAlt fontSize={20} color="white dark:b-primary" />
+                <div className="flex flex-row items-center gap-3">
+                  <button onClick={() => deleteProduct(product.id, category)}>
+                    <FaRegTrashAlt fontSize={20} className="text-white" />
                   </button>
-                  <a
-                    href={`/editProducts?id=${product.id}&category=${category}`}
-                  >
-                    Editar
-                  </a>
+                  <a href={`/editProducts?id=${product.id}&category=${category}`}>Editar</a>
                 </div>
               </div>
             </div>
           ))
         ) : (
-          <p className="text-center">No hay productos disponibles.</p>
+          <p className="text-center text-white/70">No hay productos disponibles.</p>
         )}
       </div>
     </>
   );
 
   return (
-    <>
-      <section className="relative z-10 overflow-hidden pb-16 pt-36 md:pb-20 lg:pb-28 lg:pt-[10px]">
-        <div className="container">
-          <div className="-mx-4 flex flex-wrap">
-            <div className="w-full px-4">
-              {loading ? (
-                <p className="text-dark">Cargando...</p>
-              ) : (
-                <div className="mx-auto max-w-[1200px] rounded bg-white px-6 py-10 shadow-three dark:bg-dark sm:p-[60px]">
-                  <h3 className="mb-3 text-center text-2xl font-bold text-black dark:text-white sm:text-3xl">
-                    PRODUCTOS DISPONIBLES
-                  </h3>
-                  <div className="mb-11 text-center text-base font-medium text-body-color">
-                    Estos son todos los productos ingresados y disponibles en la
-                    página.
-                    <br /> ¿Deseas añadir uno nuevo?
-                    <Link
-                      href="/newProduct"
-                      className="text-primary hover:underline"
+    <section
+      className="relative z-10 overflow-hidden py-24"
+      style={{
+        background: "radial-gradient(circle at top left, #1E3A8A 0%, #0A0F24 100%)",
+      }}
+    >
+
+      <BubbleDecoration/>
+
+      <div className="container">
+        <div className="-mx-4 flex flex-wrap">
+          <div className="w-full px-4">
+            {loading ? (
+              <p className="text-white">Cargando...</p>
+            ) : (
+              <div className="mx-auto max-w-[1200px] rounded-xl bg-[#101933]/60 px-6 py-10 text-white shadow-xl backdrop-blur-md sm:p-[60px]">
+                <Image
+                  src={logo}
+                  alt="logo"
+                  width={50}
+                  height={50}
+                  style={{ width: 80, height: 80, margin: "auto", marginBottom: 20 }}
+                />
+                <h3 className="mb-3 text-center text-3xl font-bold">PRODUCTOS DISPONIBLES</h3>
+                <div className="mb-11 text-center text-white/80">
+                  Estos son todos los productos ingresados y disponibles en la página.
+                  <br /> ¿Deseas añadir uno nuevo? {" "}
+                  <Link href="/newProduct" className="text-[#4A6CF7] hover:underline">
+                    Añadir producto
+                  </Link>
+                </div>
+
+                <h2 className="mb-8 text-center text-2xl font-bold text-white drop-shadow">
+                  Colores de fondo en productos
+                </h2>
+
+                <div className="mb-10 space-y-4">
+                  {Object.entries(backgroundColors).map(([category, color]) => (
+                    <div
+                      key={category}
+                      className="rounded-md bg-[#1a1f33]/60 p-4 shadow-md backdrop-blur-md"
                     >
-                      Añadir producto
-                    </Link>
-                  </div>
-                  <div>
-                    <h2
-                      className="mb-8 text-center"
-                      style={{ fontSize: "26px" }}
-                    >
-                      Colores de fondo en productos
-                    </h2>
-                    <div className="mb-6 flex flex-col items-center justify-center gap-3 ">
-                      {Object.entries(backgroundColors).map(
-                        ([category, color]) => (
-                          <div
-                            key={category}
-                            className="border-stroke flex w-full justify-between rounded-sm border border-primary bg-primary/5 px-6 py-3 text-base"
-                            style={{ background: color }}
-                          >
-                            {category.toUpperCase()}
-                            <div className="flex  w-2/3 flex-row items-center justify-center gap-3">
-                              <input
-                                type="text"
-                                placeholder="Ej: #004AAD o linear-gradient(90deg, #004AAD, #E72603)"
-                                value={color || ""}
-                                onChange={(e) =>
-                                  handleColorChange(category, e.target.value)
-                                }
-                                className="w-full px-2 py-1"
-                              />
-                              <button
-                                onClick={() => saveColor(category)}
-                                className="text-primary hover:underline"
-                              >
-                                Editar
-                              </button>
-                            </div>
-                            {successMessages[category] && (
-                              <h3 className="mt-2 text-sm text-green-600">
-                                ✅ {successMessages[category]}
-                              </h3>
-                            )}
-                          </div>
-                        ),
+                      <div className="flex flex-wrap items-center justify-between gap-4">
+                        <h4 className="text-white font-semibold">
+                          {{
+                            trophies: "Trofeos",
+                            recognitions: "Reconocimientos",
+                            promotional: "Promocionales",
+                            medals: "Medallas",
+                            impresion: "Impresiones"
+                          }[category] || category}
+                        </h4>
+                        <input
+                          type="text"
+                          value={color}
+                          onChange={(e) => handleColorChange(category, e.target.value)}
+                          className="w-full flex-1 rounded-md bg-[#101933] px-3 py-2 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#4A6CF7]"
+                          placeholder="Ej: #004AAD o linear-gradient(90deg, #1E3A8A ,#c8101c)"
+                        />
+                        <button
+                          onClick={() => saveColor(category)}
+                          className="rounded-md bg-red-700 hover:bg-[#c8101c] px-4 py-2 text-sm font-semibold text-white transition"
+                        >
+                          Guardar
+                        </button>
+                      </div>
+                      {successMessages[category] && (
+                        <p className="mt-2 text-sm text-green-400">✅ {successMessages[category]}</p>
                       )}
                     </div>
-                  </div>
-                  {renderProducts(trophies, "Trofeos", "trophies")}
-                  {renderProducts(
-                    recognitions,
-                    "Reconocimientos",
-                    "recognitions",
-                  )}
-                  {renderProducts(promotional, "Promocionales", "promotional")}
-                  {renderProducts(medals, "Medallas", "medals")}
-                  {renderProducts(impresion, "Impresiones", "impresion")}
+                  ))}
                 </div>
-              )}
-            </div>
+
+                {renderProducts(trophies, "Trofeos", "trophies")}
+                {renderProducts(recognitions, "Reconocimientos", "recognitions")}
+                {renderProducts(promotional, "Promocionales", "promotional")}
+                {renderProducts(medals, "Medallas", "medals")}
+                {renderProducts(impresion, "Impresiones", "impresion")}
+              </div>
+            )}
           </div>
         </div>
-        <div className="absolute left-0 top-0 z-[-1]">
-          <svg
-            width="1440"
-            height="969"
-            viewBox="0 0 1440 969"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <mask
-              id="mask0_95:1005"
-              style={{ maskType: "alpha" }}
-              maskUnits="userSpaceOnUse"
-              x="0"
-              y="0"
-              width="1440"
-              height="969"
-            >
-              <rect width="1440" height="969" fill="#090E34" />
-            </mask>
-            <g mask="url(#mask0_95:1005)">
-              <path
-                opacity="0.1"
-                d="M1086.96 297.978L632.959 554.978L935.625 535.926L1086.96 297.978Z"
-                fill="url(#paint0_linear_95:1005)"
-              />
-              <path
-                opacity="0.1"
-                d="M1324.5 755.5L1450 687V886.5L1324.5 967.5L-10 288L1324.5 755.5Z"
-                fill="url(#paint1_linear_95:1005)"
-              />
-            </g>
-            <defs>
-              <linearGradient
-                id="paint0_linear_95:1005"
-                x1="1178.4"
-                y1="151.853"
-                x2="780.959"
-                y2="453.581"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" />
-                <stop offset="1" stopColor="#4A6CF7" stopOpacity="0" />
-              </linearGradient>
-              <linearGradient
-                id="paint1_linear_95:1005"
-                x1="160.5"
-                y1="220"
-                x2="1099.45"
-                y2="1192.04"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4A6CF7" />
-                <stop offset="1" stopColor="#4A6CF7" stopOpacity="0" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 };
 

@@ -2,6 +2,7 @@ import Image from "next/image";
 import { GiConcentrationOrb } from "react-icons/gi";
 
 import { Metadata } from "next";
+import BubbleDecoration from "@/components/Common/BubbleDecoration";
 
 export const metadata: Metadata = {
   title: "Historia Repsell",
@@ -19,50 +20,8 @@ const AboutUsHistory = () => {
           "radial-gradient(circle at bottom right, #1E3A8A 0%, #0A0F24 80%)",
       }}
     >
-      <span className="absolute left-0 top-0 z-0 opacity-10">
-        <svg
-          width="300"
-          height="300"
-          viewBox="0 0 300 300"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle cx="150" cy="150" r="150" fill="#4A6CF7" />
-        </svg>
-      </span>
-      <span className="absolute bottom-0 right-0 z-0 opacity-10">
-        <svg
-          width="220"
-          height="220"
-          viewBox="0 0 220 220"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle cx="110" cy="110" r="110" fill="#e11b24" />
-        </svg>
-      </span>
-      <span className="absolute bottom-10 left-10 z-0 opacity-10">
-        <svg
-          width="100"
-          height="100"
-          viewBox="0 0 100 100"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle cx="50" cy="50" r="50" fill="#ffffff" />
-        </svg>
-      </span>
-      <span className="absolute right-10 top-1/2 z-0 opacity-10">
-        <svg
-          width="180"
-          height="180"
-          viewBox="0 0 180 180"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle cx="90" cy="90" r="90" fill="#4A6CF7" />
-        </svg>
-      </span>
+      <BubbleDecoration/>
+
       <div className="container mx-auto ">
         <div className="flex flex-wrap justify-center">
           <div className="w-full px-4 lg:w-8/12">

@@ -13,12 +13,11 @@ const NewProductPage = () => {
       <Breadcrumb
         color="text-[#000000]"
         pageName="¿Deseas agregar nuevos productos?"
-        description="Agrega nuevos Reconocimientos, Medallas, Promocionales, Trofeos, Copas y Impresiones."
+        description="Agrega nuevos productos: Reconocimientos, Medallas, Artículos Promocionales, Trofeos, Copas e Impresiones en Gran Formato."
       />
 
-      <section className="add-product pb-[120px] pt-[120px]">
         <NewProducts />
-      </section>
+
     </div>
   );
 };

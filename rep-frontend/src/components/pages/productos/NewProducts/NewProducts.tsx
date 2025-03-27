@@ -2,6 +2,8 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
+import logo from "../../../../../public/images/hero/logo-repsell-icono.png";
+import BubbleDecoration from "@/components/Common/BubbleDecoration";
 
 const NewProduct = () => {
   const [selectedCategoria, setSelectedCategoria] = useState("");
@@ -117,21 +119,37 @@ const NewProduct = () => {
   };
 
   return (
-    <div className="bg-white">
-      <section className="relative z-10 overflow-hidden pb-16 pt-36 md:pb-20 lg:pb-28 lg:pt-[10px]">
+    <div
+      className="relative z-10 overflow-hidden"
+      style={{
+        background: "radial-gradient(circle at top left, #1E3A8A 0%, #0A0F24 100%)",
+      }}
+    >
+
+       <BubbleDecoration/>
+
+      <section className="py-24">
         <div className="container">
-          <div className="-mx-4 flex flex-wrap ">
-            <div className="w-full  px-4">
-              <div className="mx-auto max-w-[1200px] rounded bg-white px-6 py-10 shadow-three dark:bg-dark sm:p-[60px]">
-                <h3 className="mb-3 text-center text-2xl font-bold text-black dark:text-white sm:text-3xl">
+
+          <div className="flex flex-wrap justify-center">
+            <div className="w-full px-4 lg:w-10/12 xl:w-9/12">
+              <div className="mx-auto rounded-xl bg-[#101933]/60 px-6 py-10 text-white shadow-xl backdrop-blur-md sm:p-[60px]">
+                <Image
+                  src={logo}
+                  alt="logo"
+                  width={50}
+                  height={50}
+                  style={{ width: 80, height: 80, margin: "auto", marginBottom: 20 }}
+                />
+                <h3 className="mb-3 text-center text-3xl font-bold drop-shadow">
                   AÑADE UN NUEVO PRODUCTO
                 </h3>
-                <p className="mb-11 text-center text-base font-medium text-body-color">
-                  Ingresa todos los datos necesarios para brindarle al cliente
-                  una información detallada.
+                <p className="mb-10 text-center text-base font-medium text-white/80">
+                  Ingresa todos los datos necesarios para brindarle al cliente una información detallada.
                 </p>
+
                 <select
-                  className="border-stroke mb-8 flex w-full items-center justify-center rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none"
+                  className="mb-6 w-full rounded-md bg-[#1a1f33] px-6 py-3 text-sm text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#4A6CF7]"
                   value={selectedCategoria}
                   onChange={handleChange}
                 >
@@ -142,6 +160,13 @@ const NewProduct = () => {
                   ))}
                 </select>
 
+                <button
+                  type="button"
+                  onClick={handleButtonClick}
+                  className="mb-6 w-full rounded-md bg-[#1a1f33] px-6 py-3 text-sm text-white hover:bg-[#1f2e4a] transition"
+                >
+                  Subir Imagen del producto
+                </button>
                 <input
                   type="file"
                   accept="image/*"
@@ -150,121 +175,93 @@ const NewProduct = () => {
                   style={{ display: "none" }}
                 />
 
-                <button
-                  type="button"
-                  onClick={handleButtonClick}
-                  className="border-stroke flex w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none"
-                >
-                  Subir Imagen del producto
-                </button>
-
                 {preview && (
-                  <div className="mb-8 mt-8 flex items-center justify-center">
+                  <div className="mb-8 flex items-center justify-center">
                     <Image
                       width={200}
                       height={200}
                       src={preview}
                       alt="Vista previa"
-                      className="h-auto max-w-full rounded-sm border-gray-300"
+                      className="h-auto max-w-full rounded-md border border-white/20"
                       onLoad={handleCleanup}
                     />
                   </div>
                 )}
 
-                <div className="mb-8 flex items-center justify-center">
-                  <span className="hidden h-[1px] w-full max-w-[60px] bg-body-color/50 sm:block"></span>
-                  <p className="w-full px-5 text-center text-base font-medium text-body-color">
-                    --- Informacion General ---
+                <div className="mb-10 flex items-center justify-center">
+                  <span className="hidden h-[1px] w-full max-w-[60px] bg-white/30 sm:block"></span>
+                  <p className="mx-4 text-center text-sm font-medium text-white/60">
+                    --- Información General ---
                   </p>
-                  <span className="hidden h-[1px] w-full max-w-[60px] bg-body-color/50 sm:block"></span>
+                  <span className="hidden h-[1px] w-full max-w-[60px] bg-white/30 sm:block"></span>
                 </div>
+
                 <form onSubmit={handleSubmit}>
-                  <div className="mb-8">
-                    <label
-                      htmlFor="name"
-                      className="mb-3 block text-sm text-dark dark:text-white"
-                    >
-                      Nombre del Producto:
-                    </label>
-                    <input
-                      required
-                      type="text"
-                      name="name"
-                      placeholder="Ingresa el codigo o/y nombre del producto"
-                      className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                    />
+                  <div className="space-y-6">
+                    <div>
+                      <label className="block text-sm mb-2">Nombre del Producto:</label>
+                      <input
+                        required
+                        type="text"
+                        name="name"
+                        placeholder="Ingresa el código o nombre"
+                        className="w-full rounded-md bg-[#1a1f33] px-6 py-3 text-sm text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#4A6CF7]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm mb-2">Descripción:</label>
+                      <input
+                        type="text"
+                        name="description"
+                        placeholder="Descripción detallada"
+                        className="w-full rounded-md bg-[#1a1f33] px-6 py-3 text-sm text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#4A6CF7]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm mb-2">Altura/Tamaño:</label>
+                      <input
+                        maxLength={20}
+                        type="text"
+                        name="height"
+                        placeholder="Altura en cm"
+                        className="w-full rounded-md bg-[#1a1f33] px-6 py-3 text-sm text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#4A6CF7]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm mb-2">Colores:</label>
+                      <input
+                        type="text"
+                        name="color"
+                        placeholder="Colores disponibles"
+                        className="w-full rounded-md bg-[#1a1f33] px-6 py-3 text-sm text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#4A6CF7]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm mb-2">Categoría:</label>
+                      <select
+                        required
+                        name="category"
+                        value={selectedStyles}
+                        onChange={handleChangeStyle}
+                        className="w-full rounded-md bg-[#1a1f33] px-6 py-3 text-sm text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#4A6CF7]"
+                      >
+                        {styles.map((style) => (
+                          <option key={style.value} value={style.value}>
+                            {style.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-                  <div className="mb-8">
-                    <label
-                      htmlFor="description"
-                      className="mb-3 block text-sm text-dark dark:text-white"
-                    >
-                      Descripción: (Opcional)
-                    </label>
-                    <input
-                      type="text"
-                      name="description"
-                      placeholder="Ingresa una descripcion detallada"
-                      className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                    />
-                  </div>
-                  <div className="mb-8">
-                    <label
-                      htmlFor="height"
-                      className="mb-3 block text-sm text-dark dark:text-white"
-                    >
-                      Altura/Tamaño: (opcional)
-                    </label>
-                    <input
-                      maxLength={20}
-                      type="text"
-                      name="height"
-                      placeholder="Ingresa la altura en centimetros"
-                      className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                    />
-                  </div>
-                  <div className="mb-8">
-                    <label
-                      htmlFor="color"
-                      className="mb-3 block text-sm text-dark dark:text-white"
-                    >
-                      Colores: (opcional)
-                    </label>
-                    <input
-                      type="text"
-                      name="color"
-                      placeholder="Ingresa los colores disponibles"
-                      className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                    />
-                  </div>
-                  <div className="mb-8">
-                    <label
-                      htmlFor="category"
-                      className="mb-3 block text-sm text-dark dark:text-white"
-                    >
-                      Categoria:
-                    </label>
-                    <select
-                      required
-                      className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                      value={selectedStyles}
-                      onChange={handleChangeStyle}
-                      name="category"
-                    >
-                      {styles.map((style) => (
-                        <option key={style.value} value={style.value}>
-                          {style.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+
                   <button
                     type="submit"
-                    className="mt-10 w-full rounded bg-red-700 px-6 py-4 text-base font-medium text-white outline-none transition-all duration-300 hover:bg-opacity-90"
+                    className="mt-10 w-full rounded-full bg-[#e11b24] px-6 py-4 font-semibold text-white shadow-lg transition hover:bg-[#c8101c]"
                   >
                     Enviar Producto
                   </button>
                 </form>
+
               </div>
             </div>
           </div>

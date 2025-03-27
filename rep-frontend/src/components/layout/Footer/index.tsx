@@ -9,7 +9,7 @@ const Footer = () => {
   return (
     <>
       <footer className="relative z-10 bg-gradient-to-br from-[#0A0F24] via-[#1E3A8A] to-[#0A0F24] pb-10 pt-20 text-[#0A0F24]">
-        <div className="container mx-auto px-4">
+        <div className="container ">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
             <div>
               <div className="mb-6 flex items-center gap-3">
@@ -160,7 +160,7 @@ const Footer = () => {
 
           <div className="mt-10 h-px w-full bg-gradient-to-r from-transparent via-[#0A0F24]/30 to-transparent" />
 
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 text-sm text-[#0A0F24]/60">
+          <div className=" flex flex-col items-center justify-center gap-3 text-sm text-[#0A0F24]/60">
             <GiConcentrationOrb
               size={25}
               className="text-[#ffffff]/80 hover:text-red-700"

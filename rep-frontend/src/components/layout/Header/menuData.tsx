@@ -42,18 +42,6 @@ const menuData: Menu[] = [
         path: "/promotional",
         newTab: false,
       },
-      /*{
-        id: 44,
-        title: "Blog Sidebar Page",
-        path: "/blog-sidebar",
-        newTab: false,
-      },
-      {
-        id: 45,
-        title: "Blog Details Page",
-        path: "/blog-details",
-        newTab: false,
-      },*/
       {
         id: 46,
         title: "Medallas",
@@ -66,12 +54,7 @@ const menuData: Menu[] = [
         path: "/impression",
         newTab: false,
       },
-      /* {
-        id: 48,
-        title: "Error Page",
-        path: "/error",
-        newTab: false,
-      },*/
+
     ],
   },
 ];
