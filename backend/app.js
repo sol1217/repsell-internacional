@@ -12,14 +12,14 @@ const UPLOAD_DIR = process.env.UPLOAD_DIR || "uploads/";
 
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 min
-  max: 1000, // Limit each IP to 100 requests per window
+  max: 10000, // Limit each IP to 100 requests per window
 });
 
 // Middlewares
 app.use(helmet());
 app.use(cors({ origin: process.env.CORS_ORIGIN || "*" }));
 app.use(express.json()); // for parsing application/json
-app.use(limiter);
+//app.use(limiter);
 
 // Multer
 const multer = require("multer");
@@ -45,16 +45,16 @@ const SCHEMAS = {
     "background",
   ],
   BLOG: [
-    "title",
-    "description",
-    "additionalText",
-    "subtitle",
-    "paragraph",
-    "list",
-    "phrase",
-    "additionalTitle",
     "image",
     "category",
+    "title",
+    "introduction",
+    "subtitle1",
+    "paragraph1",
+    "subtitle2",
+    "paragraph2",
+    "conclusion",
+    "paragraph3",
   ],
   ADMIN: ["user", "password"],
   BACKGROUND: ["category", "color"],
@@ -313,9 +313,21 @@ const blogService = {
    * @returns {Promise} Insert operation result
    */
   create: async (data) => {
-    const fields = Object.keys(data);
-    const sql = `INSERT INTO blogs (${fields.join()}) VALUES (${fields.map(() => "?").join()})`;
-    return dbQuery(sql, Object.values(data));
+    const fields = [
+      "image",
+      "category",
+      "title",
+      "introduction",
+      "subtitle1",
+      "paragraph1",
+      "subtitle2",
+      "paragraph2",
+      "conclusion",
+      "paragraph3",
+    ];
+    const sql = `INSERT INTO blogs (${fields.join(", ")}) VALUES (${fields.map(() => "?").join(", ")})`;
+    const values = fields.map((f) => data[f]);
+    return dbQuery(sql, values);
   },
 
   /**
@@ -325,9 +337,21 @@ const blogService = {
    * @returns {Promise} Update operation result
    */
   update: async (id, data) => {
-    const fields = Object.keys(data);
-    const sql = `UPDATE blogs SET ${fields.map((f) => `${f} = ?`).join()} WHERE id = ?`;
-    return dbQuery(sql, [...Object.values(data), id]);
+    const fields = [
+      "image",
+      "category",
+      "title",
+      "intruduction",
+      "subtitle1",
+      "paragraph1",
+      "subtitle2",
+      "paragraph2",
+      "conclusion",
+      "paragraph3",
+    ];
+    const sql = `UPDATE blogs SET ${fields.map((f) => `${f} = ?`).join(", ")} WHERE id = ?`;
+    const values = fields.map((f) => data[f]);
+    return dbQuery(sql, [...values, id]);
   },
 
   /**
@@ -349,16 +373,17 @@ app
       const results = await blogService.getAll();
       res.json({ data: results });
     } catch (err) {
+      console.error(err.message);
       res.status(500).json({ error: "Database error" });
     }
   })
   .post(upload.single("image"), async (req, res) => {
     try {
       const cleanData = sanitizeInput(req.body, SCHEMAS.BLOG);
-      cleanData.list = JSON.stringify(cleanData.list); // Handle array data
       const result = await blogService.create(cleanData);
       res.status(201).json({ id: result.lastID, ...cleanData });
     } catch (err) {
+      console.error(err.message);
       res.status(500).json({ error: "Blog creation failed" });
     }
   });
@@ -371,13 +396,13 @@ app
       if (!blog) return res.status(404).json({ error: "Blog not found" });
       res.json({ data: blog });
     } catch (err) {
+      console.error(err.message);
       res.status(500).json({ error: "Database error" });
     }
   })
   .put(upload.single("image"), async (req, res) => {
     try {
       const cleanData = sanitizeInput(req.body, SCHEMAS.BLOG);
-      cleanData.list = JSON.stringify(cleanData.list); // Handle array data
       const result = await blogService.update(req.params.id, cleanData);
 
       if (result.changes === 0) {
@@ -386,6 +411,7 @@ app
 
       res.json({ message: "Blog updated" });
     } catch (err) {
+      console.error(err.message);
       res.status(500).json({ error: "Update failed" });
     }
   })
@@ -476,88 +502,9 @@ app.get("/backgrounds", async (req, res) => {
   }
 });
 
-// const blog = {
-//   image,
-//   category,
-//   title,
-//   intrudduction,
-//   subtitle1,
-//   paragraph1,
-//   subtitle2,
-//   paragraph2,
-//   concl,
-//   paragraph3,
-// };
-
-const updateBlogIntoDatabase = async (table, data) => {
-  // Aqui lo diferente es que agregue la columna image y el parametro data.image para q lo pueda insertar en la debe en el get hay como extraerla
-  const sql = `UPDATE ${table} SET title= ?,description= ?,additionalText= ?,subtitle= ?,paragraph= ?,list= ?,phrase= ?,additionalTitle= ?,image= ?,category= ? WHERE id = ?`;
-  const params = [
-    data.title,
-    data.description,
-    data.additionalText,
-    data.subtitle,
-    data.paragraph,
-    data.list,
-    data.phrase,
-    data.additionalTitle,
-    data.image,
-    data.category,
-    data.id,
-  ];
-  console.log(params);
-  return new Promise((resolve, reject) => {
-    db.run(sql, params, function (err) {
-      if (err) {
-        console.error("Error al insertar en la base de datos:", err.message);
-        reject({ success: false, error: err.message });
-      } else {
-        console.log(`Insertado en ${table} con ID: ${this.lastID}`);
-        resolve({ success: true, id: this.lastID });
-      }
-    });
-  });
-};
-
-app.put("/blog/:id", upload.single("image"), async (req, res) => {
-  const { id } = req.params;
-  const data = req.body;
-  if (!id) {
-    return res.status(400).json({ error: "ID y categoría son requeridos" });
-  }
-  data.id = id;
-  const result = await updateBlogIntoDatabase("blogs", data);
-
-  if (result.success) {
-    res.status(201).json({ message: "Product Updated" });
-  } else {
-    res.status(500).json({ message: "Error in update product" });
-  }
-});
-
-app.delete("/blog/:id", async (req, res) => {
-  const { id } = req.params;
-
-  if (!id)
-    return res.status(400).json({ error: "ID y categoría son requeridos" });
-
-  db.run("DELETE FROM blogs WHERE id = ?", [id], function (err) {
-    if (err) {
-      console.error("Error eliminando el producto:", err);
-      return res.status(500).json({ error: "Error en el servidor" });
-    }
-    if (this.changes > 0) {
-      res.status(200).json({ message: "Producto eliminado correctamente" });
-    } else {
-      res.status(404).json({ error: "Producto no encontrado" });
-    }
-  });
-});
-
 //  Endpoint para verificar las credenciales de admin
 app.post("/admin", (req, res) => {
   const { User, password } = req.body;
-
   if (!User || !password) {
     return res
       .status(400)
@@ -580,143 +527,6 @@ app.post("/admin", (req, res) => {
     }
 
     res.json({ message: "Inicio de sesión correcto" });
-  });
-});
-
-// Endpoint para verificar las credenciales blog
-app.post("/blogs", upload.single("image"), (req, res) => {
-  const {
-    image, // imagen base64
-    category, //categoria
-    title, // titulo del blog
-    description, // introduccion del blog
-    additionalTitle, // subtitulo 1
-    paragraph, // parrafo 1
-    additionalText,
-    subtitle,
-    list,
-    phrase,
-  } = req.body;
-
-  const data = {
-    title: req.body.title ? req.body.title.trim() : null,
-    description: req.body.description ? req.body.description.trim() : null,
-    additionalTitle: req.body.additionalText
-      ? req.body.additionalText.trim()
-      : null,
-    additionalText: req.body.additionalText
-      ? req.body.additionalText.trim()
-      : null,
-    phrase: req.body.phrase ? req.body.phrase.trim() : null,
-    paragraph: req.body.paragraph ? req.body.paragraph.trim() : null,
-    subtitle: req.body.subtitle ? req.body.subtitle.trim() : null,
-    list: req.body.list ? req.body.list.trim() : null,
-    category: req.body.category ? req.body.category.trim() : null,
-    image: req.body.image ? req.body.image : null,
-  };
-  console.log(data);
-
-  const sql = `INSERT INTO blogs (title, description, additionalTitle,  additionalText, subtitle, paragraph, category, list, phrase, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
-  db.run(
-    sql,
-    [
-      title,
-      description,
-      additionalTitle,
-      additionalText,
-      subtitle,
-      paragraph,
-      category,
-      JSON.stringify(list),
-      phrase,
-      image,
-    ],
-    function (err) {
-      if (err) {
-        console.error("Error al crear el blog:", err.message);
-        return res.status(500).json({ message: "Error al crear el blog" });
-      }
-
-      res.status(201).json({
-        id: this.lastID,
-        title,
-        description,
-        additionalTitle,
-        additionalText,
-        subtitle,
-        paragraph,
-        list,
-        phrase,
-        category,
-        image,
-      });
-    }
-  );
-});
-
-app.get("/blogs", (req, res) => {
-  const sql =
-    "SELECT title, description, additionalTitle, id, additionalText, category, list,subtitle, paragraph, phrase, image FROM blogs";
-
-  db.all(sql, [], (err, rows) => {
-    if (err) {
-      console.error(
-        "Error al obtener los registros de la tabla blogs:",
-        err.message
-      );
-      res.status(400).json({ error: err.message });
-      return;
-    }
-
-    if (rows.length === 0) {
-      res
-        .status(404)
-        .json({ message: "No se encontraron registros en la tabla blogs" });
-    } else {
-      // console.log('Registros de la tabla blogs:', rows);
-      res.json({
-        message: "success",
-        data: rows,
-      });
-    }
-  });
-});
-
-app.put("/update-background", async (req, res) => {
-  const { category, background } = req.body;
-
-  if (!category || !background) {
-    return res.status(400).json({ error: "Categoría y color son requeridos" });
-  }
-
-  let sql;
-  switch (category) {
-    case "trophies":
-      sql = "UPDATE trophies SET background = ?";
-      break;
-    case "recognitions":
-      sql = "UPDATE recognitions SET background = ?";
-      break;
-    case "promotional":
-      sql = "UPDATE promotional SET background = ?";
-      break;
-    case "medals":
-      sql = "UPDATE medals SET background = ?";
-      break;
-    case "impresion":
-      sql = "UPDATE impresion SET background = ?";
-      break;
-    default:
-      return res.status(400).json({ error: "Categoría no válida" });
-  }
-
-  db.run(sql, [background], function (err) {
-    if (err) {
-      console.error("Error actualizando el color de fondo:", err);
-      return res.status(500).json({ error: "Error en el servidor" });
-    }
-    res.status(200).json({ message: "Color actualizado correctamente" });
   });
 });
 
