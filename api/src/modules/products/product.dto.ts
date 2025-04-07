@@ -139,7 +139,7 @@ export class UpdateProductDto {
     type: String,
   })
   @IsOptional()
-  @IsBase64()
+  @IsString()
   image?: string;
 
   @ApiProperty({
