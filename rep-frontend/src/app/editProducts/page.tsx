@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import {api} from "@/utils/config";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
+import Breadcrumb from "@/components/Common/Breadcrumb";
 
 const EditProductsPage = () => {
   const [editNombre, setEditNombre] = useState(false);
@@ -89,98 +90,103 @@ const EditProductsPage = () => {
   };
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <section
-        className="relative mt-20 z-10 overflow-hidden py-24"
-        style={{ background: "radial-gradient(circle at top left, #1E3A8A 0%, #0A0F24 100%)" }}
-      >
+    <>
+      <Breadcrumb pageName="Editar producto" description="Edita el producto con sus nuevos valores"/>
 
-        <BubbleDecoration/>
+      <Suspense fallback={<div>Loading...</div>}>
+        <section
+          className="relative  z-10 overflow-hidden py-24"
+          style={{ background: "radial-gradient(circle at top left, #1E3A8A 0%, #0A0F24 100%)" }}
+        >
 
-        <div className="container">
-          <div className="flex flex-wrap justify-center">
-            <div className="w-full px-4 lg:w-10/12 xl:w-8/12">
-              <div className="mx-auto rounded-xl bg-[#101933]/60 px-6 py-10 text-white shadow-xl backdrop-blur-md sm:p-[60px]">
-                <h3 className="mb-3 text-center text-3xl font-bold">Datos del producto</h3>
-                <p className="mb-8 text-center text-white/80">
-                  Por favor, proceda a ingresar la información actualizada correspondiente al nuevo producto, asegurándose de completar todos los campos requeridos con datos precisos y verificados.
-                </p>
+          <BubbleDecoration/>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <input
-                    type="file"
-                    name="image"
-                    onChange={handleFileChange}
-                    className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
-                  />
+          <div className="container">
+            <div className="flex flex-wrap justify-center">
+              <div className="w-full px-4 lg:w-10/12 xl:w-8/12">
+                <div className="mx-auto rounded-xl bg-[#101933]/60 px-6 py-10 text-white shadow-xl backdrop-blur-md sm:p-[60px]">
+                  <h3 className="mb-3 text-center text-3xl font-bold">Datos del producto</h3>
+                  <p className="mb-8 text-center text-white/80">
+                    Por favor, proceda a ingresar la información actualizada correspondiente al nuevo producto, asegurándose de completar todos los campos requeridos con datos precisos y verificados.
+                  </p>
 
-                  {dataSelected && (
-                    <>
-                      <input
-                        type="text"
-                        name="name"
-                        defaultValue={dataSelected.name}
-                        placeholder="Nuevo nombre"
-                        className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
-                      />
-                      <input
-                        type="text"
-                        name="description"
-                        defaultValue={dataSelected.description}
-                        placeholder="Nueva descripción"
-                        className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
-                      />
-                      <input
-                        type="text"
-                        name="height"
-                        defaultValue={dataSelected.height}
-                        placeholder="Nuevo tamaño"
-                        className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
-                      />
-                      <input
-                        type="text"
-                        name="color"
-                        defaultValue={dataSelected.color}
-                        placeholder="Nuevo color"
-                        className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
-                      />
-                    </>
-                  )}
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <input
+                      type="file"
+                      name="image"
+                      onChange={handleFileChange}
+                      className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
+                    />
 
-                  {globalMessage && (
-                    <div
-                      className={`rounded-md px-4 py-3 text-center text-sm font-medium ${
-                        globalMessage.type === "success"
-                          ? "bg-green-800 text-green-200"
-                          : "bg-red-800 text-red-200"
-                      }`}
-                    >
-                      {globalMessage.text}
+                    {dataSelected && (
+                      <>
+                        <input
+                          type="text"
+                          name="name"
+                          defaultValue={dataSelected.name}
+                          placeholder="Nuevo nombre"
+                          className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
+                        />
+                        <input
+                          type="text"
+                          name="description"
+                          defaultValue={dataSelected.description}
+                          placeholder="Nueva descripción"
+                          className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
+                        />
+                        <input
+                          type="text"
+                          name="height"
+                          defaultValue={dataSelected.height}
+                          placeholder="Nuevo tamaño"
+                          className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
+                        />
+                        <input
+                          type="text"
+                          name="color"
+                          defaultValue={dataSelected.color}
+                          placeholder="Nuevo color"
+                          className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
+                        />
+                      </>
+                    )}
+
+                    {globalMessage && (
+                      <div
+                        className={`rounded-md px-4 py-3 text-center text-sm font-medium ${
+                          globalMessage.type === "success"
+                            ? "bg-green-800 text-green-200"
+                            : "bg-red-800 text-red-200"
+                        }`}
+                      >
+                        {globalMessage.text}
+                      </div>
+                    )}
+
+                    <div className="mt-6 flex items-center justify-center">
+                      <button
+                        type="submit"
+                        className="rounded-full bg-[#e11b24] px-32 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-[#c8101c]"
+                      >
+                        Guardar
+                      </button>
                     </div>
-                  )}
+                  </form>
 
-                  <div className="mt-6 flex items-center justify-center">
-                    <button
-                      type="submit"
-                      className="rounded-full bg-[#e11b24] px-32 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-[#c8101c]"
-                    >
-                      Guardar
-                    </button>
-                  </div>
-                </form>
-
-                <p className="mt-6 text-center text-sm text-white/80">
-                  Volver a productos {" "}
-                  <a href="/products" className="text-red-700 hover:underline font-semibold">
-                    Productos
-                  </a>
-                </p>
+                  <p className="mt-6 text-center text-sm text-white/80">
+                    Volver a productos {" "}
+                    <a href="/products" className="text-red-700 hover:underline font-semibold">
+                      Productos
+                    </a>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-    </Suspense>
+        </section>
+      </Suspense>
+    </>
+
   );
 };
 

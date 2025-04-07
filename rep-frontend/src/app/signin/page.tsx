@@ -9,6 +9,8 @@ const SigninPage = () => {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,6 +34,8 @@ const SigninPage = () => {
     } else {
       setErrorMessage(resultado.message || "Usuario o contraseña incorrectos.");
     }
+
+    setLoading(false);
   };
 
   return (
@@ -57,7 +61,7 @@ const SigninPage = () => {
 
       <BubbleDecoration/>
 
-      <div className="n absolute">
+      <div className="absolute">
         <svg
           width="100%"
           height="100%"
@@ -82,7 +86,7 @@ const SigninPage = () => {
         </svg>
       </div>
 
-      <div className="mb-8 mt-40 w-full max-w-md rounded-xl bg-[#101933]/90 p-10 text-white shadow-xl backdrop-blur-md">
+      <div className="mx-4 mb-8 mt-40 w-full max-w-md rounded-xl bg-[#101933]/90 p-10 text-white shadow-xl backdrop-blur-md">
         <div className="mb-8 flex flex-col items-center justify-center ">
           <Image
             className="custom-img-size custom-img-animation  h-auto w-[300px] sm:w-[200px]"
@@ -136,8 +140,9 @@ const SigninPage = () => {
           <button
             type="submit"
             className="w-full rounded-full bg-[#e11b24] px-6 py-3 font-medium text-white transition hover:bg-[#c8101c]"
+            disabled={loading}
           >
-            Iniciar Sesión
+            {loading ? "Cargando..." : "Iniciar Sesión"}
           </button>
 
           {errorMessage && (

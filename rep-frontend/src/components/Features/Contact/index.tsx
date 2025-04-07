@@ -5,11 +5,10 @@ import emailjs from "@emailjs/browser";
 import NewsLatterBox from "@/components/Features/Contact/NewsLatterBox";
 
 const Contact = () => {
+  const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "warning" } | null>(null);
   const form = useRef<HTMLFormElement>(null);
   const [buttonText, setButtonText] = useState("Enviar Mensaje");
   const [isSent, setIsSent] = useState(false);
-  const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "warning" } | null>(null);
-
 
   const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,17 +25,12 @@ const Contact = () => {
           () => {
             setIsSent(true);
             setButtonText("Enviado ✅");
-            setGlobalMessage({ text: "✅ Mensaje enviado correctamente.", type: "success" });
           },
           (error) => {
             console.error("FAILED...", error.text);
             setButtonText("Error al enviar mensaje");
-            setGlobalMessage({ text: "⚠️ Error al enviar el mensaje. Intenta nuevamente.", type: "warning" });
-          }
-        )
-        .finally(() => {
-          setTimeout(() => setGlobalMessage(null), 3000);
-        });
+          },
+        );
     }
   };
 
@@ -108,7 +102,7 @@ const Contact = () => {
                         Número de identificación:
                       </label>
                       <input
-                        type="text"
+                        type="id"
                         name="id"
                         placeholder="Número de identificación"
                         className="w-full rounded-md border border-white/10 bg-[#1a1f33] px-5 py-3 text-sm text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-red-700"
@@ -122,7 +116,7 @@ const Contact = () => {
                         Tipo de identificación:
                       </label>
                       <input
-                        type="text"
+                        type="type_id"
                         name="type_id"
                         placeholder="Tipo de identificación"
                         className="w-full rounded-md border border-white/10 bg-[#1a1f33] px-5 py-3 text-sm text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-red-700"
@@ -136,7 +130,7 @@ const Contact = () => {
                         Dirección:
                       </label>
                       <input
-                        type="text"
+                        type="address"
                         name="address"
                         placeholder="Dirección"
                         className="w-full rounded-md border border-white/10 bg-[#1a1f33] px-5 py-3 text-sm text-white placeholder-white/50 focus:outline-none focus:ring-2  focus:ring-red-700"
@@ -150,7 +144,7 @@ const Contact = () => {
                         Teléfono:
                       </label>
                       <input
-                        type="tel"
+                        type="phone"
                         name="phone"
                         placeholder="Teléfono"
                         className="w-full rounded-md border border-white/10 bg-[#1a1f33] px-5 py-3 text-sm text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-red-700"
@@ -181,6 +175,7 @@ const Contact = () => {
                       {buttonText}
                     </button>
                   </div>
+
                   {globalMessage && (
                     <div
                       className={`px-6 py-4 text-center text-base font-medium shadow-lg ${

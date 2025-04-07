@@ -8,6 +8,7 @@ import Breadcrumb from "@/components/Common/Breadcrumb";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
 import logo from "../../../public/images/hero/logo-repsell-icono.png";
 import Image from "next/image";
+import {api} from "@/utils/config";
 
 const BlogPageCheck = () => {
   const [blog, setBlog] = useState([]);
@@ -22,7 +23,7 @@ const BlogPageCheck = () => {
     try {
       const blogs = (
         (await axios.get(
-          "https://repsell-international-backend.onrender.com/blogs"
+          `${api}/blogs`
         )) as any
       ).data.data;
       console.log(blogs);
@@ -116,7 +117,7 @@ const BlogPageCheck = () => {
                 <h3 className="mb-3 text-center text-3xl font-bold drop-shadow">
                   BLOGS PUBLICADOS
                 </h3>
-                <p className="mb-8 mx-32 text-center text-white/80">
+                <p className="mb-8  text-center text-white/80">
                   A continuación, se muestra el listado completo de todas las entradas de blog que han sido ingresadas y publicadas en la página.                  <br /> ¿Deseas añadir uno nuevo?
                   <Link href="/newBlog" className="text-red-700 hover:underline">
                     Añadir Blog

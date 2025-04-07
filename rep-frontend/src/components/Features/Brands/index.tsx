@@ -37,9 +37,7 @@ const SingleBrand = ({ brand }: { brand: Brand }) => {
   const { href, image, imageLight, name } = brand;
 
   return (
-    <a
-      href=""
-      target="_blank"
+    <div
       rel="noreferrer"
       className="group relative flex items-center justify-center"
     >
@@ -52,6 +50,6 @@ const SingleBrand = ({ brand }: { brand: Brand }) => {
           className="object-cover grayscale-0 transition group-hover:grayscale"
         />
       </div>
-    </a>
+    </div>
   );
 };

@@ -5,6 +5,7 @@ import BubbleDecoration from "@/components/Common/BubbleDecoration";
 import Image from "next/image";
 import logo from "../../../../../public/images/hero/logo-repsell-icono.png";
 import {categorias} from "@/config/constants";
+import {api} from "@/utils/config";
 
 const NewBlog = () => {
   const [preview, setPreview] = useState(null);
@@ -40,8 +41,7 @@ const NewBlog = () => {
       formDataPost.append("image", preview);
 
       const response = await fetch(
-        "https://repsell-international-backend.onrender.com/blogs",
-        {
+        `${api}/blogs`,        {
           method: "POST",
           body: formDataPost,
         },
@@ -82,7 +82,7 @@ const NewBlog = () => {
               <h3 className="mb-3 text-center text-3xl font-bold drop-shadow">
                 AÑADIR NUEVO BLOG
               </h3>
-              <p className="mb-10 mx-16 text-center text-white/80">
+              <p className="mb-10 text-center text-white/80">
                 Por favor, complete los siguientes campos para crear una entrada de blog informativa, atractiva y alineada con los intereses y necesidades de su audiencia.              </p>
 
               <p className="text-lg font-bold text-center text-white/80">

@@ -236,7 +236,7 @@ const ProductMain = () => {
                   style={{ width: 80, height: 80, margin: "auto", marginBottom: 20 }}
                 />
                 <h3 className="mb-3 text-center text-3xl font-bold">PRODUCTOS DISPONIBLES</h3>
-                <div className="mb-11 mx-28 text-center text-white/80">
+                <div className="mb-11  text-center text-white/80">
                   A continuación, se presenta el listado completo de todos los productos que han sido ingresados y que actualmente se encuentran disponibles en la página.
                   <br /> ¿Deseas añadir uno nuevo? {" "}
                   <Link href="/newProduct" className="text-red-700 font-bold  hover:underline">
@@ -247,6 +247,10 @@ const ProductMain = () => {
                 <h2 className="mb-8 text-center text-2xl font-bold text-white drop-shadow">
                   Colores de fondo en productos
                 </h2>
+
+                <p className="mb-8 text-center text-sm font-bold text-green-600 drop-shadow">
+                  #004AAD o linear-gradient(90deg, #1E3A8A ,#c8101c)
+                </p>
 
                 <div className="mb-10 space-y-4">
                   {Object.entries(backgroundColors).map(([category, color]) => (

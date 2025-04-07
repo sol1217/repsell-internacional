@@ -24,7 +24,7 @@ const Breadcrumb = ({
 
   return (
     <section
-      className="relative z-10 overflow-hidden lg:pt-[150px]"
+      className="relative z-10 overflow-hidden pt-28 lg:pt-[150px]"
       style={{
         background:
           "radial-gradient(circle at top left, #f5f7fa 0%, #dbe7ff 50%, #ffffff 100%)",

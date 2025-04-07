@@ -92,7 +92,7 @@ const Cart = () => {
         description="Solicite su cotización personalizada para reconocimientos, artículos promocionales e impresión en gran formato."
       />
 
-      <div className="relative flex flex-col items-center justify-center py-28 lg:flex-row lg:items-start lg:gap-10">
+      <div className=" px-4 relative flex flex-col items-center justify-center py-28 lg:flex-row lg:items-start lg:gap-10">
         <div className="video-repsell absolute inset-0 z-0 flex h-full w-full items-center justify-center">
           <video
             className="absolute inset-0 h-full w-full object-cover opacity-50 mix-blend-darken"
@@ -105,7 +105,7 @@ const Cart = () => {
           </video>
           <div className="absolute inset-0 bg-[#0A0F24]/50 backdrop-blur-sm"></div>
         </div>
-        <div className=" w-full px-4 lg:w-5/6 xl:w-4/6 mt-10 lg:mt-0 max-w-5xl rounded-xl bg-[#101933] p-8  shadow-xl backdrop-blur-md">
+        <div className=" w-full px-8 lg:w-5/6 xl:w-4/6 mt-10  max-w-5xl rounded-xl bg-[#101933] p-8  shadow-xl backdrop-blur-md">
           <h3 className="mb-4 text-center text-2xl font-bold">
             Productos Seleccionados
           </h3>
@@ -219,7 +219,7 @@ const Cart = () => {
           </p>
         </div>
 
-        <div className="w-full px-4 lg:w-5/12 xl:w-4/12 mt-10 lg:mt-0">
+        <div className="w-full mt-10 lg:w-5/12 xl:w-4/12 ">
           <NewsLatterBox />
         </div>
       </div>

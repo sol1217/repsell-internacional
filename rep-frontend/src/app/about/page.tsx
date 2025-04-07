@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 const AboutPage = () => {
   return (
-    <div className="border-2 bg-white">
+    <div>
       <Breadcrumb
         color="text-[#1e242e]"
         pageName="Repsell Internacional"

@@ -32,11 +32,11 @@ const Admin = () => {
 
       <BubbleDecoration/>
 
-      <div className="container mt-20">
+      <div className="container  mt-20">
 
         <div className="flex flex-wrap items-center justify-center">
-          <div className="w-full px-4 lg:w-10/12 xl:w-9/12">
-            <div className="rounded-xl bg-[#101933]/90 p-10 text-white shadow-xl backdrop-blur-md">
+          <div className="w-full ">
+            <div className="rounded-xl bg-[#101933]/90 p-10 px-6 text-white shadow-xl backdrop-blur-md">
               <SectionTitle
                 title="Bienvenidos administradores de Repsell International"
                 paragraph="En este perfil administrador podrás encontrar (Agregar nuevos productos, Crear un nuevo Blog, Pedir ayuda a soporte)"
@@ -44,7 +44,7 @@ const Admin = () => {
                 titleColor="text-white"
               />
 
-              <div className="mb-10 w-full overflow-hidden rounded-xl shadow-lg">
+              <div className="mb-10  w-full overflow-hidden rounded-xl shadow-lg">
                 <div className="relative aspect-[97/60] w-full sm:aspect-[97/44]">
                   <Image
                     src="/images/hero/rs.jpeg"

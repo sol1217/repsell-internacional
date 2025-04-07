@@ -15,7 +15,6 @@ export const categorias = [
   { value: "impression", label: "Impresiones", href: "/impression" },
 ];
 
-
 export const categoriesProducts = [
   { value: "", label: "Elegir Categoria" },
   { value: "medals", label: "Medallas" },

@@ -44,7 +44,7 @@ const GalleryAbout = () => {
         <div className="mb-20 flex flex-wrap items-center justify-center gap-4 px-4">
           {Images.map((item, index) => (
             <div key={index} className="w-full p-2 sm:w-1/2 md:w-1/3 lg:w-1/4">
-              <div className="transform overflow-hidden rounded-lg border-4 border-[#4A6CF7] shadow-lg hover:shadow-blue-500/90">
+              <div className="transform overflow-hidden rounded-xl ">
                 <Image
                   src={item.image}
                   className="rounded-md object-cover"

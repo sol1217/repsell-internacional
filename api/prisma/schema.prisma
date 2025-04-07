@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model admin {
+  id       Int     @id @default(autoincrement())
+  user     String  @db.VarChar(100)
+  password String? @db.VarChar(100)
+}
+
+model background {
+  id    Int     @id @default(autoincrement())
+  name  String  @db.VarChar(100)
+  color String? @db.VarChar(100)
+}
+
+model blogs {
+  id           Int     @id @default(autoincrement())
+  image        String? @db.LongText
+  category     String? @db.VarChar(100)
+  title        String? @db.VarChar(255)
+  introduction String? @db.LongText
+  subtitle1    String? @db.VarChar(255)
+  paragraph1   String? @db.LongText
+  subtitle2    String? @db.VarChar(255)
+  paragraph2   String? @db.LongText
+  conclusion   String? @db.VarChar(255)
+  paragraph3   String? @db.LongText
+}
+
+model medals {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(100)
+  category    String? @db.VarChar(100)
+  description String? @db.Text
+  color       String? @db.VarChar(50)
+  image       String? @db.LongText
+  height      String? @db.VarChar(50)
+}
+
+model prints {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(100)
+  category    String? @db.VarChar(100)
+  description String? @db.Text
+  color       String? @db.VarChar(50)
+  image       String? @db.LongText
+  height      String? @db.VarChar(50)
+}
+
+model promotional {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(100)
+  category    String? @db.VarChar(100)
+  description String? @db.Text
+  color       String? @db.VarChar(50)
+  image       String? @db.LongText
+  height      String? @db.VarChar(50)
+}
+
+model recognitions {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(100)
+  category    String? @db.VarChar(100)
+  description String? @db.Text
+  color       String? @db.VarChar(50)
+  image       String? @db.LongText
+  height      String? @db.VarChar(50)
+}
+
+model trophies {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(100)
+  category    String? @db.VarChar(100)
+  description String? @db.Text
+  color       String? @db.VarChar(50)
+  image       String? @db.LongText
+  height      String? @db.VarChar(50)
+}
