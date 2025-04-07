@@ -8,10 +8,11 @@ import { background } from '@prisma/client';
 export class BackgroundRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async createBackground(createBackgroundDto: CreateBackgroundDto) {
+  async createBackground(createBackgroundDto: CreateBackgroundDto):Promise<background> {
     try {
-      await this.prismaService.background.create({
+      return await this.prismaService.background.create({
         data: createBackgroundDto,
+        
       });
     } catch (error) {
       throw new PrismaException(error);
@@ -47,6 +48,14 @@ export class BackgroundRepository {
         where: { id },
         data: updateBackgroundDto,
       });
+    } catch (error) {
+      throw new PrismaException(error);
+    }
+  }
+
+  async deleteBackgroundById(id: number): Promise<void> {
+    try {
+      await this.prismaService.background.delete({ where: { id } });
     } catch (error) {
       throw new PrismaException(error);
     }
