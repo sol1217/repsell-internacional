@@ -65,7 +65,7 @@ export class CreateProductDto {
     required: true,
     type: String,
   })
-  @IsBase64()
+  @IsString()
   image: string;
 
   @ApiProperty({
