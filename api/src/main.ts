@@ -18,9 +18,9 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('ChepePass API')
+    .setTitle('Repsell API')
     .setVersion('0.0.1')
-    .setDescription('ChepePass API Documentation')
+    .setDescription('Repsell API Documentation')
     .addBearerAuth(
       {
         type: 'http',
