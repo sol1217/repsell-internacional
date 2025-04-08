@@ -39,7 +39,7 @@ const BlogPageCheck = () => {
   const deleteBlog = async (id) => {
     try {
       const response = await axios.delete(
-        `https://repsell-international-backend.onrender.com/delete-blog/${id}`
+        `https://repsell-international-backend.onrender.com/delete-blog/${id}`,
       );
       if (response.status === 200) {
         setGlobalMessage({ text: "✅ Blog eliminado correctamente.", type: "success" });
@@ -76,7 +76,10 @@ const BlogPageCheck = () => {
                   >
                     <FaRegTrashAlt fontSize={20} className="text-white" />
                   </button>
-                  <a href={`/editBlogs?id=${product.id}`} className="cursor-pointer hover:underline">
+                  <a
+                    href={`/editBlogs?id=${product.id}`}
+                    className="cursor-pointer hover:underline"
+                  >
                     Editar
                   </a>
                 </div>
@@ -92,16 +95,19 @@ const BlogPageCheck = () => {
 
   return (
     <>
-      <Breadcrumb pageName="BLOGS PUBLICADOS" description="Listado de nuestras publicaciones recientes y artículos informativos sobre tendencias, novedades y soluciones de Repsell Internacional."/>
+      <Breadcrumb
+        pageName="BLOGS PUBLICADOS"
+        description="Listado de nuestras publicaciones recientes y artículos informativos sobre tendencias, novedades y soluciones de Repsell Internacional."
+      />
 
       <section
         className="relative z-10  overflow-hidden py-24"
         style={{
-          background: "radial-gradient(circle at top left, #1E3A8A 0%, #0A0F24 100%)",
+          background:
+            "radial-gradient(circle at top left, #1E3A8A 0%, #0A0F24 100%)",
         }}
       >
-
-        <BubbleDecoration/>
+        <BubbleDecoration />
 
         <div className="container">
           <div className="-mx-4 flex flex-wrap justify-center">
@@ -112,7 +118,12 @@ const BlogPageCheck = () => {
                   alt="logo"
                   width={50}
                   height={50}
-                  style={{ width: 80, height: 80, margin: "auto", marginBottom: 20 }}
+                  style={{
+                    width: 80,
+                    height: 80,
+                    margin: "auto",
+                    marginBottom: 20,
+                  }}
                 />
                 <h3 className="mb-3 text-center text-3xl font-bold drop-shadow">
                   BLOGS PUBLICADOS
@@ -142,8 +153,8 @@ const BlogPageCheck = () => {
             </div>
           </div>
         </div>
-      </section></>
-
+      </section>
+    </>
   );
 };
 

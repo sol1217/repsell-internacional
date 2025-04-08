@@ -5,12 +5,13 @@ import axios from "axios";
 import {api} from "@/utils/config";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
 import Breadcrumb from "@/components/Common/Breadcrumb";
+import {Product} from "@/types/product";
 
 const EditProductsPage = () => {
-  const [editNombre, setEditNombre] = useState(false);
-  const [editDescripcion, setEditDescripcion] = useState(false);
-  const [editImage, setEditImage] = useState(false);
-  const [editColor, setEditColor] = useState(false);
+  const [editNombre, setEditNombre] = useState("");
+  const [editDescripcion, setEditDescripcion] = useState("");
+  const [editImage, setEditImage] = useState("");
+  const [editColor, setEditColor] = useState("");
   const [dataSelected, setDataSelected] = useState(null);
   const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
   const [preview, setPreview] = useState(null);
@@ -19,10 +20,10 @@ const EditProductsPage = () => {
   const fetchProduct = async () => {
     try {
       const product = (
-        await axios.get(
+        await axios.get<Product>(
           `${api}/products/${data.get("category")}/${data.get("id")}`,
         )
-      ).data.data;
+      ).data;
       setDataSelected(
         product || {
           name: "",
@@ -32,7 +33,6 @@ const EditProductsPage = () => {
           image: "",
         },
       );
-      console.log(product);
       setEditNombre(product.name);
       setEditDescripcion(product.description);
       setEditDescripcion(product.height);

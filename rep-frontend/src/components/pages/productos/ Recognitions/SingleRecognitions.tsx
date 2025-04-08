@@ -8,6 +8,9 @@ import { colorMapping } from "@/utils/colorMapping";
 import gold from "public/images/products/color/golden.jpeg";
 import {api} from "@/utils/config";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
+import {Property} from "csstype";
+import Background = Property.Background;
+import {Product} from "@/types/product";
 
 const SingleRecognitions = () => {
   const [recognitions, setRecognitions] = useState([]);
@@ -16,27 +19,37 @@ const SingleRecognitions = () => {
   const [backgroundColor, setBackgroundColor] = useState("#004AAD");
 
   useEffect(() => {
-    const savedColors = JSON.parse(localStorage.getItem("backgroundColors"));
-    if (savedColors && savedColors.recognitions) {
-      setBackgroundColor(savedColors.recognitions);
-    }
+    // request base to obtain the background color
+    const fetchBackground = async () => {
+      try {
+        const { data } = await axios.get(
+          `${api}/backgrounds/recognitions`,
+        );
+        setBackgroundColor(data.color);
+      } catch (error) {
+        console.error("Error fetching recognitions background:", error);
+      }
+    };
+    fetchBackground();
+    // const savedColors = JSON.parse(localStorage.getItem("backgroundColors"));
+    // if (savedColors && savedColors.recognitions) {
+    //   setBackgroundColor(savedColors.recognitions);
+    // }
   }, []);
 
   useEffect(() => {
     const fetchRecognitions = async () => {
       try {
-        const response = await axios.get(
-          `${api}/products/recognitions`,
-        );
+        const {data} = await axios.get<Product[]>(`${api}/products/recognitions`);
 
-        const uniquePromotional = response.data.data.filter(
+        const uniquePromotional = data.filter(
           (promotional, index, self) =>
             index === self.findIndex((m) => m.name === promotional.name),
         );
 
         setRecognitions(uniquePromotional);
       } catch (error) {
-        console.error("Error fetching promotional:", error);
+        console.error("Error fetching recognitions:", error);
       } finally {
         setLoading(false);
       }

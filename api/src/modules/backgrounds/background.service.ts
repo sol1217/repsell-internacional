@@ -16,8 +16,8 @@ export class BackgroundService {
     return this.backgroundRepository.getAllBackgrounds();
   }
 
-  async getBackgroundById(id: number): Promise<background> {
-    return this.backgroundRepository.getBackgroundById(id);
+  async getBackgroundByName(productType: string): Promise<background> {
+    return this.backgroundRepository.getBackgroundByName(productType);
   }
 
   async updateBackgroundById(

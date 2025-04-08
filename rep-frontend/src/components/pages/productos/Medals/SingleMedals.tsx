@@ -11,6 +11,9 @@ import white from "public/images/products/color/white.jpeg";
 import { colorMapping } from "@/utils/colorMapping";
 import {api} from "@/utils/config";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
+import {Property} from "csstype";
+import Background = Property.Background;
+import {Product} from "@/types/product";
 
 const SingleMedals = () => {
   const [medals, setMedals] = useState([]);
@@ -19,20 +22,32 @@ const SingleMedals = () => {
   const [backgroundColor, setBackgroundColor] = useState("#004AAD");
 
   useEffect(() => {
-    const savedColors = JSON.parse(localStorage.getItem("backgroundColors"));
-    if (savedColors && savedColors.medals) {
-      setBackgroundColor(savedColors.medals);
-    }
+    // request base to obtain the background color
+    const fetchBackground = async () => {
+      try {
+        const { data } = await axios.get(
+          `${api}/backgrounds/medals`,
+        );
+        setBackgroundColor(data.color);
+      } catch (error) {
+        console.error("Error fetching medals background:", error);
+      }
+    };
+    fetchBackground();
+    // const savedColors = JSON.parse(localStorage.getItem("backgroundColors"));
+    // if (savedColors && savedColors.medals) {
+    //   setBackgroundColor(savedColors.medals);
+    // }
   }, []);
 
   useEffect(() => {
     const fetchMedals = async () => {
       try {
-        const response = await axios.get(
+        const {data} = await axios.get(
           `${api}/products/medals`,
         );
 
-        const uniquePromotional = response.data.data.filter(
+        const uniquePromotional = data.filter(
           (promotional, index, self) =>
             index === self.findIndex((m) => m.name === promotional.name),
         );

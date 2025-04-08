@@ -9,32 +9,46 @@ import gold from "public/images/products/color/golden.jpeg";
 import {api} from "@/utils/config";
 import promotional from "@/components/pages/productos/Promotional/Promotional";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
+import {Property} from "csstype";
+import Background = Property.Background;
+import {Product} from "@/types/product";
 
 const SingleImpression = () => {
   const [impressions, setImpressions] = useState([]);
   const [addedImpressionId, setAddedImpressionId] = useState(null);
-  const [backgroundColor, setBackgroundColor] = useState("#004AAD");
+  const [backgroundColor, setBackgroundColor] = useState<string>("#004AAD");
 
   useEffect(() => {
-    const savedColors = JSON.parse(localStorage.getItem("backgroundColors"));
-    if (savedColors && savedColors.impresion) {
-      setBackgroundColor(savedColors.impresion);
-    }
+    // request base to obtain the background color
+    const fetchBackground = async () => {
+      try {
+        const { data } = await axios.get(
+          `${api}/backgrounds/prints`,
+        );
+        setBackgroundColor(data.color);
+      } catch (error) {
+        console.error("Error fetching prints background:", error);
+      }
+    };
+    fetchBackground();
+
+    // const savedColors = JSON.parse(localStorage.getItem("backgroundColors"));
+    // if (savedColors && savedColors.impresion) {
+    //   setBackgroundColor(savedColors.impresion);
+    // }
   }, []);
 
   useEffect(() => {
     const fetchImpression = async () => {
       try {
-        const response = await axios.get(
-          `${api}/products/impresion`,
-        );
-        const uniqueImpression = response.data.data.filter(
+        const response = await axios.get<Product[]>(`${api}/products/prints`);
+        const uniqueImpression = response.data.filter(
           (impression, index, self) =>
             index === self.findIndex((m) => m.name === impression.name),
         );
         setImpressions(uniqueImpression);
       } catch (error) {
-        console.error("Error fetching impression:", error);
+        console.error("Error fetching prints:", error);
       }
     };
 

@@ -210,8 +210,8 @@ export default EditBlogsPage;
   const fetchProduct = async () => {
     try {
       const product = (
-        await axios.get(`http://localhost:3001/blog/${data.get("id")}`)
-      ).data.data[0];
+        await axios.get<Blog>(`${api}/blogs/${data.get("id")}`)
+      ).data[0];
       setDataSelected(
         product || {
           title: "",

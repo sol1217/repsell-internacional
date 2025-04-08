@@ -28,10 +28,10 @@ export class BackgroundRepository {
     }
   }
 
-  async getBackgroundById(id: number) {
+  async getBackgroundByName(name: string) {
     try {
-      const background = await this.prismaService.background.findUnique({
-        where: { id },
+      const background = await this.prismaService.background.findFirst({
+        where: { name },
       });
       return background;
     } catch (error) {
