@@ -1,12 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { EncryptJWT, jwtDecrypt, jwtVerify, SignJWT } from 'jose';
+import { jwtVerify, SignJWT } from 'jose';
 
 @Injectable()
 export class JoseService {
   private secretKey: Uint8Array;
-  private encryptionKey: Uint8Array;
-  private readonly logger = new Logger(JoseService.name);
 
   constructor(private readonly configService: ConfigService) {
     const JWT_SECRET_KEY = this.configService.getOrThrow<string>('JWT_SECRET_KEY')

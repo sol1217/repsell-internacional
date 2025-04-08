@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './modules/app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as nodeCrypto from 'crypto';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,6 +17,11 @@ async function bootstrap() {
       'Authorization',
     ],
   });
+
+
+  if (!globalThis.crypto) {
+    (globalThis as any).crypto = nodeCrypto.webcrypto;
+  }
 
   const config = new DocumentBuilder()
     .setTitle('Repsell API')
