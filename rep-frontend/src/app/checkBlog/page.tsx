@@ -8,6 +8,8 @@ import Breadcrumb from "@/components/Common/Breadcrumb";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
 import logo from "../../../public/images/hero/logo-repsell-icono.png";
 import Image from "next/image";
+import { api } from "@/utils/config";
+import { Blog } from "@/types/blog";
 
 const BlogPageCheck = () => {
   const [blog, setBlog] = useState([]);
@@ -20,11 +22,7 @@ const BlogPageCheck = () => {
 
   const fetchBlogs = async () => {
     try {
-      const blogs = (
-        (await axios.get(
-          "https://repsell-international-backend.onrender.com/blogs"
-        )) as any
-      ).data.data;
+      const blogs = (await axios.get<Blog[]>(`${api}/blogs`)).data;
       console.log(blogs);
       setBlog(blogs);
     } catch (error) {
@@ -38,7 +36,7 @@ const BlogPageCheck = () => {
   const deleteBlog = async (id) => {
     try {
       const response = await axios.delete(
-        `https://repsell-international-backend.onrender.com/delete-blog/${id}`
+        `https://repsell-international-backend.onrender.com/delete-blog/${id}`,
       );
       if (response.status === 200) {
         setMessage("✅ Blog eliminado correctamente.");
@@ -72,7 +70,10 @@ const BlogPageCheck = () => {
                   >
                     <FaRegTrashAlt fontSize={20} className="text-white" />
                   </button>
-                  <a href={`/editBlogs?id=${product.id}`} className="cursor-pointer hover:underline">
+                  <a
+                    href={`/editBlogs?id=${product.id}`}
+                    className="cursor-pointer hover:underline"
+                  >
                     Editar
                   </a>
                 </div>
@@ -88,16 +89,19 @@ const BlogPageCheck = () => {
 
   return (
     <>
-      <Breadcrumb pageName="BLOGS PUBLICADOS" description="Listado de nuestras publicaciones recientes y artículos informativos sobre tendencias, novedades y soluciones de Repsell Internacional."/>
+      <Breadcrumb
+        pageName="BLOGS PUBLICADOS"
+        description="Listado de nuestras publicaciones recientes y artículos informativos sobre tendencias, novedades y soluciones de Repsell Internacional."
+      />
 
       <section
         className="relative z-10  overflow-hidden py-24"
         style={{
-          background: "radial-gradient(circle at top left, #1E3A8A 0%, #0A0F24 100%)",
+          background:
+            "radial-gradient(circle at top left, #1E3A8A 0%, #0A0F24 100%)",
         }}
       >
-
-        <BubbleDecoration/>
+        <BubbleDecoration />
 
         <div className="container">
           <div className="-mx-4 flex flex-wrap justify-center">
@@ -108,15 +112,24 @@ const BlogPageCheck = () => {
                   alt="logo"
                   width={50}
                   height={50}
-                  style={{ width: 80, height: 80, margin: "auto", marginBottom: 20 }}
+                  style={{
+                    width: 80,
+                    height: 80,
+                    margin: "auto",
+                    marginBottom: 20,
+                  }}
                 />
                 <h3 className="mb-3 text-center text-3xl font-bold drop-shadow">
                   BLOGS PUBLICADOS
                 </h3>
                 <p className="mb-8 text-center text-white/80">
-                  Estos son todos los blogs ingresados y publicados en la página.
+                  Estos son todos los blogs ingresados y publicados en la
+                  página.
                   <br /> ¿Deseas añadir uno nuevo?
-                  <Link href="/newBlog" className="text-[#4A6CF7] hover:underline">
+                  <Link
+                    href="/newBlog"
+                    className="text-[#4A6CF7] hover:underline"
+                  >
                     Añadir Blog
                   </Link>
                 </p>
@@ -136,8 +149,8 @@ const BlogPageCheck = () => {
             </div>
           </div>
         </div>
-      </section></>
-
+      </section>
+    </>
   );
 };
 

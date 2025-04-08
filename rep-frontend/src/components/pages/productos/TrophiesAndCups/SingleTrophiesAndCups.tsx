@@ -8,6 +8,8 @@ import { FaCheckCircle } from "react-icons/fa";
 import error from "public/images/hero/error.png";
 import transp from "public/images/products/color/transparent.png";
 import {api} from "@/utils/config";
+import { Product } from "@/types/product";
+import { Background } from "@/types/background";
 
 const SingleTrophiesAndCups = () => {
   const [trophies, setTrophies] = useState([]);
@@ -16,17 +18,29 @@ const SingleTrophiesAndCups = () => {
   const [backgroundColor, setBackgroundColor] = useState("#004AAD");
 
   useEffect(() => {
-    const savedColors = JSON.parse(localStorage.getItem("backgroundColors"));
-    if (savedColors && savedColors.trophies) {
-      setBackgroundColor(savedColors.trophies);
-    }
+    // request base to obtain the background color
+    const fetchBackground = async () => {
+      try {
+        const { data } = await axios.get<Background>(
+          `${api}/backgrounds/trophies`,
+        );
+        setBackgroundColor(data.color);
+      } catch (error) {
+        console.error("Error fetching trophies background:", error);
+      }
+    };
+    fetchBackground();
+    // const savedColors = JSON.parse(localStorage.getItem("backgroundColors"));
+    // if (savedColors && savedColors.trophies) {
+    //   setBackgroundColor(savedColors.trophies);
+    // }
 
     const fetchTrophies = async () => {
       try {
-        const response = await axios.get(
+        const {data} = await axios.get<Product[]>(
           `${api}/products/trophies`,
         );
-        setTrophies(response.data.data);
+        setTrophies(data);
       } catch (error) {
         console.error("Error fetching trophies:", error);
       } finally {
@@ -40,11 +54,11 @@ const SingleTrophiesAndCups = () => {
   useEffect(() => {
     const fetchTrophies = async () => {
       try {
-        const response = await axios.get(
+        const response = await axios.get<Product[]>(
           `${api}/products/trophies`,
         );
-
-        const uniquePromotional = response.data.data.filter(
+        
+        const uniquePromotional = response.data.filter(
           (promotional, index, self) =>
             index === self.findIndex((m) => m.name === promotional.name),
         );

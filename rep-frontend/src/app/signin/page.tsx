@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import trophy from "public/images/products/trophy.png";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
+import { api } from "@/utils/config";
 
 const SigninPage = () => {
   const [user, setUser] = useState("");
@@ -14,13 +15,13 @@ const SigninPage = () => {
     e.preventDefault();
 
     const response = await fetch(
-      "https://repsell-international-backend.onrender.com/admin",
+      `${api}/auth/login`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ User: user, password }),
+        body: JSON.stringify({ email: user, password }),
       },
     );
 

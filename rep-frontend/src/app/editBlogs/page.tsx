@@ -2,6 +2,8 @@
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import axios from "axios/index";
+import { api } from "@/utils/config";
+import { Blog } from "@/types/blog";
 
 const EditBlogsPage = () => {
   const [dataSelected, setDataSelected] = useState(null);
@@ -10,8 +12,8 @@ const EditBlogsPage = () => {
   const fetchProduct = async () => {
     try {
       const product = (
-        await axios.get(`http://localhost:3001/blog/${data.get("id")}`)
-      ).data.data[0];
+        await axios.get<Blog>(`${api}/blogs/${data.get("id")}`)
+      ).data[0];
       setDataSelected(
         product || {
           title: "",

@@ -5,6 +5,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaCheckCircle } from "react-icons/fa";
 import {api} from "@/utils/config";
+import { Product } from "@/types/product";
+import { Background } from "@/types/background";
 
 const SinglePromotional = () => {
   const [promotionals, setPromotionals] = useState([]);
@@ -13,20 +15,32 @@ const SinglePromotional = () => {
   const [backgroundColor, setBackgroundColor] = useState("#004AAD");
 
   useEffect(() => {
-    const savedColors = JSON.parse(localStorage.getItem("backgroundColors"));
-    if (savedColors && savedColors.promotional) {
-      setBackgroundColor(savedColors.promotional);
-    }
+    // request base to obtain the background color
+    const fetchBackground = async () => {
+      try {
+        const { data } = await axios.get<Background>(
+          `${api}/backgrounds/promotional`,
+        );
+        setBackgroundColor(data.color);
+      } catch (error) {
+        console.error("Error fetching promitional background:", error);
+      }
+    };
+    fetchBackground();
+    // const savedColors = JSON.parse(localStorage.getItem("backgroundColors"));
+    // if (savedColors && savedColors.promotional) {
+    //   setBackgroundColor(savedColors.promotional);
+    // }
   }, []);
 
   useEffect(() => {
     const fetchPromotional = async () => {
       try {
-        const response = await axios.get(
+        const {data} = await axios.get<Product[]>(
           `${api}/products/promotional`,
         );
 
-        const uniquePromotional = response.data.data.filter(
+        const uniquePromotional = data.filter(
           (promotional, index, self) =>
             index === self.findIndex((m) => m.name === promotional.name),
         );

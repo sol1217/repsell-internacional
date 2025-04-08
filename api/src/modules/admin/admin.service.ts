@@ -11,7 +11,10 @@ export class AdminService {
 
   async login(email: string, password: string): Promise<number> {
     const user = await this.adminRepository.getUserByEmail(email);
-    if (!(await this.bcryptService.comparePassword(password, user.password)))
+    const hashedPassword = await this.bcryptService.hashPassword(password);
+    const samePassword:boolean = await this.bcryptService.comparePassword(password, user.password)
+
+    if (!samePassword)
       throw new BadRequestException();
 
     return user.id;

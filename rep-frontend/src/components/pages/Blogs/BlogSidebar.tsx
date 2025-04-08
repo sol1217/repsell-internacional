@@ -8,6 +8,7 @@ import logo from "../../../../public/images/hero/logo-repsell-icono.png";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import NewsLatterBox from "@/components/Features/Contact/NewsLatterBox";
+import { api } from "@/utils/config";
 
 const BlogSidebar = () => {
   const [blog, setBlog] = useState(null);
@@ -32,10 +33,10 @@ const BlogSidebar = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get(
-          "https://repsell-international-backend.onrender.com/blogs",
+        const {data} = await axios.get(
+          `${api}blogs`,
         );
-        const uniqueBlogs = response.data.data.filter(
+        const uniqueBlogs = data.filter(
           (blog, index, self) =>
             index === self.findIndex((b) => b.title === blog.title),
         );
