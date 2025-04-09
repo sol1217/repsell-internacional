@@ -6,6 +6,9 @@ import {api} from "@/utils/config";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import {Product} from "@/types/product";
+import {getToken} from "@/services/auth";
+import {useAuthProtection} from "@/hook/useAuthProtection";
+import axiosInstance from "@/utils/axiosInstance";
 
 const EditProductsPage = () => {
   const [editNombre, setEditNombre] = useState("");
@@ -16,6 +19,8 @@ const EditProductsPage = () => {
   const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
   const [preview, setPreview] = useState(null);
   const data = useSearchParams();
+
+  useAuthProtection();
 
   const fetchProduct = async () => {
     try {
@@ -66,18 +71,26 @@ const EditProductsPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const token = getToken();
+
+    if (!token) {
+      alert("⚠️ Sesión expirada. Inicia sesión nuevamente.");
+      window.location.href = "/signin";
+      return;
+    }
+
     const formData = new FormData(e.target);
     formData.append("image", preview);
     formData.append("category", data.get("category"));
     try {
-      const response = await fetch(
+      const response = await axiosInstance.put(
         `${api}/products/${data.get("category")}/${data.get("id")}`,        {
-          method: "PUT",
-          body: formData,
+          formData,
         },
       );
 
-      if (response.ok) {
+      if (response.status === 200) {
         setGlobalMessage({ text: "✅ Producto actualizado correctamente.", type: "success" });
       } else {
         setGlobalMessage({ text: "⚠️ Error al actualizar el producto.", type: "error" });

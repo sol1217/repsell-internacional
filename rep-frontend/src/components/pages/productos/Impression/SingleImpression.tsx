@@ -9,9 +9,7 @@ import gold from "public/images/products/color/golden.jpeg";
 import {api} from "@/utils/config";
 import promotional from "@/components/pages/productos/Promotional/Promotional";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
-import {Property} from "csstype";
-import Background = Property.Background;
-import {Product} from "@/types/product";
+
 
 const SingleImpression = () => {
   const [impressions, setImpressions] = useState([]);
@@ -41,7 +39,7 @@ const SingleImpression = () => {
   useEffect(() => {
     const fetchImpression = async () => {
       try {
-        const response = await axios.get<Product[]>(`${api}/products/prints`);
+        const response = await axios.get(`${api}/products/prints`);
         const uniqueImpression = response.data.filter(
           (impression, index, self) =>
             index === self.findIndex((m) => m.name === impression.name),

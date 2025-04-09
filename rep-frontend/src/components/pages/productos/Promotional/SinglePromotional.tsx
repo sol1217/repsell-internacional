@@ -6,9 +6,7 @@ import axios from "axios";
 import { FaCheckCircle } from "react-icons/fa";
 import {api} from "@/utils/config";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
-import {Property} from "csstype";
-import Background = Property.Background;
-import {Product} from "@/types/product";
+
 
 const SinglePromotional = () => {
   const [promotionals, setPromotionals] = useState([]);

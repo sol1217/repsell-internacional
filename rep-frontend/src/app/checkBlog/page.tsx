@@ -9,11 +9,15 @@ import BubbleDecoration from "@/components/Common/BubbleDecoration";
 import logo from "../../../public/images/hero/logo-repsell-icono.png";
 import Image from "next/image";
 import {api} from "@/utils/config";
+import {useAuthProtection} from "@/hook/useAuthProtection";
+import axiosInstance from "@/utils/axiosInstance";
 
 const BlogPageCheck = () => {
   const [blog, setBlog] = useState([]);
   const [loading, setLoading] = useState(true);
   const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
+
+  useAuthProtection();
 
   useEffect(() => {
     fetchBlogs();
@@ -21,12 +25,8 @@ const BlogPageCheck = () => {
 
   const fetchBlogs = async () => {
     try {
-      const blogs = (
-        (await axios.get(
-          `${api}/blogs`
-        )) as any
-      ).data.data;
-      console.log(blogs);
+      const response = await axiosInstance.get(`${api}/blogs`);
+      const blogs = response.data.data;
       setBlog(blogs);
     } catch (error) {
       console.error("Error fetching Blogs:", error);
@@ -36,11 +36,10 @@ const BlogPageCheck = () => {
     }
   };
 
+
   const deleteBlog = async (id) => {
     try {
-      const response = await axios.delete(
-        `https://repsell-international-backend.onrender.com/delete-blog/${id}`,
-      );
+      const response = await axiosInstance.delete(`${api}/delete-blog/${id}`);
       if (response.status === 200) {
         setGlobalMessage({ text: "✅ Blog eliminado correctamente.", type: "success" });
         fetchBlogs();
@@ -48,11 +47,13 @@ const BlogPageCheck = () => {
         setGlobalMessage({ text: "❌ Error al eliminar el blog.", type: "error" });
       }
     } catch (error) {
+      console.error("Error al eliminar blog:", error);
       setGlobalMessage({ text: "❌ Error en el servidor al eliminar.", type: "error" });
     } finally {
       setTimeout(() => setGlobalMessage(null), 3000);
     }
   };
+
 
 
   const renderBlogs = (blogs, title, category) => (

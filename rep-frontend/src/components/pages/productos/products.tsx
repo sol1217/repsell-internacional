@@ -2,11 +2,12 @@
 import Link from "next/link";
 import { FaRegTrashAlt } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import Image from "next/image";
 import logo from "public/images/hero/logo-repsell-icono.png";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
 import {api} from "@/utils/config";
+import axiosInstance from "@/utils/axiosInstance";
+import {useAuthProtection} from "@/hook/useAuthProtection";
 
 const ProductMain = () => {
   const [trophies, setTrophies] = useState([]);
@@ -22,6 +23,8 @@ const ProductMain = () => {
     medals: "#E72603",
     impresion: "#BFBFBF",
   };
+
+  useAuthProtection();
 
   const [backgroundColors, setBackgroundColors] = useState(initialColors);
   const [successMessages, setSuccessMessages] = useState({});
@@ -44,8 +47,8 @@ const ProductMain = () => {
     }));
 
     try {
-      await axios.put(
-        `https://repsell-international-backend.onrender.com/update-background`,
+      await axiosInstance.put(
+        `${api}/update-background`,
         {
           category,
           background: color,
@@ -99,14 +102,14 @@ const ProductMain = () => {
         },
         { key: "promotional", endpoint: "promotional", setter: setPromotional },
         { key: "medals", endpoint: "medals", setter: setMedals },
-        { key: "impresion", endpoint: "impresion", setter: setImpresion },
+        { key: "impresion", endpoint: "prints", setter: setImpresion },
       ];
 
       const endpoints = [
         ...categories.map(({ endpoint }) =>
-          axios.get(`${api}/products/${endpoint}`),
+          axiosInstance.get(`${api}/products/${endpoint}`),
         ),
-        axios.get(`${api}/backgrounds`),
+        axiosInstance.get(`${api}/backgrounds`),
       ];
 
       const allResponses = await Promise.all(endpoints);
@@ -114,10 +117,10 @@ const ProductMain = () => {
       const productResponses = allResponses;
 
       categories.forEach(({ setter }, index) => {
-        setter(productResponses[index]?.data?.data || []);
+        setter(productResponses[index]?.data || []);
       });
 
-      const backgroundData = backgroundRes.data.data;
+      const backgroundData = backgroundRes.data;
       const defaultColors: BackgroundColors = {
         trophies: "#000000",
         recognitions: "#E72603",
@@ -149,8 +152,10 @@ const ProductMain = () => {
   const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
 
   const deleteProduct = async (id, category) => {
+
     try {
-      const response = await axios.delete(`${api}/products/${category}/${id}`, {
+      const response = await axiosInstance.delete(`${api}/products/${category}/${id}`, {
+
         data: { id, category },
       });
       if (response.status === 200) {

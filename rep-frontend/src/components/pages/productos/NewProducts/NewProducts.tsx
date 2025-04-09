@@ -6,6 +6,8 @@ import logo from "../../../../../public/images/hero/logo-repsell-icono.png";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
 import {api} from "@/utils/config";
 import {categoriesProducts, stylesProducts} from "@/config/constants";
+import {useAuthProtection} from "@/hook/useAuthProtection";
+import axiosInstance from "@/utils/axiosInstance";
 
 const NewProduct = () => {
   const [selectedCategoria, setSelectedCategoria] = useState("");
@@ -14,6 +16,7 @@ const NewProduct = () => {
   const fileInputRef = useRef(null);
   const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
 
+  useAuthProtection();
 
   const handleChange = (event) => {
     setSelectedCategoria(event.target.value);
@@ -65,17 +68,15 @@ const NewProduct = () => {
       return;
     }
 
-    console.log(e.target);
-
     const formData = new FormData(e.target);
-    formData.append("image", preview);
-    try {
-      const response = await fetch(endpoint, {
-        method: "POST",
-        body: formData,
-      });
 
-      if (response.ok) {
+    formData.append("image", preview);
+    const data = Object.fromEntries(formData.entries())
+
+    try {
+      const response = await axiosInstance.post(endpoint, data);
+
+      if (response.status === 200) {
         setGlobalMessage({ text: "✅ Producto enviado correctamente.", type: "success" });
       } else {
         setGlobalMessage({ text: "⚠️ Error al enviar el producto.", type: "error" });

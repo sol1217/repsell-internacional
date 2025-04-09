@@ -8,9 +8,7 @@ import { colorMapping } from "@/utils/colorMapping";
 import gold from "public/images/products/color/golden.jpeg";
 import {api} from "@/utils/config";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
-import {Property} from "csstype";
-import Background = Property.Background;
-import {Product} from "@/types/product";
+
 
 const SingleRecognitions = () => {
   const [recognitions, setRecognitions] = useState([]);
@@ -19,7 +17,6 @@ const SingleRecognitions = () => {
   const [backgroundColor, setBackgroundColor] = useState("#004AAD");
 
   useEffect(() => {
-    // request base to obtain the background color
     const fetchBackground = async () => {
       try {
         const { data } = await axios.get(
@@ -40,7 +37,7 @@ const SingleRecognitions = () => {
   useEffect(() => {
     const fetchRecognitions = async () => {
       try {
-        const {data} = await axios.get<Product[]>(`${api}/products/recognitions`);
+        const {data} = await axios.get(`${api}/products/recognitions`);
 
         const uniquePromotional = data.filter(
           (promotional, index, self) =>

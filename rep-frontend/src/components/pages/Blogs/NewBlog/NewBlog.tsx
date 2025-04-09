@@ -6,11 +6,15 @@ import Image from "next/image";
 import logo from "../../../../../public/images/hero/logo-repsell-icono.png";
 import {categorias} from "@/config/constants";
 import {api} from "@/utils/config";
+import {getToken} from "@/services/auth";
+import {useAuthProtection} from "@/hook/useAuthProtection";
+import axiosInstance from "@/utils/axiosInstance";
 
 const NewBlog = () => {
   const [preview, setPreview] = useState(null);
   const fileInputRef = useRef(null);
   const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
+  useAuthProtection();
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -33,31 +37,25 @@ const NewBlog = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const formData = new FormData(e.target);
+    formData.append("image", preview);
+
     try {
-      const formDataPost = new FormData(e.target);
+      const response = await axiosInstance.post(`${api}/blogs`, formData);
 
-      console.log(e.target);
-
-      formDataPost.append("image", preview);
-
-      const response = await fetch(
-        `${api}/blogs`,        {
-          method: "POST",
-          body: formDataPost,
-        },
-      );
-
-      if (response.ok) {
+      if (response.status === 200) {
         setGlobalMessage({ text: "✅ Blog creado exitosamente.", type: "success" });
       } else {
         setGlobalMessage({ text: "⚠️ Error al crear el blog. Por favor, intenta nuevamente.", type: "error" });
       }
     } catch (error) {
+      console.error("Error al crear blog:", error);
       setGlobalMessage({ text: "❌ Error al conectarse al backend. Intenta nuevamente.", type: "error" });
     } finally {
       setTimeout(() => setGlobalMessage(null), 3000);
     }
   };
+
 
   return (
     <section

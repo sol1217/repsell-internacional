@@ -1,10 +1,11 @@
 "use client";
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import axios from "axios/index";
 import {api} from "@/utils/config";
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
+import {useAuthProtection} from "@/hook/useAuthProtection";
+import axiosInstance from "@/utils/axiosInstance";
 
 const EditBlogsPage = () => {
   const [dataSelected, setDataSelected] = useState(null);
@@ -12,11 +13,12 @@ const EditBlogsPage = () => {
   const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
   const data = useSearchParams();
 
+  useAuthProtection();
+
   const fetchProduct = async () => {
     try {
-      const product = (
-        await axios.get(`${api}/blog/${data.get("id")}`)
-      ).data.data[0];
+      const response = await axiosInstance.get(`${api}/blog/${data.get("id")}`);
+      const product = response.data.data[0];
       setDataSelected(product);
       setPreview(product.image);
     } catch (error) {
@@ -42,24 +44,29 @@ const EditBlogsPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const formData = new FormData(e.target);
     formData.append("image", preview);
+
     try {
-      const response = await fetch(`${api}/update-blog/${data.get("id")}`, {
-        method: "PUT",
-        body: formData,
-      });
-      if (response.ok) {
+      const response = await axiosInstance.put(
+        `${api}/update-blog/${data.get("id")}`,
+        formData
+      );
+
+      if (response.status === 200) {
         setGlobalMessage({ text: "✅ Blog actualizado correctamente.", type: "success" });
       } else {
         setGlobalMessage({ text: "⚠️ Error al actualizar el blog.", type: "error" });
       }
     } catch (error) {
+      console.error("Error actualizando blog:", error);
       setGlobalMessage({ text: "❌ Error en la conexión al servidor.", type: "error" });
     } finally {
       setTimeout(() => setGlobalMessage(null), 3000);
     }
   };
+
 
   return (
     <>

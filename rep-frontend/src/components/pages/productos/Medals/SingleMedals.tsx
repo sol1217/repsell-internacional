@@ -11,9 +11,7 @@ import white from "public/images/products/color/white.jpeg";
 import { colorMapping } from "@/utils/colorMapping";
 import {api} from "@/utils/config";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
-import {Property} from "csstype";
-import Background = Property.Background;
-import {Product} from "@/types/product";
+
 
 const SingleMedals = () => {
   const [medals, setMedals] = useState([]);

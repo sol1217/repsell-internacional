@@ -5,6 +5,7 @@ import { useState } from "react";
 import trophy from "public/images/products/trophy.png";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
 import { api } from "@/utils/config";
+import {saveToken} from "@/services/auth";
 
 const SigninPage = () => {
   const [user, setUser] = useState("");
@@ -30,7 +31,8 @@ const SigninPage = () => {
     const resultado = await response.json();
     console.log(resultado);
 
-    if (response.ok) {
+    if (response.ok && resultado.authToken) {
+      saveToken(resultado.authToken);
       window.location.href = "/admin";
     } else {
       setErrorMessage(resultado.message || "Usuario o contraseña incorrectos.");
