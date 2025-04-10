@@ -1,12 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import { ProductRepository } from "./product.repository";
 import { CreateProductDto, UpdateProductDto } from "./product.dto";
+import { Product } from "./product.model";
 
 @Injectable()
 export class ProductService {
     constructor(private readonly productRepository: ProductRepository) {}
     
-    async createProduct(productType: string, createProductDto: CreateProductDto){
+    async createProduct(productType: string, createProductDto: CreateProductDto):Promise<Product>{
         return this.productRepository.createProduct(productType, createProductDto);
     }
 

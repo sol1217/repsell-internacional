@@ -79,15 +79,23 @@ const EditProductsPage = () => {
       window.location.href = "/signin";
       return;
     }
-
+   
     const formData = new FormData(e.target);
     formData.append("image", preview);
     formData.append("category", data.get("category"));
+
+    // transform formData to object (json)
+    const body = Object.fromEntries(formData.entries());
+
     try {
-      const response = await axiosInstance.put(
-        `${api}/products/${data.get("category")}/${data.get("id")}`,        {
-          formData,
+      const response = await axiosInstance.patch(
+      `${api}/products/${data.get("category")}/${data.get("id")}`,
+      body, // here we pass the object
+      {
+        headers: {
+        "Content-Type": "application/json",
         },
+      }
       );
 
       if (response.status === 200) {

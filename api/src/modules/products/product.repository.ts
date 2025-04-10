@@ -2,16 +2,21 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/config/prisma/prisma.service';
 import { CreateProductDto, UpdateProductDto } from './product.dto';
 import { PrismaException } from 'src/config/prisma/prisma.exception';
+import { Product } from './product.model';
 
 @Injectable()
 export class ProductRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async createProduct(productType: string, createProductDto: CreateProductDto) {
+  async createProduct(
+    productType: string,
+    createProductDto: CreateProductDto,
+  ): Promise<Product> {
     try {
       const product = await this.prismaService[productType].create({
         data: createProductDto,
       });
+      return product;
     } catch (error) {
       throw new PrismaException(error);
     }
@@ -39,7 +44,7 @@ export class ProductRepository {
     productType: string,
     id: number,
     updateProductDto: UpdateProductDto,
-  ) {
+  ): Promise<Product> {
     try {
       const product = await this.prismaService[productType].update({
         where: { id },

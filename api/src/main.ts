@@ -2,10 +2,15 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './modules/app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { urlencoded, json } from 'express';
+
 import * as nodeCrypto from 'crypto';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { rawBody: true });
+
+  app.use(json({ limit: '50mb' }));
+  app.use(urlencoded({ extended: true, limit: '50mb' }));
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
     origin: [process.env.WEB_BASE_URL || 'http://localhost:3000'],
@@ -17,7 +22,6 @@ async function bootstrap() {
       'Authorization',
     ],
   });
-
 
   if (!globalThis.crypto) {
     (globalThis as any).crypto = nodeCrypto.webcrypto;

@@ -5,14 +5,18 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ProductEnum } from './product.enum';
 import { isEnum, isInt } from 'class-validator';
 import { CreateProductDto, UpdateProductDto } from './product.dto';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiParam } from '@nestjs/swagger';
 import { ProductService } from './product.service';
+import { Product } from './product.model';
+import { AuthGuard } from 'src/core/guards/auth.guard';
 
 @Controller('products')
 export class ProductController {
@@ -46,11 +50,17 @@ export class ProductController {
       },
     },
   })
+  @ApiParam({
+    name: 'productType',
+    required: true,
+    enum: ProductEnum,
+  })
+  @UseGuards(AuthGuard)
   @Post('/:productType')
   async createProduct(
     @Param('productType') productType: string,
     @Body() createProductDto: CreateProductDto,
-  ) {
+  ): Promise<Product> {
     this.validateProductType(productType);
     return this.productService.createProduct(productType, createProductDto);
   }
@@ -69,6 +79,11 @@ export class ProductController {
         description: 'Internal server error',
       },
     },
+  })
+  @ApiParam({
+    name: 'productType',
+    required: true,
+    enum: ProductEnum,
   })
   @Get('/:productType')
   async getAllProductsByType(@Param('productType') productType: string) {
@@ -91,10 +106,15 @@ export class ProductController {
       },
     },
   })
+  @ApiParam({
+    name: 'productType',
+    required: true,
+    enum: ProductEnum,
+  })
   @Get('/:productType/:id')
   async getProductById(
     @Param('productType') productType: string,
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
   ) {
     this.validateProductType(productType);
     this.validateProductId(id);
@@ -115,10 +135,15 @@ export class ProductController {
       500: { description: 'Internal server error' },
     },
   })
+  @ApiParam({
+    name: 'productType',
+    required: true,
+    enum: ProductEnum,
+  })
   @Patch('/:productType/:id')
   async updateProduct(
     @Param('productType') productType: string,
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateProductDto: UpdateProductDto,
   ) {
     this.validateProductType(productType);
@@ -149,10 +174,16 @@ export class ProductController {
       },
     },
   })
+  @ApiParam({
+    name: 'productType',
+    required: true,
+    enum: ProductEnum,
+  })
+  @UseGuards(AuthGuard)
   @Delete('/:productType/:id')
   async deleteProduct(
     @Param('productType') productType: string,
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
   ) {
     this.validateProductType(productType);
     this.validateProductId(id);

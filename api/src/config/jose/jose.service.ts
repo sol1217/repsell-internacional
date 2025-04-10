@@ -31,7 +31,7 @@ export class JoseService {
    */
   async generateSignedToken(
     payload: object,
-    expiresIn: string = '1h',
+    expiresIn: string = '8h',
   ): Promise<string> {
     return await new SignJWT({ ...payload })
       .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })

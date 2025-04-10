@@ -14,7 +14,7 @@ const ProductMain = () => {
   const [recognitions, setRecognitions] = useState([]);
   const [promotional, setPromotional] = useState([]);
   const [medals, setMedals] = useState([]);
-  const [impresion, setImpresion] = useState([]);
+  const [prints, setPrint] = useState([]);
   const [loading, setLoading] = useState(true);
   const [backgroundIds, setBackgroundIds] = useState<Record<string, number>>({});
 
@@ -23,7 +23,7 @@ const ProductMain = () => {
     recognitions: "#E72603",
     promotional: "#004AAD",
     medals: "#E72603",
-    impresion: "#BFBFBF",
+    print: "#BFBFBF",
   };
 
   useAuthProtection();
@@ -91,7 +91,7 @@ const ProductMain = () => {
     recognitions: string;
     promotional: string;
     medals: string;
-    impresion: string;
+    print: string;
   };
 
   const fetchProducts = async () => {
@@ -101,7 +101,7 @@ const ProductMain = () => {
         { key: "recognitions", endpoint: "recognitions", setter: setRecognitions },
         { key: "promotional", endpoint: "promotional", setter: setPromotional },
         { key: "medals", endpoint: "medals", setter: setMedals },
-        { key: "impresion", endpoint: "prints", setter: setImpresion },
+        { key: "prints", endpoint: "prints", setter: setPrint },
       ];
 
       const endpoints = [
@@ -126,7 +126,7 @@ const ProductMain = () => {
         recognitions: "#E72603",
         promotional: "#004AAD",
         medals: "#E72603",
-        impresion: "#BFBFBF",
+        print: "#BFBFBF",
       };
 
       const apiColors = backgroundData.reduce((colorMap, item) => {
@@ -268,7 +268,7 @@ const ProductMain = () => {
                             recognitions: "Reconocimientos",
                             promotional: "Promocionales",
                             medals: "Medallas",
-                            impresion: "Impresiones",
+                            prints: "Impresiones",
                           }[category] || category}
                         </h4>
                         <input
@@ -296,7 +296,7 @@ const ProductMain = () => {
                 {renderProducts(recognitions, "Reconocimientos", "recognitions")}
                 {renderProducts(promotional, "Promocionales", "promotional")}
                 {renderProducts(medals, "Medallas", "medals")}
-                {renderProducts(impresion, "Impresiones", "impresion")}
+                {renderProducts(print, "Impresiones", "impresion")}
               </div>
             )}
           </div>
