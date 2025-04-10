@@ -38,4 +38,4 @@ jobs:
 
       - name: Push Docker Image to ECR Public
         run: |
-          docker push public.ecr.aws/d0z6z8b6/repsell-api:latest
+          docker push public.ecr.aws/d0z6z8b6/repsell-internacional-api:latest
