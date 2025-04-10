@@ -513,3 +513,164 @@ const BlogSidebar = () => {
 };
 
 export default BlogSidebar;
+
+
+{/*// Nuevo diseño del componente BlogSidebar
+"use client";
+
+import SharePost from "@/components/Blog/SharePost";
+import TagButton from "@/components/Blog/TagButton";
+import Image from "next/image";
+import logo from "../../../../public/images/hero/logo-repsell-icono.png";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import NewsLatterBox from "@/components/Features/Contact/NewsLatterBox";
+import { api } from "@/utils/config";
+import BubbleDecoration from "@/components/Common/BubbleDecoration";
+
+const BlogSidebar = () => {
+  const [blog, setBlog] = useState(null);
+  const [selectedBlogId, setSelectedBlogId] = useState(null);
+  const [blogsList, setBlogsList] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const categoryTranslationMap = {
+    medals: { translated: "Medallas", href: "/medals" },
+    recognitions: { translated: "Reconocimientos", href: "/recognitions" },
+    trophiesAndCups: { translated: "Trofeos y Copas", href: "/trophiesAndCups" },
+    promotional: { translated: "Promocionales", href: "/promotional" },
+    impression: { translated: "Impresiones", href: "/impression" },
+  };
+
+  const listItems = blog && typeof blog.conclusion === "string" ? blog.conclusion.split(",") : [];
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const { data } = await axios.get(`${api}/blogs`);
+        const uniqueBlogs = data.filter((blog, index, self) => index === self.findIndex(b => b.title === blog.title));
+        setBlogsList(uniqueBlogs);
+        setBlog(uniqueBlogs[0]);
+        if (uniqueBlogs[0]) setSelectedBlogId(uniqueBlogs[0].id);
+      } catch (error) {
+        console.error("Error fetching Blogs:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBlogs();
+  }, []);
+
+  const handleBlogClick = selectedBlog => {
+    setBlog(selectedBlog);
+    setSelectedBlogId(selectedBlog.id);
+  };
+
+  const handleBlogSelect = event => {
+    const selectedId = event.target.value;
+    const selectedBlog = blogsList.find(blog => blog.id === parseInt(selectedId));
+    setBlog(selectedBlog);
+    setSelectedBlogId(selectedId);
+  };
+
+  const getTranslatedCategory = category => categoryTranslationMap[category]?.translated || category;
+  const getHref = category => categoryTranslationMap[category]?.href || "/medals";
+
+  return (
+    <section className="bg-gradient-to-br from-blue-900 via-gray-900 to-black py-20 text-white">
+      <BubbleDecoration />
+      <div className="container px-4 mx-auto">
+        {loading ? (
+          <p className="text-center">Cargando...</p>
+        ) : blog ? (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            <div className="lg:col-span-2">
+              <h1 className="text-4xl font-bold mb-6 leading-tight font-serif">{blog.title}</h1>
+              <div className="flex items-center gap-4 mb-6">
+                <Image src={logo} alt="author" width={40} height={40} className="rounded-full" />
+                <span className="font-medium">Repsell International</span>
+                <span className="bg-red-700 px-3 py-1 rounded-full text-sm">{getTranslatedCategory(blog.category)}</span>
+              </div>
+              <img src={blog.image} alt="Blog" className="rounded-xl w-full mb-6" />
+              <div className="space-y-4 mb-8">
+                {blog.introduction.split(";").map((p, i) => (
+                  <p key={i}>{p.trim()}</p>
+                ))}
+              </div>
+              <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-red-500 via-white to-red-500 text-transparent bg-clip-text">{blog.subtitle1}</h3>
+              <div className="space-y-3 mb-8">
+                {blog.paragraph1.split(";").map((p, i) => (
+                  <p key={i}>{p.trim()}</p>
+                ))}
+              </div>
+              <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-red-500 via-white to-red-500 text-transparent bg-clip-text">{blog.subtitle2}</h3>
+              <div className="space-y-3 mb-8">
+                {blog.paragraph2.split(";").map((p, i) => (
+                  <p key={i}>{p.trim()}</p>
+                ))}
+              </div>
+              <ul className="space-y-2 mb-8">
+                {listItems.map((item, i) => (
+                  <li key={i} className="hover:text-red-500 cursor-pointer">{item.trim().replace(/[*"]/g, "")}</li>
+                ))}
+              </ul>
+              <div className="bg-white bg-opacity-10 p-6 rounded-xl">
+                {blog.paragraph3.split(";").map((p, i) => (
+                  <p key={i} className="italic mb-4">{p.trim()}</p>
+                ))}
+              </div>
+              <div className="mt-8 text-center">
+                <a href={getHref(blog.category)} className="bg-red-700 px-5 py-2 rounded-full text-white inline-block">
+                  {getTranslatedCategory(blog.category)}
+                </a>
+              </div>
+            </div>
+            <div>
+              <div className="bg-red-700 p-6 rounded-xl mb-6">
+                <h3 className="text-xl font-semibold mb-4">Todos los blogs</h3>
+                <select
+                  value={selectedBlogId}
+                  onChange={handleBlogSelect}
+                  className="w-full bg-white text-black p-2 rounded-md"
+                >
+                  {blogsList.map(blg => (
+                    <option key={blg.id} value={blg.id}>{blg.title}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="bg-white p-6 rounded-xl mb-6 text-red-700">
+                <h3 className="text-xl font-semibold mb-4">Productos Disponibles</h3>
+                <ul className="space-y-2">
+                  <li><a href="/medals">Medallas</a></li>
+                  <li><a href="/impression">Impresión Gran Formato</a></li>
+                  <li><a href="/promotional">Promocionales y empresariales</a></li>
+                  <li><a href="/recognitions">Reconocimientos</a></li>
+                  <li><a href="/trophiesAndCups">Copas y Trofeos</a></li>
+                </ul>
+              </div>
+              <div className="bg-red-700 p-6 rounded-xl mb-6">
+                <h3 className="text-xl font-semibold text-white mb-4">Atajos a enlaces</h3>
+                <div className="flex flex-wrap gap-2">
+                  <TagButton text="Sobre nosotros" href="/about" />
+                  <TagButton text="Inicio" href="/" />
+                  <TagButton text="Contacto" href="/contact" />
+                  <TagButton text="Carrito" href="/cart" />
+                </div>
+              </div>
+              <div className="bg-red-700 p-6 rounded-xl">
+                <h4 className="text-white mb-3">Correo Electrónico:</h4>
+                <TagButton text="Info@gruposelley.com" />
+                <h5 className="text-white mt-4 mb-2">Nuestras redes sociales:</h5>
+                <SharePost />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <p className="text-center">No se encontraron blogs.</p>
+        )}
+      </div>
+    </section>
+  );
+};
+
+export default BlogSidebar;*/}

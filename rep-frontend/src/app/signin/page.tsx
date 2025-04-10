@@ -149,7 +149,7 @@ const SigninPage = () => {
           </button>
 
           {errorMessage && (
-            <p className="text-center text-sm text-red-400">{errorMessage}</p>
+            <p className="text-center text-sm text-red-400">Hubo un error al iniciar sesión. Intenta nuevamente.</p>
           )}
         </form>
       </div>

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -20,7 +19,6 @@ const SingleMedals = () => {
   const [backgroundColor, setBackgroundColor] = useState("#004AAD");
 
   useEffect(() => {
-    // request base to obtain the background color
     const fetchBackground = async () => {
       try {
         const { data } = await axios.get(
@@ -121,18 +119,15 @@ const SingleMedals = () => {
                           const colorKey = color.trim().toLowerCase();
                           const imageSrc = colorMapping[colorKey] || white;
                           return (
-                            <div key={i} className="flex items-center gap-2">
-                              <Image
-                                src={imageSrc}
-                                alt={color.trim()}
-                                width={20}
-                                height={20}
-                                className="rounded-full"
-                              />
-                              <span className="text-xs text-white/80">
-                                {color.trim()}
-                              </span>
-                            </div>
+                              <div key={i} className="w-6 h-6 rounded-full overflow-hidden ">
+                                <Image
+                                  src={imageSrc}
+                                  alt={color.trim()}
+                                  width={28}
+                                  height={28}
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
                           );
                         })}
                       </div>

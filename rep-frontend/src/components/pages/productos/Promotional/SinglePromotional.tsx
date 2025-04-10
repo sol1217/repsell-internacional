@@ -6,6 +6,9 @@ import axios from "axios";
 import { FaCheckCircle } from "react-icons/fa";
 import {api} from "@/utils/config";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
+import {colorMapping} from "@/utils/colorMapping";
+import white from "../../../../../public/images/products/color/white.jpeg";
+import Image from "next/image";
 
 
 const SinglePromotional = () => {
@@ -115,8 +118,28 @@ const SinglePromotional = () => {
                       <p className="text-white/80">{promotional.height}</p>
                     </div>
 
-                    <div className="flex flex-col items-center gap-3">
+                    <div className="flex mb-5 flex-col items-start gap-3">
                       <h4 className="text-sm font-medium text-white">Colores:</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {(promotional.color || "").split(",").map((color, i) => {
+                          const colorKey = color.trim().toLowerCase();
+                          const imageSrc = colorMapping[colorKey] || white;
+                          return (
+                              <div key={i} className="w-6 h-6 rounded-full overflow-hidden ">
+                                <Image
+                                  src={imageSrc}
+                                  alt={color.trim()}
+                                  width={28}
+                                  height={28}
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col items-center gap-3">
                       <button
                         onClick={() => handleAddToLocalStorage(promotional)}
                         className="rounded-full bg-[#e11b24] px-16 py-2 text-sm font-medium text-white shadow-md transition hover:bg-[#c8101c]"

@@ -134,7 +134,9 @@ const NewProduct = () => {
                 </p>
 
                 <p className="mb-5 text-center text-green-600">
-                  ¡Recuerda usar imagenes optimizadas (no +50KG) y/o comprimelas!
+                  ¡Recuerda usar imagenes optimizadas (no +100KG) y/o comprimelas!
+              <br/>
+                  *LLENA TODOS LOS DATOS CON SUS VALORES CORRECTOS*
                 </p>
 
                 <select
@@ -229,7 +231,7 @@ const NewProduct = () => {
                       />
                     </div>
 
-                    <p className=" text-green-600"> <b className="text-white">Lista colores:</b>
+                    <p className=" text-green-600"> <b className="text-white">Lista colores: </b>
                       verde,
                       negro,
                       azul,

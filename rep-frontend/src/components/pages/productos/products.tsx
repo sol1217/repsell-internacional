@@ -150,7 +150,7 @@ const ProductMain = () => {
       setBackgroundColors(newColors);
       localStorage.setItem("backgroundColors", JSON.stringify(newColors));
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error("Error fetching products");
     } finally {
       setLoading(false);
     }

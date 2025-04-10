@@ -141,17 +141,14 @@ const SingleTrophiesAndCups = () => {
                           const colorKey = color.trim().toLowerCase();
                           const imageSrc = colorMapping[colorKey] || transp;
                           return (
-                            <div key={i} className="flex items-center gap-2">
-                              <Image
-                                src={imageSrc}
-                                alt={color.trim()}
-                                width={24}
-                                height={24}
-                                className="rounded-full "
-                              />
-                              <span className="text-xs text-white/80">
-                                {color.trim()}
-                              </span>
+                            <div key={i} className="w-6 h-6 rounded-full overflow-hidden ">
+                                <Image
+                                  src={imageSrc}
+                                  alt={color.trim()}
+                                  width={28}
+                                  height={28}
+                                  className="w-full h-full object-cover"
+                                />
                             </div>
                           );
                         })}
