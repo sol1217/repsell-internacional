@@ -26,7 +26,7 @@ export class JoseService {
    * Generates a signed JWT.
    *
    * @param {object} payload - The payload to include in the token.
-   * @param {string} expiresIn - Expiration time of the token (default: '1h').
+   * @param {string} expiresIn - Expiration time of the token (default: '8h').
    * @returns A signed JWT.
    */
   async generateSignedToken(

@@ -56,10 +56,13 @@ const EditBlogsPage = () => {
     const formData = new FormData(e.target);
     formData.append("image", preview);
 
+    // transform formData to object (json)
+    const body = Object.fromEntries(formData.entries());
+
     try {
-      const response = await axiosInstance.put(
-        `${api}/blogs/${blogId}`, // ✅ Ruta corregida
-        formData
+      const response = await axiosInstance.patch(
+        `${api}/blogs/${blogId}`,
+        body
       );
 
       if (response.status === 200) {
@@ -114,50 +117,50 @@ const EditBlogsPage = () => {
                         />
                         <input
                           type="text"
-                          name="description"
-                          defaultValue={dataSelected.description}
+                          name="introduction"
+                          defaultValue={dataSelected.introduction}
                           placeholder="Introducción"
                           className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
                         />
                         <input
                           type="text"
-                          name="additionalTitle"
-                          defaultValue={dataSelected.additionalTitle}
+                          name="subtitle1"
+                          defaultValue={dataSelected.subtitle1}
                           placeholder="Subtítulo 1"
                           className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
                         />
                         <input
                           type="text"
-                          name="additionalText"
-                          defaultValue={dataSelected.additionalText}
+                          name="paragraph1"
+                          defaultValue={dataSelected.paragraph1}
                           placeholder="Párrafo 1"
                           className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
                         />
                         <input
                           type="text"
-                          name="subtitle"
+                          name="subtitle2"
                           defaultValue={dataSelected.subtitle}
                           placeholder="Subtítulo 2"
                           className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
                         />
                         <input
                           type="text"
-                          name="paragraph"
-                          defaultValue={dataSelected.paragraph}
+                          name="paragraph2"
+                          defaultValue={dataSelected.paragraph2}
                           placeholder="Párrafo 2"
                           className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
                         />
                         <input
                           type="text"
-                          name="list"
-                          defaultValue={dataSelected.list}
+                          name="conclusion"
+                          defaultValue={dataSelected.conclusion}
                           placeholder="Conclusión"
                           className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
                         />
                         <input
                           type="text"
-                          name="phrase"
-                          defaultValue={dataSelected.phrase}
+                          name="paragraph3"
+                          defaultValue={dataSelected.paragraph3}
                           placeholder="Frase Final"
                           className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
                         />

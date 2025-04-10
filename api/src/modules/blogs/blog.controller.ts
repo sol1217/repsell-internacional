@@ -4,12 +4,15 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateBlogDto, UpdateBlogDto } from './blog.dto';
 import { BlogService } from './blog.service';
 import { ApiOperation } from '@nestjs/swagger';
+import { AuthGuard } from 'src/core/guards/auth.guard';
 
 @Controller('blogs')
 export class BlogController {
@@ -33,6 +36,7 @@ export class BlogController {
       },
     },
   })
+  @UseGuards(AuthGuard)
   @Post()
   async createBlog(@Body() createBlogDto: CreateBlogDto) {
     return this.blogService.createBlog(createBlogDto);
@@ -71,7 +75,7 @@ export class BlogController {
     },
   })
   @Get(':id')
-  async getBlogById(@Param('id') id: number) {
+  async getBlogById(@Param('id', ParseIntPipe) id: number) {
     return this.blogService.getBlogById(id);
   }
 
@@ -93,9 +97,10 @@ export class BlogController {
       },
     },
   })
+  @UseGuards(AuthGuard)
   @Patch(':id')
   async updateBlogById(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateBlogDto: UpdateBlogDto,
   ) {
     return this.blogService.updateBlogById(id, updateBlogDto);
@@ -119,8 +124,9 @@ export class BlogController {
       },
     },
   })
+  @UseGuards(AuthGuard)
   @Delete(':id')
-  async deleteBlogById(@Param('id') id: number) {
+  async deleteBlogById(@Param('id', ParseIntPipe) id: number) {
     return this.blogService.deleteBlogById(id);
   }
 }
