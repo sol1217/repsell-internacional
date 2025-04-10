@@ -139,7 +139,7 @@ const EditBlogsPage = () => {
                         <input
                           type="text"
                           name="subtitle2"
-                          defaultValue={dataSelected.subtitle}
+                          defaultValue={dataSelected.subtitle2}
                           placeholder="Subtítulo 2"
                           className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
                         />
