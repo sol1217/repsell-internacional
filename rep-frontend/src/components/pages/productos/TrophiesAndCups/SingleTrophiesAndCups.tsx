@@ -22,9 +22,8 @@ const SingleTrophiesAndCups = () => {
     // request base to obtain the background color
     const fetchBackground = async () => {
       try {
-        const { data } = await axios.get(
-          `${api}/backgrounds/trophies`,
-        );
+        const { data } = await axios.get(`${api}/backgrounds/trophies`);
+        console.log("🎨 Fondo recibido:", data);
         setBackgroundColor(data.color);
       } catch (error) {
         console.error("Error fetching trophies background:", error);
@@ -103,11 +102,11 @@ const SingleTrophiesAndCups = () => {
               trophies.map((trophy) => (
                 <div
                   key={trophy.id}
-                  style={{ background: trophy.background || "radial-gradient(circle at bottom right, #1E3A8A 0%, #0A0F24 80%)" }}
+                  style={{ background: backgroundColor || "radial-gradient(circle at bottom right, #1E3A8A 0%, #0A0F24 80%)" }}
                   className="w-[360px] rounded-xl text-white shadow-xl backdrop-blur-md transition shadow-blue-500/30 hover:shadow-red-500/30"
                 >
 
-                  <div style={{ background: trophy.background || "radial-gradient(circle at bottom right, #1E3A8A 0%, #0A0F24 80%)" }}  className="relative rounded-t-xl overflow-hidden">
+                  <div style={{ background: backgroundColor || "radial-gradient(circle at bottom right, #1E3A8A 0%, #0A0F24 80%)" }}  className="relative rounded-t-xl overflow-hidden">
                     <div className="absolute  top-4 right-4 z-10 rounded-full bg-red-700 px-4 py-2.5 text-sm font-semibold text-white">
                       {trophy.category}
                     </div>

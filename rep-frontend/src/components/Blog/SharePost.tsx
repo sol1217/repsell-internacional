@@ -7,21 +7,21 @@ const SharePost = () => {
       <a
         href="https://wa.link/26xce4"
         aria-label="social-share"
-        className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-sm bg-gray-light text-body-color duration-300 hover:bg-primary hover:text-white dark:bg-gray-dark dark:hover:bg-primary sm:ml-3"
+        className="mb-3 inline-flex h-9 hover:bg-white hover:text-red-700  w-9 items-center justify-center rounded-full bg-red-700 text-white duration-300 sm:ml-3"
       >
         <FaWhatsapp />
       </a>
       <a
         href="https://www.instagram.com/repsellcr?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
         aria-label="social-share"
-        className="mb-3 ml-3 inline-flex h-9 w-9 items-center justify-center rounded-sm bg-gray-light text-body-color duration-300 hover:bg-primary hover:text-white dark:bg-gray-dark dark:hover:bg-primary"
+        className="mb-3 inline-flex hover:bg-white hover:text-red-700  h-9 w-9 items-center justify-center rounded-full bg-red-700 text-white duration-300 sm:ml-3"
       >
         <FaInstagram />
       </a>
       <a
         href="https://www.facebook.com/repsellcr/"
         aria-label="social-share"
-        className="mb-3 ml-3 inline-flex h-9 w-9 items-center justify-center rounded-sm bg-gray-light text-body-color duration-300 hover:bg-primary hover:text-white dark:bg-gray-dark dark:hover:bg-primary"
+        className="mb-3 hover:bg-white hover:text-red-700 inline-flex h-9 w-9 items-center justify-center rounded-full bg-red-700 text-white duration-300 sm:ml-3"
       >
         <svg
           width="18"

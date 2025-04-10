@@ -1,7 +1,6 @@
 const TOKEN_KEY = "authToken";
 const EXPIRATION_KEY = "authTokenExpiration";
-//const TTL_MS = 8 * 60 * 60 * 1000;
-const TTL_MS = 30 * 1000;
+const TTL_MS = 8 * 60 * 60 * 1000;
 
 export function saveToken(token: string) {
   const expiresAt = Date.now() + TTL_MS;

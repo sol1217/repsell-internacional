@@ -5,9 +5,9 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import logo from "public/images/hero/logo-repsell-icono.png";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
-import {api} from "@/utils/config";
+import { api } from "@/utils/config";
 import axiosInstance from "@/utils/axiosInstance";
-import {useAuthProtection} from "@/hook/useAuthProtection";
+import { useAuthProtection } from "@/hook/useAuthProtection";
 
 const ProductMain = () => {
   const [trophies, setTrophies] = useState([]);
@@ -16,6 +16,8 @@ const ProductMain = () => {
   const [medals, setMedals] = useState([]);
   const [impresion, setImpresion] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [backgroundIds, setBackgroundIds] = useState<Record<string, number>>({});
+
   const initialColors = {
     trophies: "#004AAD",
     recognitions: "#E72603",
@@ -31,7 +33,6 @@ const ProductMain = () => {
 
   useEffect(() => {
     const savedColors = JSON.parse(localStorage.getItem("backgroundColors"));
-
     if (savedColors) {
       setBackgroundColors((prevColors) => ({
         ...prevColors,
@@ -47,13 +48,15 @@ const ProductMain = () => {
     }));
 
     try {
-      await axiosInstance.put(
-        `${api}/update-background`,
-        {
-          category,
-          background: color,
-        }
-      );
+      const backgroundId = backgroundIds[category];
+      if (!backgroundId) {
+        console.error(`No se encontró un backgroundId para la categoría: ${category}`);
+        return;
+      }
+
+      await axiosInstance.patch(`${api}/backgrounds/${backgroundId}`, {
+        color,
+      });
 
       const updatedColors = { ...backgroundColors, [category]: color };
       localStorage.setItem("backgroundColors", JSON.stringify(updatedColors));
@@ -95,11 +98,7 @@ const ProductMain = () => {
     try {
       const categories = [
         { key: "trophies", endpoint: "trophies", setter: setTrophies },
-        {
-          key: "recognitions",
-          endpoint: "recognitions",
-          setter: setRecognitions,
-        },
+        { key: "recognitions", endpoint: "recognitions", setter: setRecognitions },
         { key: "promotional", endpoint: "promotional", setter: setPromotional },
         { key: "medals", endpoint: "medals", setter: setMedals },
         { key: "impresion", endpoint: "prints", setter: setImpresion },
@@ -121,6 +120,7 @@ const ProductMain = () => {
       });
 
       const backgroundData = backgroundRes.data;
+
       const defaultColors: BackgroundColors = {
         trophies: "#000000",
         recognitions: "#E72603",
@@ -130,9 +130,16 @@ const ProductMain = () => {
       };
 
       const apiColors = backgroundData.reduce((colorMap, item) => {
-        colorMap[item.category] = item.color;
+        colorMap[item.name] = item.color;
         return colorMap;
       }, {} as Record<keyof BackgroundColors, string | undefined>);
+
+      const idsByCategory = backgroundData.reduce((acc, item) => {
+        acc[item.name] = item.id;
+        return acc;
+      }, {} as Record<string, number>);
+
+      setBackgroundIds(idsByCategory);
 
       const newColors = categories.reduce((colorsObject, category) => {
         const categoryKey = category.key;
@@ -152,26 +159,24 @@ const ProductMain = () => {
   const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
 
   const deleteProduct = async (id, category) => {
+    const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este producto?");
+    if (!confirmDelete) return;
 
     try {
-      const response = await axiosInstance.delete(`${api}/products/${category}/${id}`, {
-
-        data: { id, category },
-      });
-      if (response.status === 200) {
+      const response = await axiosInstance.delete(`${api}/products/${category}/${id}`);
+      if (response.status === 200 || response.status === 204) {
         setGlobalMessage({ text: "✅ Producto eliminado correctamente.", type: "success" });
         fetchProducts();
       } else {
         setGlobalMessage({ text: "⚠️ Error al eliminar el producto.", type: "error" });
       }
     } catch (error) {
-      console.error("Error eliminando el producto:", error);
-      setGlobalMessage({ text: "❌ Error en el servidor al eliminar.", type: "error" });
+      console.error("Error eliminando el producto:", error.response?.data || error.message);
+      setGlobalMessage({ text: "❌Hubo un error al eliminar el producto, Intenta nuevamente.", type: "error" });
     } finally {
       setTimeout(() => setGlobalMessage(null), 3000);
     }
   };
-
 
   const renderProducts = (products, title, category) => (
     <>
@@ -181,10 +186,7 @@ const ProductMain = () => {
       <div>
         {products.length > 0 ? (
           products.map((product) => (
-            <div
-              key={product.id}
-              className="mb-6 flex flex-col items-center justify-center gap-3"
-            >
+            <div key={product.id} className="mb-6 flex flex-col items-center justify-center gap-3">
               <div
                 className="flex w-full justify-between rounded-md border border-white/10 bg-[#101933]/60 px-6 py-3 text-base text-white shadow-md backdrop-blur-md"
                 style={{ background: backgroundColors[category] }}
@@ -213,8 +215,7 @@ const ProductMain = () => {
         background: "radial-gradient(circle at top left, #1E3A8A 0%, #0A0F24 100%)",
       }}
     >
-
-      <BubbleDecoration/>
+      <BubbleDecoration />
 
       {globalMessage && (
         <div
@@ -241,10 +242,10 @@ const ProductMain = () => {
                   style={{ width: 80, height: 80, margin: "auto", marginBottom: 20 }}
                 />
                 <h3 className="mb-3 text-center text-3xl font-bold">PRODUCTOS DISPONIBLES</h3>
-                <div className="mb-11  text-center text-white/80">
+                <div className="mb-11 text-center text-white/80">
                   A continuación, se presenta el listado completo de todos los productos que han sido ingresados y que actualmente se encuentran disponibles en la página.
-                  <br /> ¿Deseas añadir uno nuevo? {" "}
-                  <Link href="/newProduct" className="text-red-700 font-bold  hover:underline">
+                  <br /> ¿Deseas añadir uno nuevo?{" "}
+                  <Link href="/newProduct" className="text-red-700 font-bold hover:underline">
                     Añadir producto
                   </Link>
                 </div>
@@ -259,10 +260,7 @@ const ProductMain = () => {
 
                 <div className="mb-10 space-y-4">
                   {Object.entries(backgroundColors).map(([category, color]) => (
-                    <div
-                      key={category}
-                      className="rounded-md bg-[#1a1f33]/60 p-4 shadow-md backdrop-blur-md"
-                    >
+                    <div key={category} className="rounded-md bg-[#1a1f33]/60 p-4 shadow-md backdrop-blur-md">
                       <div className="flex flex-wrap items-center justify-between gap-4">
                         <h4 className="text-white font-semibold">
                           {{
@@ -270,7 +268,7 @@ const ProductMain = () => {
                             recognitions: "Reconocimientos",
                             promotional: "Promocionales",
                             medals: "Medallas",
-                            impresion: "Impresiones"
+                            impresion: "Impresiones",
                           }[category] || category}
                         </h4>
                         <input

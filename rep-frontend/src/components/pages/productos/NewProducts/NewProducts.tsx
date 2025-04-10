@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 import logo from "../../../../../public/images/hero/logo-repsell-icono.png";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
@@ -33,14 +33,18 @@ const NewProduct = () => {
       const reader = new FileReader();
 
       reader.onloadend = () => {
-        const base64Image = reader.result;
-        setPreview(base64Image);
+        const result = reader.result;
+        if (typeof result === "string" && result.startsWith("data:image")) {
+          setPreview(result);
+        } else {
+          setPreview(`data:image/jpeg;base64,${result}`);
+        }
       };
 
       reader.readAsDataURL(file);
-      console.log("convertida en base 64");
     }
   };
+
 
   const handleButtonClick = () => {
     fileInputRef.current.click();
@@ -68,21 +72,27 @@ const NewProduct = () => {
       return;
     }
 
-    const formData = new FormData(e.target);
 
-    formData.append("image", preview);
-    const data = Object.fromEntries(formData.entries())
+    const data = {
+      name: e.target.name.value,
+      description: e.target.description.value,
+      height: e.target.height.value,
+      color: e.target.color.value,
+      category: selectedStyles,
+      image: preview,
+    };
+
 
     try {
       const response = await axiosInstance.post(endpoint, data);
 
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 201){
         setGlobalMessage({ text: "✅ Producto enviado correctamente.", type: "success" });
       } else {
-        setGlobalMessage({ text: "⚠️ Error al enviar el producto.", type: "error" });
+        setGlobalMessage({ text: "⚠️Hubo un error al enviar el producto. ", type: "error" });
       }
     } catch (error) {
-      setGlobalMessage({ text: "❌ Error en la conexión.", type: "error" });
+      setGlobalMessage({ text: "❌ Error en la conexión. Intenta más tarde", type: "error" });
     } finally {
       setTimeout(() => setGlobalMessage(null), 3000);
     }
@@ -104,6 +114,7 @@ const NewProduct = () => {
           <div className="flex flex-wrap justify-center">
             <div className="w-full px-4 lg:w-10/12 xl:w-9/12">
               <div className="mx-auto rounded-xl bg-[#101933]/60 px-6 py-10 text-white shadow-xl backdrop-blur-md sm:p-[60px]">
+
                 <Image
                   src={logo}
                   alt="logo"
@@ -116,6 +127,14 @@ const NewProduct = () => {
                 </h3>
                 <p className="mb-10 text-center text-base font-medium text-white/80">
                   Ingresa todos los datos: Una vez completados todos los campos, verifique que los datos sean correctos y estén actualizados para garantizar su correcta visualización en la plataforma.
+                </p>
+
+                <p className="text-lg font-bold text-center text-white/80">
+                  Nota:
+                </p>
+
+                <p className="mb-5 text-center text-green-600">
+                  ¡Recuerda usar imagenes optimizadas (no +50KG) y/o comprimelas!
                 </p>
 
                 <select
@@ -158,6 +177,8 @@ const NewProduct = () => {
                   </div>
                 )}
 
+
+
                 <div className="mb-10 flex items-center justify-center">
                   <span className="hidden h-[1px] w-full max-w-[60px] bg-white/30 sm:block"></span>
                   <p className="mx-4 text-center text-sm font-medium text-white/60">
@@ -197,6 +218,7 @@ const NewProduct = () => {
                         className="w-full rounded-md bg-[#1a1f33] px-6 py-3 text-sm text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#4A6CF7]"
                       />
                     </div>
+                    <p className=" text-green-600">En la altura coloca (cm) al lado</p>
                     <div>
                       <label className="block text-sm mb-2">Colores:</label>
                       <input
@@ -206,6 +228,26 @@ const NewProduct = () => {
                         className="w-full rounded-md bg-[#1a1f33] px-6 py-3 text-sm text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#4A6CF7]"
                       />
                     </div>
+
+                    <p className=" text-green-600"> <b className="text-white">Lista colores:</b>
+                      verde,
+                      negro,
+                      azul,
+                      celeste,
+                      bronce,
+                      cafe,
+                      oro,
+                      gris,
+                      naranja,
+                      rojo,
+                      plata,
+                      blanco,
+                      amarillo,
+                      blue pastel,
+                      nogal,
+                      beige,
+                      full color,
+                      transparente, </p>
                     <div>
                       <label className="block text-sm mb-2">Categoría:</label>
                       <select
@@ -242,6 +284,7 @@ const NewProduct = () => {
                     Guardar producto
                   </button>
                 </form>
+
 
               </div>
             </div>

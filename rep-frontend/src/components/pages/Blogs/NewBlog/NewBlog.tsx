@@ -6,7 +6,6 @@ import Image from "next/image";
 import logo from "../../../../../public/images/hero/logo-repsell-icono.png";
 import {categorias} from "@/config/constants";
 import {api} from "@/utils/config";
-import {getToken} from "@/services/auth";
 import {useAuthProtection} from "@/hook/useAuthProtection";
 import axiosInstance from "@/utils/axiosInstance";
 
@@ -37,20 +36,35 @@ const NewBlog = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData(e.target);
-    formData.append("image", preview);
+    const form = e.target;
+
+    const payload = {
+      image: preview,
+      category: form.category.value,
+      title: form.title.value,
+      introduction: form.introduction.value,
+      subtitle1: form.subtitle1.value,
+      paragraph1: form.paragraph1.value,
+      subtitle2: form.subtitle2.value,
+      paragraph2: form.paragraph2.value,
+      conclusion: form.conclusion.value,
+      paragraph3: form.paragraph3.value,
+    };
 
     try {
-      const response = await axiosInstance.post(`${api}/blogs`, formData);
+      const response = await axiosInstance.post(`${api}/blogs`, payload);
 
-      if (response.status === 200) {
+      console.log("📦 response:", response);
+
+      if (response.status === 200 || response.status === 201) {
         setGlobalMessage({ text: "✅ Blog creado exitosamente.", type: "success" });
+
       } else {
         setGlobalMessage({ text: "⚠️ Error al crear el blog. Por favor, intenta nuevamente.", type: "error" });
       }
     } catch (error) {
       console.error("Error al crear blog:", error);
-      setGlobalMessage({ text: "❌ Error al conectarse al backend. Intenta nuevamente.", type: "error" });
+      setGlobalMessage({ text: "❌Hubo un error al crear el nuevo blog. Intenta nuevamente.", type: "error" });
     } finally {
       setTimeout(() => setGlobalMessage(null), 3000);
     }
@@ -87,8 +101,12 @@ const NewBlog = () => {
                 Nota:
               </p>
 
-              <p className="mb-10 text-center text-green-600">
+              <p className="mb-5 text-center text-green-600">
                 ¡Recuerda para dividir en saltos de linea los parrafos y/o textos usar ( ; ) punto y coma!
+              </p>
+
+              <p className="mb-10 text-center text-green-600">
+                ¡Recuerda colocar un formato de imagen correcto, (-50KG)!
               </p>
 
               <form onSubmit={handleSubmit}>
@@ -138,7 +156,7 @@ const NewBlog = () => {
                   <div>
                     <label className="block text-sm mb-2">Introducción:</label>
                     <textarea
-                      name="description"
+                      name="introduction"
                       required
                       className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-white placeholder-white/50"
                       placeholder="Escribe la introducción"
@@ -149,7 +167,7 @@ const NewBlog = () => {
                     <label className="block text-sm mb-2">Subtítulo 1:</label>
                     <input
                       type="text"
-                      name="additionalTitle"
+                      name="subtitle1"
                       required
                       className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-white placeholder-white/50"
                       placeholder="Ingresa un subtítulo"
@@ -159,7 +177,8 @@ const NewBlog = () => {
                   <div>
                     <label className="block text-sm mb-2">Párrafo:</label>
                     <textarea
-                      name="additionalText"
+                      name="paragraph1"
+                      required
                       className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-white placeholder-white/50"
                       placeholder="Texto del párrafo"
                     ></textarea>
@@ -169,7 +188,8 @@ const NewBlog = () => {
                     <label className="block text-sm mb-2">Subtítulo 2:</label>
                     <input
                       type="text"
-                      name="subtitle"
+                      name="subtitle2"
+                      required
                       className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-white placeholder-white/50"
                       placeholder="Subtítulo adicional"
                     />
@@ -178,7 +198,8 @@ const NewBlog = () => {
                   <div>
                     <label className="block text-sm mb-2">Párrafo 2:</label>
                     <textarea
-                      name="paragraph"
+                      name="paragraph2"
+                      required
                       className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-white placeholder-white/50"
                       placeholder="Segundo párrafo"
                     ></textarea>
@@ -187,7 +208,7 @@ const NewBlog = () => {
                   <div>
                     <label className="block text-sm mb-2">Conclusión:</label>
                     <input
-                      name="list"
+                      name="conclusion"
                       required
                       className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-white placeholder-white/50"
                       placeholder="Escribe la conclusión"
@@ -197,7 +218,7 @@ const NewBlog = () => {
                   <div>
                     <label className="block text-sm mb-2">Frase final:</label>
                     <textarea
-                      name="phrase"
+                      name="paragraph3"
                       required
                       className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-white placeholder-white/50"
                       placeholder="Frase o párrafo final"

@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import NewsLatterBox from "@/components/Features/Contact/NewsLatterBox";
 import { api } from "@/utils/config";
+import BubbleDecoration from "@/components/Common/BubbleDecoration";
 
 const BlogSidebar = () => {
   const [blog, setBlog] = useState(null);
@@ -28,13 +29,14 @@ const BlogSidebar = () => {
   };
 
   const listItems =
-    blog && typeof blog.list === "string" ? blog.list.split(",") : [];
+    blog && typeof blog.conclusion === "string" ? blog.conclusion.split(",") : [];
+
 
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
         const {data} = await axios.get(
-          `${api}blogs`,
+          `${api}/blogs`,
         );
         const uniqueBlogs = data.filter(
           (blog, index, self) =>
@@ -81,21 +83,29 @@ const BlogSidebar = () => {
 
   return (
     <>
-      <section className="overflow-hidden bg-white py-20 ">
+      <section style={{
+        background: "radial-gradient(circle at top left, #1E3A8A 0%, #0A0F24 100%)",
+      }} className="overflow-hidden py-20 ">
+
+        <BubbleDecoration/>
+
         {loading ? (
-          <p className="m-20 text-dark">Cargando...</p>
+          <p className="m-20 text-white">Cargando...</p>
         ) : (
           <div className="container">
             {blog ? (
               <div key={blog.id} className="-mx-4 flex flex-wrap">
                 <div className="w-full px-4 lg:w-8/12">
                   <div>
-                    <h1 className="mb-8 text-3xl font-bold leading-tight text-black dark:text-white sm:text-4xl sm:leading-tight">
+
+                    <h1 className="mb-10 font-bold text-white font-serif text-2xl sm:text-3xl lg:text-4xl leading-tight relative group">
                       {blog.title}
                     </h1>
-                    <div className="mb-10 flex flex-wrap items-center justify-between border-b border-body-color border-opacity-10 pb-4 dark:border-white dark:border-opacity-10">
+
+                    <div className="mb-10 flex flex-wrap items-center justify-between border-b border-white   pb-4 ">
+
                       <div className="flex flex-wrap items-center">
-                        <div className="mb-5 mr-10 flex items-center">
+                        <div className="mb-5  mr-10 flex items-center">
                           <div className="mr-4">
                             <div className="relative h-10 w-10 overflow-hidden rounded-full">
                               <Image
@@ -107,13 +117,13 @@ const BlogSidebar = () => {
                             </div>
                           </div>
                           <div className="w-full">
-                            <span className="mb-1 text-base font-medium text-body-color">
-                              By <span> Repsell International</span>
+                            <span className="mb-1 text-white font-medium ">
+                               <span> Repsell International</span>
                             </span>
                           </div>
                         </div>
                         <div className="mb-5 flex items-center">
-                          <p className="mr-5 flex items-center text-base font-medium text-body-color">
+                          <p className="mr-5 flex items-center text-white font-medium ">
                             <span className="mr-3">
                               <svg
                                 width="15"
@@ -139,7 +149,7 @@ const BlogSidebar = () => {
                       <div className="mb-5">
                         <a
                           href={getHref(blog.category)}
-                          className="inline-flex items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white"
+                          className="inline-flex items-center justify-center rounded-full bg-red-800 px-4 py-2 text-sm font-semibold text-white"
                         >
                           {getTranslatedCategory(blog.category)}
                         </a>
@@ -149,54 +159,52 @@ const BlogSidebar = () => {
                       <div className="mb-10 w-full overflow-hidden rounded">
                         <div className="relative aspect-[97/60] w-full sm:aspect-[97/44]">
                           <img
-                            src={
-                              blog.image.startsWith("http")
-                                ? blog.image
-                                : `${blog.image}`
-                            }
-                            alt="image"
-                            className="h-full w-full object-cover object-center"
+                            src={blog.image}
+                            alt="Imagen del blog"
+                            className="h-full w-full object-cover object-center rounded-md"
                           />
+
                         </div>
                       </div>
-                      <div>
-                        {blog.description
-                          .split(/;([ \t\n]*|$)/)
+                      <div className="text-white  mb-5">
+                        {(blog?.introduction || "")
+                          .split(";")
+                          .map((p, i) => p.trim())
+                          .filter(Boolean)
                           .map((paragraph, index) => (
-                            <p
-                              key={index}
-                              className="mb-8 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed"
-                            >
-                              {paragraph.trim()}
+                            <p key={index}>{paragraph}</p>
+                          ))}
+                      </div>
+
+                      <h3 className="mb-10 font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-white to-red-600 text-xl sm:text-2xl lg:text-3xl leading-tight relative group">
+                        {blog.subtitle1}
+                        <span className="absolute left-0 bottom-0 h-0.5 w-0 bg-white transition-all duration-500 group-hover:w-full"></span>
+                      </h3>
+
+                      <div>
+                        {(blog?.paragraph1 || "")
+                          .split(";")
+                          .map((p, i) => p.trim())
+                          .filter(Boolean)
+                          .map((paragraph, index) => (
+                            <p key={index} className="...">
+                              {paragraph}
                             </p>
                           ))}
                       </div>
 
-                      <h3 className="font-xl mb-10 font-bold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight">
-                        {blog.additionalTitle}
+                      <h3 className="mb-10 font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-white to-red-600 text-xl sm:text-2xl lg:text-3xl leading-tight relative group">
+                        {blog.subtitle2}
+                        <span className="absolute left-0 bottom-0 h-0.5 w-0 bg-white transition-all duration-500 group-hover:w-full"></span>
                       </h3>
+
                       <div>
-                        {blog.additionalText
+                        {blog.paragraph2
                           .split(/;([ \t\n]*|$)/)
                           .map((paragraph, index) => (
                             <p
                               key={index}
-                              className="mb-8 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed"
-                            >
-                              {paragraph.trim()}
-                            </p>
-                          ))}
-                      </div>
-                      <h3 className="font-xl mb-10 font-bold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight">
-                        {blog.subtitle}
-                      </h3>
-                      <div>
-                        {blog.paragraph
-                          .split(/;([ \t\n]*|$)/)
-                          .map((paragraph, index) => (
-                            <p
-                              key={index}
-                              className="mb-8 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed"
+                              className="mb-8 text-base font-medium leading-relaxed text-white sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed"
                             >
                               {paragraph.trim()}
                             </p>
@@ -223,14 +231,16 @@ const BlogSidebar = () => {
                           })}
                       </ul>
 
-                      <div className=" relative z-10 mb-10 mt-20 overflow-hidden rounded-md bg-primary bg-opacity-10 p-8 md:p-9 lg:p-8 xl:p-9">
+
+
+                      <div className=" relative z-10 mb-10 mt-20 overflow-hidden rounded-md bg-white bg-opacity-10 p-8 md:p-9 lg:p-8 xl:p-9">
                         <div className="text-center text-base font-medium italic text-body-color">
-                          {blog.phrase
+                          {blog.paragraph3
                             .split(/;([ \t\n]*|$)/)
                             .map((paragraph, index) => (
                               <p
                                 key={index}
-                                className="mb-8 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed"
+                                className="mb-8 text-base font-medium leading-relaxed text-white sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed"
                               >
                                 {paragraph.trim()}
                               </p>
@@ -382,14 +392,14 @@ const BlogSidebar = () => {
                         <p>Enlace:</p>
                         <a
                           href={getHref(blog.category)}
-                          className="inline-flex items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white"
+                          className="inline-flex items-center justify-center rounded-full bg-red-700 px-4 py-2 text-sm font-semibold text-white"
                         >
                           {getTranslatedCategory(blog.category)}
                         </a>
                       </div>
                       <div className="items-center justify-between sm:flex">
                         <div className="mb-5">
-                          <h4 className="mb-3 text-sm font-medium text-body-color">
+                          <h4 className="mb-3 text-sm font-medium text-white">
                             Correo Electronico :
                           </h4>
                           <div className="flex items-center">
@@ -397,7 +407,7 @@ const BlogSidebar = () => {
                           </div>
                         </div>
                         <div className="mb-5">
-                          <h5 className="mb-3 text-sm font-medium text-body-color sm:text-right">
+                          <h5 className="mb-3 text-sm font-medium text-white sm:text-right">
                             Nuestras redes sociales:
                           </h5>
                           <div className="flex items-center sm:justify-end">
@@ -409,7 +419,7 @@ const BlogSidebar = () => {
                   </div>
                 </div>
                 <div className="w-full px-4 lg:w-4/12">
-                  <div className="mb-10 rounded-sm bg-white shadow-three dark:bg-gray-dark dark:shadow-none">
+                  <div className="mb-10 rounded-xl bg-red-700 shadow-three">
                     <h3 className="dark:border-text-red-700 border-b border-body-color border-opacity-10 px-8 py-4 text-lg  font-semibold dark:border-opacity-10 dark:text-white">
                       Todos los blogs:
                     </h3>
@@ -418,7 +428,7 @@ const BlogSidebar = () => {
                         <select
                           value={selectedBlogId}
                           onChange={handleBlogSelect}
-                          className="w-[90%] rounded border p-2"
+                          className="w-[90%] rounded-lg border bg-white text-dark p-2"
                         >
                           {blogsList.map((blg) => (
                             <option key={blg.id} value={blg.id}>
@@ -431,15 +441,15 @@ const BlogSidebar = () => {
                       <p>No hay publicaciones disponibles.</p>
                     )}
                   </div>
-                  <div className="mb-10 rounded-sm bg-white shadow-three dark:bg-gray-dark dark:shadow-none">
-                    <h3 className="border-b border-body-color border-opacity-10 px-8 py-4 text-lg font-semibold text-black dark:border-white dark:border-opacity-10 dark:text-white">
+                  <div className="mb-10 rounded-xl bg-white shadow-three ">
+                    <h3 className="border-b border-body-color border-opacity-10 px-8 py-4 text-lg font-semibold text-red-700">
                       Productos Disponibles
                     </h3>
                     <ul className="px-8 py-6">
                       <li>
                         <a
                           href="/medals"
-                          className="mb-3 inline-block text-base font-medium text-body-color hover:text-primary"
+                          className="mb-3 inline-block text-base font-medium text-red-700"
                         >
                           Medallas
                         </a>
@@ -447,7 +457,7 @@ const BlogSidebar = () => {
                       <li>
                         <a
                           href="/impression"
-                          className="mb-3 inline-block text-base font-medium text-body-color hover:text-primary"
+                          className="mb-3 inline-block text-base font-medium text-red-700"
                         >
                           Impresión Gran Formato
                         </a>
@@ -455,7 +465,7 @@ const BlogSidebar = () => {
                       <li>
                         <a
                           href="/promotional"
-                          className="mb-3 inline-block text-base font-medium text-body-color hover:text-primary"
+                          className="mb-3 inline-block text-base font-medium text-red-700"
                         >
                           Promocionales y empresariales
                         </a>
@@ -463,7 +473,7 @@ const BlogSidebar = () => {
                       <li>
                         <a
                           href="/recognitions"
-                          className="mb-3 inline-block text-base font-medium text-body-color hover:text-primary"
+                          className="mb-3 inline-block text-base font-medium text-red-700"
                         >
                           Reconocimientos
                         </a>
@@ -471,14 +481,14 @@ const BlogSidebar = () => {
                       <li>
                         <a
                           href="/trophiesAndCups"
-                          className="mb-3 inline-block text-base font-medium text-body-color hover:text-primary"
+                          className="mb-3 inline-block text-base font-medium text-red-700"
                         >
                           Copas y Trofeos
                         </a>
                       </li>
                     </ul>
                   </div>
-                  <div className="mb-10 rounded-sm bg-white shadow-three dark:bg-gray-dark dark:shadow-none">
+                  <div className="mb-10 rounded-xl bg-red-700 shadow-three ">
                     <h3 className="border-b border-body-color border-opacity-10 px-8 py-4 text-lg font-semibold text-black dark:border-white dark:border-opacity-10 dark:text-white">
                       Atajos a enlaces
                     </h3>
@@ -490,11 +500,10 @@ const BlogSidebar = () => {
                     </div>
                   </div>
 
-                  <NewsLatterBox />
                 </div>
               </div>
             ) : (
-              <p className="text-dark">No se encontraron blogs.</p>
+              <p className="text-white">No se encontraron blogs.</p>
             )}
           </div>
         )}
