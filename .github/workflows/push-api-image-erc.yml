@@ -1,43 +1,41 @@
-name: Build and Push DEV API Container to ECR
+name: Build and Push DEV API Container to ECR Public
 
 on:
   push:
     branches:
       - master
-    # paths:
-    #   - "api/**"
 
 jobs:
-  build-and-deploy:
+  build-and-push:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write # Habilita OpenID Connect
-      contents: read
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
       - name: Login to Amazon ECR Public
         id: login-ecr-public
         uses: aws-actions/amazon-ecr-login@v2
         with:
           registry-type: public
-      
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
-        with:
-          mask-password: true
+          #region: us-east-1
 
       - name: Build Docker Image
         run: |
           cd api
-          docker build -t repsell-api:latest . -f Dockerfile.prod
+          docker build -t repsell-api:latest -f Dockerfile.prod .
 
       - name: Tag Docker Image
         run: |
-          docker tag respsell-internacional-api:latest public.ecr.aws/d0z6z8b6/respsell-internacional-api:latest
+          docker tag repsell-api:latest public.ecr.aws/d0z6z8b6/repsell-api:latest
 
-      - name: Push Docker Image to ECR
+      - name: Push Docker Image to ECR Public
         run: |
-          docker push public.ecr.aws/d0z6z8b6/respsell-internacional-api:latest
+          docker push public.ecr.aws/d0z6z8b6/repsell-api:latest
