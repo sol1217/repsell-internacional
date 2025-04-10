@@ -34,7 +34,7 @@ jobs:
 
       - name: Tag Docker Image
         run: |
-          docker tag repsell-api:latest public.ecr.aws/d0z6z8b6/repsell-api:latest
+          docker tag repsell-api:latest public.ecr.aws/d0z6z8b6/repsell-internacional-api:latest
 
       - name: Push Docker Image to ECR Public
         run: |
