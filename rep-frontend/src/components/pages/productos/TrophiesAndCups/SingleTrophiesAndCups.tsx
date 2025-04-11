@@ -7,10 +7,9 @@ import { colorMapping } from "@/utils/colorMapping";
 import { FaCheckCircle } from "react-icons/fa";
 import error from "public/images/hero/error.png";
 import transp from "public/images/products/color/transparent.png";
-import {api} from "@/utils/config";
+import { api } from "@/utils/config";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
-import {Product} from "@/types/product";
-
+import { Product } from "@/types/product";
 
 const SingleTrophiesAndCups = () => {
   const [trophies, setTrophies] = useState([]);
@@ -19,7 +18,6 @@ const SingleTrophiesAndCups = () => {
   const [backgroundColor, setBackgroundColor] = useState("#004AAD");
 
   useEffect(() => {
-    // request base to obtain the background color
     const fetchBackground = async () => {
       try {
         const { data } = await axios.get(`${api}/backgrounds/trophies`);
@@ -30,16 +28,10 @@ const SingleTrophiesAndCups = () => {
       }
     };
     fetchBackground();
-    // const savedColors = JSON.parse(localStorage.getItem("backgroundColors"));
-    // if (savedColors && savedColors.trophies) {
-    //   setBackgroundColor(savedColors.trophies);
-    // }
 
     const fetchTrophies = async () => {
       try {
-        const {data} = await axios.get<Product[]>(
-          `${api}/products/trophies`,
-        );
+        const { data } = await axios.get<Product[]>(`${api}/products/trophies`);
         setTrophies(data);
       } catch (error) {
         console.error("Error fetching trophies:", error);
@@ -54,15 +46,11 @@ const SingleTrophiesAndCups = () => {
   useEffect(() => {
     const fetchTrophies = async () => {
       try {
-        const response = await axios.get<Product[]>(
-          `${api}/products/trophies`,
-        );
-
+        const response = await axios.get<Product[]>(`${api}/products/trophies`);
         const uniquePromotional = response.data.filter(
           (promotional, index, self) =>
-            index === self.findIndex((m) => m.name === promotional.name),
+            index === self.findIndex((m) => m.name === promotional.name)
         );
-
         setTrophies(uniquePromotional);
       } catch (error) {
         console.error("Error fetching promotional:", error);
@@ -85,13 +73,9 @@ const SingleTrophiesAndCups = () => {
   return (
     <div
       className="w-full py-20"
-      style={{
-        background:
-          "#0A0F24",
-      }}
+      style={{ background: "#0A0F24" }}
     >
-
-      <BubbleDecoration/>
+      <BubbleDecoration />
 
       <div className="container">
         {loading ? (
@@ -102,12 +86,20 @@ const SingleTrophiesAndCups = () => {
               trophies.map((trophy) => (
                 <div
                   key={trophy.id}
-                  style={{ background: backgroundColor || "radial-gradient(circle at bottom right, #1E3A8A 0%, #0A0F24 80%)" }}
+                  style={{
+                    background:
+                      backgroundColor || "radial-gradient(circle at bottom right, #1E3A8A 0%, #0A0F24 80%)",
+                  }}
                   className="w-[360px] rounded-xl text-white shadow-xl backdrop-blur-md transition shadow-blue-500/30 hover:shadow-red-500/30"
                 >
-
-                  <div style={{ background: backgroundColor || "radial-gradient(circle at bottom right, #1E3A8A 0%, #0A0F24 80%)" }}  className="relative rounded-t-xl overflow-hidden">
-                    <div className="absolute  top-4 right-4 z-10 rounded-full bg-red-700 px-4 py-2.5 text-sm font-semibold text-white">
+                  <div
+                    style={{
+                      background:
+                        trophy.background || backgroundColor || "radial-gradient(circle at bottom right, #1E3A8A 0%, #0A0F24 80%)",
+                    }}
+                    className="relative rounded-t-xl overflow-hidden"
+                  >
+                    <div className="absolute top-4 right-4 z-10 rounded-full bg-red-700 px-4 py-2.5 text-sm font-semibold text-white">
                       {trophy.category}
                     </div>
                     <img
@@ -118,14 +110,14 @@ const SingleTrophiesAndCups = () => {
                   </div>
 
                   <div className="p-6">
-                    <h3 className="mb-2  text-xl font-bold text-white">
+                    <h3 className="mb-2 text-xl font-bold text-white">
                       {trophy.name}
                     </h3>
                     <p className="mb-4 border-b border-white/20 pb-4 text-sm text-white/80">
                       {trophy.description}
                     </p>
 
-                    <div className="mb-4 text-sm" >
+                    <div className="mb-4 text-sm">
                       <p className="mb-2 font-semibold text-white">Tamaño:</p>
                       <ul className="ml-4 list-disc space-y-1 text-white/80">
                         {(trophy.height || "").split(",").map((h, i) => (
@@ -141,14 +133,14 @@ const SingleTrophiesAndCups = () => {
                           const colorKey = color.trim().toLowerCase();
                           const imageSrc = colorMapping[colorKey] || transp;
                           return (
-                            <div key={i} className="w-6 h-6 rounded-full overflow-hidden ">
-                                <Image
-                                  src={imageSrc}
-                                  alt={color.trim()}
-                                  width={28}
-                                  height={28}
-                                  className="w-full h-full object-cover"
-                                />
+                            <div key={i} className="w-6 h-6 rounded-full overflow-hidden">
+                              <Image
+                                src={imageSrc}
+                                alt={color.trim()}
+                                width={28}
+                                height={28}
+                                className="w-full h-full object-cover"
+                              />
                             </div>
                           );
                         })}

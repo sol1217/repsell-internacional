@@ -6,34 +6,27 @@ import { FaCheckCircle } from "react-icons/fa";
 import { colorMapping } from "@/utils/colorMapping";
 import Image from "next/image";
 import gold from "public/images/products/color/golden.jpeg";
-import {api} from "@/utils/config";
-import promotional from "@/components/pages/productos/Promotional/Promotional";
+import { api } from "@/utils/config";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
-
 
 const SingleImpression = () => {
   const [impressions, setImpressions] = useState([]);
   const [addedImpressionId, setAddedImpressionId] = useState(null);
-  const [backgroundColor, setBackgroundColor] = useState<string>("#004AAD");
+  const [backgroundColor, setBackgroundColor] = useState("#004AAD");
 
   useEffect(() => {
-    // request base to obtain the background color
     const fetchBackground = async () => {
       try {
-        const { data } = await axios.get(
-          `${api}/backgrounds/prints`,
-        );
-        setBackgroundColor(data.color);
+        const { data } = await axios.get(`${api}/backgrounds/prints`);
+        console.log(data)
+        if (data && data.color) {
+          setBackgroundColor(data.color);
+        }
       } catch (error) {
         console.error("Error fetching prints background:", error);
       }
     };
     fetchBackground();
-
-    // const savedColors = JSON.parse(localStorage.getItem("backgroundColors"));
-    // if (savedColors && savedColors.impresion) {
-    //   setBackgroundColor(savedColors.impresion);
-    // }
   }, []);
 
   useEffect(() => {
@@ -42,14 +35,13 @@ const SingleImpression = () => {
         const response = await axios.get(`${api}/products/prints`);
         const uniqueImpression = response.data.filter(
           (impression, index, self) =>
-            index === self.findIndex((m) => m.name === impression.name),
+            index === self.findIndex((m) => m.name === impression.name)
         );
         setImpressions(uniqueImpression);
       } catch (error) {
         console.error("Error fetching prints:", error);
       }
     };
-
     fetchImpression();
   }, []);
 
@@ -63,14 +55,8 @@ const SingleImpression = () => {
   };
 
   return (
-    <div
-      className="w-full py-20"
-      style={{
-        background: "#0A0F24",
-      }}
-    >
-
-      <BubbleDecoration/>
+    <div className="w-full py-20" style={{ background: "#0A0F24" }}>
+      <BubbleDecoration />
 
       <div className="container">
         <div className="flex flex-wrap items-center justify-center gap-16">
@@ -78,9 +64,12 @@ const SingleImpression = () => {
             impressions.map((imp) => (
               <div
                 key={imp.id}
-                className="w-[360px] rounded-xl bg-[#101933]/60 text-white shadow-xl backdrop-blur-md transition shadow-blue-500/30 hover:shadow-red-500/30"
+                className="w-[360px] rounded-xl bg-[#101933]/60 text-white shadow-xl backdrop-blur-md transition hover:shadow-red-500/30"
               >
-                <div style={{ background: imp.background || "radial-gradient(circle at bottom right, #1E3A8A 0%, #0A0F24 80%)"}} className="relative rounded-t-xl overflow-hidden">
+                <div
+                  style={{ background: imp.background || backgroundColor }}
+                  className="relative rounded-t-xl overflow-hidden"
+                >
                   <div className="absolute top-4 right-4 z-10 rounded-full bg-red-700 px-4 py-2.5 text-sm font-semibold text-white">
                     {imp.category}
                   </div>
@@ -93,11 +82,9 @@ const SingleImpression = () => {
 
                 <div
                   className="p-6 rounded-b-xl"
-                  style={{ background: imp.background || "radial-gradient(circle at bottom right, #1E3A8A 0%, #0A0F24 80%)"}}
+                  style={{ background: imp.background || backgroundColor }}
                 >
-                  <h3 className="mb-2 text-xl font-bold text-white">
-                    {imp.name}
-                  </h3>
+                  <h3 className="mb-2 text-xl font-bold text-white">{imp.name}</h3>
                   <p className="mb-4 border-b border-white/20 pb-4 text-sm text-white/80">
                     {imp.description}
                   </p>
@@ -118,7 +105,10 @@ const SingleImpression = () => {
                         const colorKey = color.trim().toLowerCase();
                         const imageSrc = colorMapping[colorKey] || gold;
                         return (
-                          <div key={i} className="w-6 h-6 rounded-full overflow-hidden ">
+                          <div
+                            key={i}
+                            className="w-6 h-6 rounded-full overflow-hidden"
+                          >
                             <Image
                               src={imageSrc}
                               alt={color.trim()}

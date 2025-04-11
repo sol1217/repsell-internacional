@@ -6,11 +6,9 @@ import axios from "axios";
 import { FaCheckCircle } from "react-icons/fa";
 import error from "public/images/hero/error.png";
 import white from "public/images/products/color/white.jpeg";
-
 import { colorMapping } from "@/utils/colorMapping";
-import {api} from "@/utils/config";
+import { api } from "@/utils/config";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
-
 
 const SingleMedals = () => {
   const [medals, setMedals] = useState([]);
@@ -21,36 +19,28 @@ const SingleMedals = () => {
   useEffect(() => {
     const fetchBackground = async () => {
       try {
-        const { data } = await axios.get(
-          `${api}/backgrounds/medals`,
-        );
-        setBackgroundColor(data.color);
+        const { data } = await axios.get(`${api}/backgrounds/medals`);
+        if (data && data.color) {
+          setBackgroundColor(data.color);
+        }
       } catch (error) {
         console.error("Error fetching medals background:", error);
       }
     };
     fetchBackground();
-    // const savedColors = JSON.parse(localStorage.getItem("backgroundColors"));
-    // if (savedColors && savedColors.medals) {
-    //   setBackgroundColor(savedColors.medals);
-    // }
   }, []);
 
   useEffect(() => {
     const fetchMedals = async () => {
       try {
-        const {data} = await axios.get(
-          `${api}/products/medals`,
+        const { data } = await axios.get(`${api}/products/medals`);
+        const uniqueMedals = data.filter(
+          (medal, index, self) =>
+            index === self.findIndex((m) => m.name === medal.name)
         );
-
-        const uniquePromotional = data.filter(
-          (promotional, index, self) =>
-            index === self.findIndex((m) => m.name === promotional.name),
-        );
-
-        setMedals(uniquePromotional);
+        setMedals(uniqueMedals);
       } catch (error) {
-        console.error("Error fetching promotional:", error);
+        console.error("Error fetching medals:", error);
       } finally {
         setLoading(false);
       }
@@ -70,12 +60,9 @@ const SingleMedals = () => {
   return (
     <div
       className="w-full py-20"
-      style={{
-        background: "#0A0F24",
-      }}
+      style={{ background: "#0A0F24" }}
     >
-
-      <BubbleDecoration/>
+      <BubbleDecoration />
 
       <div className="container">
         {loading ? (
@@ -88,7 +75,10 @@ const SingleMedals = () => {
                   key={medal.id}
                   className="w-[360px] rounded-xl bg-[#101933]/60 text-white shadow-xl backdrop-blur-md transition shadow-blue-500/30 hover:shadow-red-500/30"
                 >
-                  <div className="relative rounded-t-xl overflow-hidden" style={{ background: medal.background || "radial-gradient(circle at bottom right, #1E3A8A 0%, #0A0F24 80%)"}}>
+                  <div
+                    className="relative rounded-t-xl overflow-hidden"
+                    style={{ background: medal.background || backgroundColor }}
+                  >
                     <div className="absolute top-4 right-4 z-10 rounded-full bg-red-700 px-4 py-2.5 text-sm font-semibold text-white">
                       {medal.category}
                     </div>
@@ -98,8 +88,10 @@ const SingleMedals = () => {
                       className="h-[230px] w-[230px] object-contain m-auto"
                     />
                   </div>
-
-                  <div className="p-6 rounded-b-xl" style={{ background: medal.background || "radial-gradient(circle at bottom right, #1E3A8A 0%, #0A0F24 80%)" }}>
+                  <div
+                    className="p-6 rounded-b-xl"
+                    style={{ background: medal.background || backgroundColor }}
+                  >
                     <h3 className="mb-2 text-xl font-bold text-white">
                       {medal.name}
                     </h3>
@@ -119,15 +111,15 @@ const SingleMedals = () => {
                           const colorKey = color.trim().toLowerCase();
                           const imageSrc = colorMapping[colorKey] || white;
                           return (
-                              <div key={i} className="w-6 h-6 rounded-full overflow-hidden ">
-                                <Image
-                                  src={imageSrc}
-                                  alt={color.trim()}
-                                  width={28}
-                                  height={28}
-                                  className="w-full h-full object-cover"
-                                />
-                              </div>
+                            <div key={i} className="w-6 h-6 rounded-full overflow-hidden">
+                              <Image
+                                src={imageSrc}
+                                alt={color.trim()}
+                                width={28}
+                                height={28}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
                           );
                         })}
                       </div>

@@ -1,13 +1,34 @@
 "use client";
 import Link from "next/link";
 import { FaRegTrashAlt } from "react-icons/fa";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import logo from "public/images/hero/logo-repsell-icono.png";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
 import { api } from "@/utils/config";
 import axiosInstance from "@/utils/axiosInstance";
 import { useAuthProtection } from "@/hook/useAuthProtection";
+
+type BackgroundColors = {
+  trophies: string;
+  recognitions: string;
+  promotional: string;
+  medals: string;
+  prints: string;
+};
+
+const DEFAULT_COLORS: BackgroundColors = {
+  trophies: "#004AAD",
+  recognitions: "#E72603",
+  promotional: "#004AAD",
+  medals: "#E72603",
+  prints: "#BFBFBF",
+};
+
+type BackgroundRecord = {
+  id: number;
+  name: string;
+};
 
 const ProductMain = () => {
   const [trophies, setTrophies] = useState([]);
@@ -16,85 +37,15 @@ const ProductMain = () => {
   const [medals, setMedals] = useState([]);
   const [prints, setPrint] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [backgroundIds, setBackgroundIds] = useState<Record<string, number>>({});
 
-  const initialColors = {
-    trophies: "#004AAD",
-    recognitions: "#E72603",
-    promotional: "#004AAD",
-    medals: "#E72603",
-    print: "#BFBFBF",
-  };
+  const [backgroundColors, setBackgroundColors] = useState<BackgroundColors>(DEFAULT_COLORS);
+  const [backgroundRecords, setBackgroundRecords] = useState<Record<string, BackgroundRecord>>({});
+  const [successMessages, setSuccessMessages] = useState<Record<string, string | null>>({});
+  const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
 
   useAuthProtection();
 
-  const [backgroundColors, setBackgroundColors] = useState(initialColors);
-  const [successMessages, setSuccessMessages] = useState({});
-
-  useEffect(() => {
-    const savedColors = JSON.parse(localStorage.getItem("backgroundColors"));
-    if (savedColors) {
-      setBackgroundColors((prevColors) => ({
-        ...prevColors,
-        ...savedColors,
-      }));
-    }
-  }, []);
-
-  const handleColorChange = async (category, color) => {
-    setBackgroundColors((prevColors) => ({
-      ...prevColors,
-      [category]: color,
-    }));
-
-    try {
-      const backgroundId = backgroundIds[category];
-      if (!backgroundId) {
-        console.error(`No se encontró un backgroundId para la categoría: ${category}`);
-        return;
-      }
-
-      await axiosInstance.patch(`${api}/backgrounds/${backgroundId}`, {
-        color,
-      });
-
-      const updatedColors = { ...backgroundColors, [category]: color };
-      localStorage.setItem("backgroundColors", JSON.stringify(updatedColors));
-    } catch (error) {
-      console.error("Error al actualizar el color de fondo:", error);
-    }
-  };
-
-  const saveColor = (category) => {
-    const updatedColors = { ...backgroundColors };
-    localStorage.setItem("backgroundColors", JSON.stringify(updatedColors));
-
-    setSuccessMessages((prevMessages) => ({
-      ...prevMessages,
-      [category]: `Color guardado para ${category}`,
-    }));
-
-    setTimeout(() => {
-      setSuccessMessages((prevMessages) => ({
-        ...prevMessages,
-        [category]: null,
-      }));
-    }, 3000);
-  };
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  type BackgroundColors = {
-    trophies: string;
-    recognitions: string;
-    promotional: string;
-    medals: string;
-    print: string;
-  };
-
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
       const categories = [
         { key: "trophies", endpoint: "trophies", setter: setTrophies },
@@ -104,64 +55,88 @@ const ProductMain = () => {
         { key: "prints", endpoint: "prints", setter: setPrint },
       ];
 
-      const endpoints = [
-        ...categories.map(({ endpoint }) =>
-          axiosInstance.get(`${api}/products/${endpoint}`),
-        ),
-        axiosInstance.get(`${api}/backgrounds`),
-      ];
+      const productRequests = categories.map(({ endpoint }) =>
+        axiosInstance.get(`${api}/products/${endpoint}`)
+      );
+      const backgroundsRequest = axiosInstance.get(`${api}/backgrounds`);
 
-      const allResponses = await Promise.all(endpoints);
-      const backgroundRes = allResponses.pop()!;
-      const productResponses = allResponses;
+      const responses = await Promise.all([
+        ...productRequests,
+        backgroundsRequest,
+      ]);
+      const productResponses = responses.slice(0, productRequests.length);
+      const backgroundsResponse = responses[productRequests.length];
 
-      categories.forEach(({ setter }, index) => {
-        setter(productResponses[index]?.data || []);
+      categories.forEach((category, index) => {
+        category.setter(productResponses[index]?.data || []);
       });
 
-      const backgroundData = backgroundRes.data;
+      const backgroundData = backgroundsResponse.data;
 
-      const defaultColors: BackgroundColors = {
-        trophies: "#000000",
-        recognitions: "#E72603",
-        promotional: "#004AAD",
-        medals: "#E72603",
-        print: "#BFBFBF",
-      };
-
-      const apiColors = backgroundData.reduce((colorMap, item) => {
-        colorMap[item.name] = item.color;
-        return colorMap;
-      }, {} as Record<keyof BackgroundColors, string | undefined>);
-
-      const idsByCategory = backgroundData.reduce((acc, item) => {
-        acc[item.name] = item.id;
+      const apiColors = backgroundData.reduce((acc: Partial<BackgroundColors>, item: any) => {
+        acc[item.name] = item.color;
         return acc;
-      }, {} as Record<string, number>);
+      }, {});
 
-      setBackgroundIds(idsByCategory);
+      const records = backgroundData.reduce((acc: Record<string, BackgroundRecord>, item: any) => {
+        acc[item.name] = { id: item.id, name: item.name };
+        return acc;
+      }, {});
 
-      const newColors = categories.reduce((colorsObject, category) => {
-        const categoryKey = category.key;
-        colorsObject[categoryKey] = apiColors[categoryKey] || defaultColors[categoryKey];
-        return colorsObject;
+      setBackgroundRecords(records);
+
+      const newColors: BackgroundColors = categories.reduce((acc, category) => {
+        acc[category.key as keyof BackgroundColors] = apiColors[category.key] || DEFAULT_COLORS[category.key as keyof BackgroundColors];
+        return acc;
       }, {} as BackgroundColors);
 
       setBackgroundColors(newColors);
-      localStorage.setItem("backgroundColors", JSON.stringify(newColors));
     } catch (error) {
-      console.error("Error fetching products");
+      console.error("Error fetching products and backgrounds: ", error);
     } finally {
       setLoading(false);
     }
+  }, []);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
+  const handleColorInputChange = (category: keyof BackgroundColors, color: string) => {
+    setBackgroundColors(prev => ({
+      ...prev,
+      [category]: color,
+    }));
   };
 
-  const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
+  const saveColor = async (category: keyof BackgroundColors) => {
+    const backgroundRecord = backgroundRecords[category];
+    if (!backgroundRecord) {
+      console.error(`No se encontró la información del background para la categoría: ${category}`);
+      return;
+    }
+    try {
+      await axiosInstance.patch(`${api}/backgrounds/${backgroundRecord.id}`, {
+        color: backgroundColors[category],
+        name: backgroundRecord.name,
+      });
+      setSuccessMessages(prev => ({
+        ...prev,
+        [category]: `Color guardado para ${category}`,
+      }));
+    } catch (error) {
+      console.error("Error al actualizar el color de fondo:", error);
+    }
+    setTimeout(() => {
+      setSuccessMessages(prev => ({
+        ...prev,
+        [category]: null,
+      }));
+    }, 3000);
+  };
 
-  const deleteProduct = async (id, category) => {
-    const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este producto?");
-    if (!confirmDelete) return;
-
+  const deleteProduct = async (id: number, category: string) => {
+    if (!window.confirm("¿Estás seguro de que deseas eliminar este producto?")) return;
     try {
       const response = await axiosInstance.delete(`${api}/products/${category}/${id}`);
       if (response.status === 200 || response.status === 204) {
@@ -170,22 +145,22 @@ const ProductMain = () => {
       } else {
         setGlobalMessage({ text: "⚠️ Error al eliminar el producto.", type: "error" });
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error eliminando el producto:", error.response?.data || error.message);
-      setGlobalMessage({ text: "❌Hubo un error al eliminar el producto, Intenta nuevamente.", type: "error" });
+      setGlobalMessage({ text: "❌ Hubo un error al eliminar el producto, intenta nuevamente.", type: "error" });
     } finally {
       setTimeout(() => setGlobalMessage(null), 3000);
     }
   };
 
-  const renderProducts = (products, title, category) => (
+  const renderProducts = (products: any[], title: string, category: keyof BackgroundColors) => (
     <>
       <h2 className="mb-8 text-center text-2xl font-bold text-white drop-shadow">
         {title}
       </h2>
       <div>
         {products.length > 0 ? (
-          products.map((product) => (
+          products.map((product: any) => (
             <div key={product.id} className="mb-6 flex flex-col items-center justify-center gap-3">
               <div
                 className="flex w-full justify-between rounded-md border border-white/10 bg-[#101933]/60 px-6 py-3 text-base text-white shadow-md backdrop-blur-md"
@@ -193,10 +168,12 @@ const ProductMain = () => {
               >
                 {product.name || "No Name"}
                 <div className="flex flex-row items-center gap-3">
-                  <button onClick={() => deleteProduct(product.id, category)}>
+                  <button onClick={() => deleteProduct(product.id, category as string)}>
                     <FaRegTrashAlt fontSize={20} className="text-white" />
                   </button>
-                  <a href={`/editProducts?id=${product.id}&category=${category}`}>Editar</a>
+                  <Link href={`/editProducts?id=${product.id}&category=${category}`}>
+                    Editar
+                  </Link>
                 </div>
               </div>
             </div>
@@ -211,9 +188,7 @@ const ProductMain = () => {
   return (
     <section
       className="relative z-10 overflow-hidden py-24"
-      style={{
-        background: "radial-gradient(circle at top left, #1E3A8A 0%, #0A0F24 100%)",
-      }}
+      style={{ background: "radial-gradient(circle at top left, #1E3A8A 0%, #0A0F24 100%)" }}
     >
       <BubbleDecoration />
 
@@ -243,8 +218,9 @@ const ProductMain = () => {
                 />
                 <h3 className="mb-3 text-center text-3xl font-bold">PRODUCTOS DISPONIBLES</h3>
                 <div className="mb-11 text-center text-white/80">
-                  A continuación, se presenta el listado completo de todos los productos que han sido ingresados y que actualmente se encuentran disponibles en la página.
-                  <br /> ¿Deseas añadir uno nuevo?{" "}
+                  A continuación, se presenta el listado completo de todos los productos ingresados y disponibles.
+                  <br />
+                  ¿Deseas añadir uno nuevo?{" "}
                   <Link href="/newProduct" className="text-red-700 font-bold hover:underline">
                     Añadir producto
                   </Link>
@@ -255,7 +231,7 @@ const ProductMain = () => {
                 </h2>
 
                 <p className="mb-8 text-center text-sm font-bold text-green-600 drop-shadow">
-                  #004AAD o linear-gradient(90deg, #1E3A8A ,#c8101c)
+                  Ejemplo: #004AAD o linear-gradient(90deg, #1E3A8A ,#c8101c)
                 </p>
 
                 <div className="mb-10 space-y-4">
@@ -274,19 +250,23 @@ const ProductMain = () => {
                         <input
                           type="text"
                           value={color}
-                          onChange={(e) => handleColorChange(category, e.target.value)}
+                          onChange={(e) =>
+                            handleColorInputChange(category as keyof BackgroundColors, e.target.value)
+                          }
                           className="w-full flex-1 rounded-md bg-[#101933] px-3 py-2 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#4A6CF7]"
-                          placeholder="Ej: #004AAD o linear-gradient(90deg, #1E3A8A ,#c8101c)"
+                          placeholder="Ingresa el color (ej. #004AAD o linear-gradient(...))"
                         />
                         <button
-                          onClick={() => saveColor(category)}
+                          onClick={() => saveColor(category as keyof BackgroundColors)}
                           className="rounded-md bg-red-700 hover:bg-[#c8101c] px-4 py-2 text-sm font-semibold text-white transition"
                         >
                           Guardar
                         </button>
                       </div>
                       {successMessages[category] && (
-                        <p className="mt-2 text-sm text-green-400">✅ {successMessages[category]}</p>
+                        <p className="mt-2 text-sm text-green-400">
+                          ✅ {successMessages[category]}
+                        </p>
                       )}
                     </div>
                   ))}
@@ -296,7 +276,7 @@ const ProductMain = () => {
                 {renderProducts(recognitions, "Reconocimientos", "recognitions")}
                 {renderProducts(promotional, "Promocionales", "promotional")}
                 {renderProducts(medals, "Medallas", "medals")}
-                {renderProducts(print, "Impresiones", "impresion")}
+                {renderProducts(prints, "Impresiones", "prints")}
               </div>
             )}
           </div>

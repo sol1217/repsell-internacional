@@ -4,12 +4,11 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaCheckCircle } from "react-icons/fa";
-import {api} from "@/utils/config";
+import { api } from "@/utils/config";
 import BubbleDecoration from "@/components/Common/BubbleDecoration";
-import {colorMapping} from "@/utils/colorMapping";
+import { colorMapping } from "@/utils/colorMapping";
 import white from "../../../../../public/images/products/color/white.jpeg";
 import Image from "next/image";
-
 
 const SinglePromotional = () => {
   const [promotionals, setPromotionals] = useState([]);
@@ -18,36 +17,27 @@ const SinglePromotional = () => {
   const [backgroundColor, setBackgroundColor] = useState("#004AAD");
 
   useEffect(() => {
-    // request base to obtain the background color
     const fetchBackground = async () => {
       try {
-        const { data } = await axios.get(
-          `${api}/backgrounds/promotional`,
-        );
-        setBackgroundColor(data.color);
+        const { data } = await axios.get(`${api}/backgrounds/promotional`);
+        if (data && data.color) {
+          setBackgroundColor(data.color);
+        }
       } catch (error) {
-        console.error("Error fetching promitional background:", error);
+        console.error("Error fetching promotional background:", error);
       }
     };
     fetchBackground();
-    // const savedColors = JSON.parse(localStorage.getItem("backgroundColors"));
-    // if (savedColors && savedColors.promotional) {
-    //   setBackgroundColor(savedColors.promotional);
-    // }
   }, []);
 
   useEffect(() => {
     const fetchPromotional = async () => {
       try {
-        const {data} = await axios.get(
-          `${api}/products/promotional`,
-        );
-
+        const { data } = await axios.get(`${api}/products/promotional`);
         const uniquePromotional = data.filter(
           (promotional, index, self) =>
-            index === self.findIndex((m) => m.name === promotional.name),
+            index === self.findIndex((m) => m.name === promotional.name)
         );
-
         setPromotionals(uniquePromotional);
       } catch (error) {
         console.error("Error fetching promotional:", error);
@@ -69,14 +59,8 @@ const SinglePromotional = () => {
   };
 
   return (
-    <div
-      className="w-full py-20"
-      style={{
-        background: "#0A0F24",
-      }}
-    >
-
-      <BubbleDecoration/>
+    <div className="w-full py-20" style={{ background: "#0A0F24" }}>
+      <BubbleDecoration />
 
       <div className="container">
         {loading ? (
@@ -89,7 +73,12 @@ const SinglePromotional = () => {
                   key={promotional.id}
                   className="w-[360px] rounded-xl bg-[#101933]/60 text-white shadow-xl backdrop-blur-md transition shadow-blue-500/30 hover:shadow-red-500/30"
                 >
-                  <div style={{ background: promotional.background || "radial-gradient(circle at bottom right, #1E3A8A 0%, #0A0F24 80%)" }} className="relative rounded-t-xl overflow-hidden">
+                  <div
+                    style={{
+                      background: promotional.background || backgroundColor,
+                    }}
+                    className="relative rounded-t-xl overflow-hidden"
+                  >
                     <div className="absolute top-4 right-4 z-10 rounded-full bg-red-700 px-4 py-2.5 text-sm font-semibold text-white">
                       {promotional.category}
                     </div>
@@ -102,12 +91,12 @@ const SinglePromotional = () => {
 
                   <div
                     className="p-6 rounded-b-xl"
-                    style={{ background: promotional.background || "radial-gradient(circle at bottom right, #1E3A8A 0%, #0A0F24 80%)" }}
+                    style={{
+                      background: promotional.background || backgroundColor,
+                    }}
                   >
                     <h3 className="mb-2 text-xl font-bold text-white">
-                      <Link href="/blog-details">
-                        {promotional.name}
-                      </Link>
+                      <Link href="/blog-details">{promotional.name}</Link>
                     </h3>
                     <p className="mb-4 border-b border-white/20 pb-4 text-sm text-white/80">
                       {promotional.description}
@@ -125,15 +114,18 @@ const SinglePromotional = () => {
                           const colorKey = color.trim().toLowerCase();
                           const imageSrc = colorMapping[colorKey] || white;
                           return (
-                              <div key={i} className="w-6 h-6 rounded-full overflow-hidden ">
-                                <Image
-                                  src={imageSrc}
-                                  alt={color.trim()}
-                                  width={28}
-                                  height={28}
-                                  className="w-full h-full object-cover"
-                                />
-                              </div>
+                            <div
+                              key={i}
+                              className="w-6 h-6 rounded-full overflow-hidden"
+                            >
+                              <Image
+                                src={imageSrc}
+                                alt={color.trim()}
+                                width={28}
+                                height={28}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
                           );
                         })}
                       </div>
@@ -156,14 +148,15 @@ const SinglePromotional = () => {
                 </div>
               ))
             ) : (
-              <p className="text-center text-white">No se encontraron promocionales.</p>
+              <p className="text-center text-white">
+                No se encontraron promocionales.
+              </p>
             )}
           </div>
         )}
       </div>
     </div>
-      )}
-
-
+  );
+};
 
 export default SinglePromotional;
