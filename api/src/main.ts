@@ -12,6 +12,8 @@ async function bootstrap() {
   app.use(json({ limit: '50mb' }));
   app.use(urlencoded({ extended: true, limit: '50mb' }));
   app.useGlobalPipes(new ValidationPipe());
+
+  //WEB_BASE_URL=repsellcr.com
   app.enableCors({
     origin: [process.env.WEB_BASE_URL || 'http://localhost:3000'],
     methods: ['GET', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
