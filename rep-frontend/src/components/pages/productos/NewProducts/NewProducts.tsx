@@ -15,6 +15,7 @@ const NewProduct = () => {
   const [preview, setPreview] = useState(null);
   const fileInputRef = useRef(null);
   const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useAuthProtection();
 
@@ -58,6 +59,7 @@ const NewProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     if (!selectedCategoria) {
       alert("Por favor, selecciona una categoría.");
@@ -94,6 +96,7 @@ const NewProduct = () => {
     } catch (error) {
       setGlobalMessage({ text: "❌ Error en la conexión. Intenta más tarde", type: "error" });
     } finally {
+      setLoading(false);
       setTimeout(() => setGlobalMessage(null), 3000);
     }
   };
@@ -283,7 +286,8 @@ const NewProduct = () => {
                     type="submit"
                     className="mt-10 w-full rounded-full bg-[#e11b24] px-6 py-4 font-semibold text-white shadow-lg transition hover:bg-[#c8101c]"
                   >
-                    Guardar producto
+                   {loading ? "Guardando..." : "Guardar producto"}
+
                   </button>
                 </form>
 

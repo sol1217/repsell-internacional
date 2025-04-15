@@ -8,6 +8,7 @@ import {useAuthProtection} from "@/hook/useAuthProtection";
 
 const AdminPage = () => {
 
+
   useAuthProtection();
 
   return (

@@ -179,7 +179,7 @@ const ProductMain = () => {
             </div>
           ))
         ) : (
-          <p className="text-center text-white/70">No hay productos disponibles.</p>
+          <p className="text-center text-white/70">Aún no hay productos disponibles. Espera unos segundos mientras se cargan.</p>
         )}
       </div>
     </>
@@ -254,7 +254,7 @@ const ProductMain = () => {
                             handleColorInputChange(category as keyof BackgroundColors, e.target.value)
                           }
                           className="w-full flex-1 rounded-md bg-[#101933] px-3 py-2 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#4A6CF7]"
-                          placeholder="Ingresa el color (ej. #004AAD o linear-gradient(...))"
+                          placeholder="#004AAD o linear-gradient(90deg, #1E3A8A ,#c8101c)"
                         />
                         <button
                           onClick={() => saveColor(category as keyof BackgroundColors)}

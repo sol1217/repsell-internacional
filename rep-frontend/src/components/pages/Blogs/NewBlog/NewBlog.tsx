@@ -12,6 +12,7 @@ import axiosInstance from "@/utils/axiosInstance";
 const NewBlog = () => {
   const [preview, setPreview] = useState(null);
   const fileInputRef = useRef(null);
+  const [loading, setLoading] = useState(false);
   const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
   useAuthProtection();
 
@@ -35,6 +36,7 @@ const NewBlog = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const form = e.target;
 
@@ -66,6 +68,7 @@ const NewBlog = () => {
       console.error("Error al crear blog:", error);
       setGlobalMessage({ text: "❌Hubo un error al crear el nuevo blog. Intenta nuevamente.", type: "error" });
     } finally {
+      setLoading(false);
       setTimeout(() => setGlobalMessage(null), 3000);
     }
   };
@@ -239,7 +242,7 @@ const NewBlog = () => {
                     type="submit"
                     className="w-full rounded-full bg-[#e11b24] px-6 py-4 font-semibold text-white shadow-lg transition hover:bg-[#c8101c]"
                   >
-                    Publicar Blog
+                  {loading ? "Guardando..." : " Publicar Blog "}
                   </button>
 
 

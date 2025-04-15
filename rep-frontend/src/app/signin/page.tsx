@@ -16,6 +16,7 @@ const SigninPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const response = await fetch(
       `${api}/auth/login`,
@@ -29,7 +30,6 @@ const SigninPage = () => {
     );
 
     const resultado = await response.json();
-    console.log(resultado);
 
     if (response.ok && resultado.authToken) {
       saveToken(resultado.authToken);
