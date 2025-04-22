@@ -49,7 +49,7 @@ const AdminPage = () => {
               <div className="mb-10  w-full overflow-hidden rounded-xl shadow-lg">
                 <div className="relative aspect-[97/60] w-full sm:aspect-[97/44]">
                   <Image
-                    src="/images/hero/rs.jpeg"
+                    src="/images/hero/rs.png"
                     alt="image"
                     fill
                     className="object-cover object-center"

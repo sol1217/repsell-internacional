@@ -107,6 +107,7 @@ const SingleRecognitions = () => {
                           <li key={i}>{h.trim()}</li>
                         ))}
                       </ul>
+                      <p className="text-white/80 underline decoration-white ">(Aproximadamente)</p>
                     </div>
 
                     <div className="mb-4 text-sm">

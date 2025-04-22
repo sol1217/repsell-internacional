@@ -104,7 +104,12 @@ const SinglePromotional = () => {
 
                     <div className="mb-4 text-sm">
                       <p className="mb-2 font-semibold text-white">Tamaño:</p>
-                      <p className="text-white/80">{promotional.height}</p>
+                      <ul className="ml-4 list-disc space-y-1 text-white/80">
+                        {(promotional.height || "").split(",").map((h, i) => (
+                          <li key={i}>{h.trim()}</li>
+                        ))}
+                      </ul>
+                      <p className="text-white/80 underline decoration-white ">(Aproximadamente)</p>
                     </div>
 
                     <div className="flex mb-5 flex-col items-start gap-3">

@@ -101,7 +101,12 @@ const SingleMedals = () => {
 
                     <div className="mb-4 text-sm">
                       <p className="mb-2 font-semibold text-white">Tamaño:</p>
-                      <p className="text-white/80">{medal.height} CM</p>
+                      <ul className="ml-4 list-disc space-y-1 text-white/80">
+                        {(medal.height || "").split(",").map((h, i) => (
+                          <li key={i}>{h.trim()}</li>
+                        ))}
+                      </ul>
+                      <p className="text-white/80 underline decoration-white ">(Aproximadamente)</p>
                     </div>
 
                     <div className="mb-4 text-sm">

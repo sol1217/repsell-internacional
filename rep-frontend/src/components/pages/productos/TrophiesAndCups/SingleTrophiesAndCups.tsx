@@ -124,7 +124,9 @@ const SingleTrophiesAndCups = () => {
                           <li key={i}>{h.trim()}</li>
                         ))}
                       </ul>
+                      <p className="text-white/80 underline decoration-white ">(Aproximadamente)</p>
                     </div>
+
 
                     <div className="mb-4 text-sm">
                       <p className="mb-2 font-semibold text-white">Colores:</p>

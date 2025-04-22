@@ -176,7 +176,7 @@ const BlogSidebar = () => {
                           ))}
                       </div>
 
-                      <h3 className="mb-10 font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-white to-red-600 text-xl sm:text-2xl lg:text-3xl leading-tight relative group">
+                      <h3 className="mb-10 font-bold text-white text-xl sm:text-2xl lg:text-3xl leading-tight relative group">
                         {blog.subtitle1}
                         <span className="absolute left-0 bottom-0 h-0.5 w-0 bg-white transition-all duration-500 group-hover:w-full"></span>
                       </h3>
@@ -193,7 +193,7 @@ const BlogSidebar = () => {
                           ))}
                       </div>
 
-                      <h3 className="mb-10 font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-white to-red-600 text-xl sm:text-2xl lg:text-3xl leading-tight relative group">
+                      <h3 className="mb-10 font-bold text-white text-xl sm:text-2xl lg:text-3xl leading-tight relative group">
                         {blog.subtitle2}
                         <span className="absolute left-0 bottom-0 h-0.5 w-0 bg-white transition-all duration-500 group-hover:w-full"></span>
                       </h3>

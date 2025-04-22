@@ -31,7 +31,7 @@ const InformationSection = () => {
           </p>
           <a
             href="/trophiesAndCups"
-            className="inline-block rounded-full bg-[#e11b24] px-8 py-3 text-base font-medium text-white shadow-xl transition duration-300 hover:bg-[#c7181f]"
+            className="text-center inline-block rounded-full bg-[#e11b24] px-8 py-3 text-base font-medium text-white shadow-xl transition duration-300 hover:bg-[#c7181f]"
           >
             Conoce nuestros productos: Copas y Trofeos
           </a>
