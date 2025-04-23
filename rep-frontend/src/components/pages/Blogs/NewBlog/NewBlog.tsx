@@ -192,7 +192,6 @@ const NewBlog = () => {
                     <input
                       type="text"
                       name="subtitle2"
-                      required
                       className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-white placeholder-white/50"
                       placeholder="Subtítulo adicional"
                     />
@@ -202,7 +201,6 @@ const NewBlog = () => {
                     <label className="block text-sm mb-2">Párrafo 2:</label>
                     <textarea
                       name="paragraph2"
-                      required
                       className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-white placeholder-white/50"
                       placeholder="Segundo párrafo"
                     ></textarea>

@@ -8,7 +8,7 @@ const NewsLatterBox = () => {
   const { theme } = useTheme();
 
   return (
-    <div className="relative z-10 flex h-full flex-col items-center justify-center rounded-xl bg-[#101933] p-10 text-center shadow-lg backdrop-blur-md">
+    <div className="relative z-10 flex h-full flex-col items-center justify-center rounded-xl bg-[#101933] text-center shadow-lg backdrop-blur-md">
       <h3 className="mb-4 text-2xl font-bold text-white">
         Horario de atención:
       </h3>
@@ -16,6 +16,8 @@ const NewsLatterBox = () => {
       <p className="mb-10 border-b border-white/20 pb-6 text-white/80">
         Lunes a viernes de 8:00 a.m. a 5:15 p.m.
       </p>
+
+      <p className="text-white font-bold">2221 2827</p>
 
       <div className="mb-8 mt-8 flex items-center gap-6">
         <a
@@ -59,7 +61,7 @@ const NewsLatterBox = () => {
         Whatsapp 8968-2121
       </a>
 
-      <p className="text-sm text-white/80">
+      <p className="text-sm p-6 text-white/80">
         Nos ubicamos en Avenida 16, calle 34, Barrio Corazón de Jesús, San José,
         Costa Rica
       </p>

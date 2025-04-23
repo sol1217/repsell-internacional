@@ -77,8 +77,8 @@ const ServicesShowcase = () => {
           <Image
             src={repsell}
             alt="Repsell logo"
-            height={300}
-            width={300}
+            height={400}
+            width={400}
             className="z-10"
           />
         </div>

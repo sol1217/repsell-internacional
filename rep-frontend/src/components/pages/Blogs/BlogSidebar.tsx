@@ -172,7 +172,7 @@ const BlogSidebar = () => {
                           .map((p, i) => p.trim())
                           .filter(Boolean)
                           .map((paragraph, index) => (
-                            <p key={index}>{paragraph}</p>
+                            <p className="text-base" key={index}>{paragraph}</p>
                           ))}
                       </div>
 
@@ -181,13 +181,13 @@ const BlogSidebar = () => {
                         <span className="absolute left-0 bottom-0 h-0.5 w-0 bg-white transition-all duration-500 group-hover:w-full"></span>
                       </h3>
 
-                      <div>
+                      <div className="text-white">
                         {(blog?.paragraph1 || "")
                           .split(";")
                           .map((p, i) => p.trim())
                           .filter(Boolean)
                           .map((paragraph, index) => (
-                            <p key={index} className="...">
+                            <p key={index} className=" text-base text-white">
                               {paragraph}
                             </p>
                           ))}
@@ -211,7 +211,7 @@ const BlogSidebar = () => {
                           ))}
                       </div>
 
-                      <ul className="mt-24">
+                      <ul className="mt-24 text-white">
                         {listItems
                           .join(";")
                           .split(/;([ \t\n]*|$)/)
@@ -223,14 +223,13 @@ const BlogSidebar = () => {
                               <li
                                 key={index}
                                 onClick={() => handleBlogClick(cleanedItem)}
-                                className="mb-2 text-base font-medium sm:text-lg lg:text-base xl:text-lg"
+                                className="mb-2 text-base text-white font-medium sm:text-lg lg:text-base xl:text-lg"
                               >
                                 {cleanedItem}
                               </li>
                             );
                           })}
                       </ul>
-
 
 
                       <div className=" relative z-10 mb-10 mt-20 overflow-hidden rounded-md bg-white bg-opacity-10 p-8 md:p-9 lg:p-8 xl:p-9">

@@ -47,8 +47,8 @@ const Testimonials = () => {
           <Image
             src={details}
             alt="Cada detalle cuenta"
-            width={300}
-            height={300}
+            width={400}
+            height={400}
             className="opacity-80"
           />
         </div>

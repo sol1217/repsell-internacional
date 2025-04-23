@@ -21,7 +21,7 @@ const InformationSection = () => {
           </h3>
 
           <h2 className="mb-6 w-full break-words font-mono text-5xl font-bold leading-tight text-white drop-shadow-md">
-            SOMOS LÍDERES PREMIAMOS SU ESFUERZO
+            SOMOS LÍDER PREMIAMOS SU ESFUERZO
           </h2>
           <p className="mb-8 text-base leading-relaxed text-white/80">
             En premiaciones y reconocimientos con nuevas tendencias y productos.
@@ -49,7 +49,7 @@ const InformationSection = () => {
             className="w-[400px] drop-shadow-lg sm:w-[300px]"
           />
 
-          <p className="text-lg font-bold">Visita nuestras redes sociales:</p>
+          <p className="text-lg font-bold text-white">Visita nuestras redes sociales:</p>
           <div className="mt-8 flex items-center gap-6">
             <a
               href="https://www.instagram.com/repsellcr?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="

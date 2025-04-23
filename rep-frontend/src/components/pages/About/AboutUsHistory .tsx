@@ -25,14 +25,14 @@ const AboutUsHistory = () => {
       <div className="container mx-auto ">
         <div className="flex flex-wrap justify-center">
           <div className="w-full px-4 lg:w-8/12">
-            <h2 className="mb-8 text-4xl font-bold drop-shadow-xl">
+            <h2 className="mb-8 text-white text-4xl font-bold drop-shadow-xl">
               La Historia de Repsell: Un Camino Forjado con Pasión, Dedicación y
               Excelencia.
             </h2>
 
             <div className="mb-10 flex items-center gap-3">
               <GiConcentrationOrb fontSize={25} className="text-[#e11b24]" />
-              <span className="border-b-2 border-white font-serif text-2xl">
+              <span className="border-b-2 border-white text-white font-serif text-2xl">
                 Somos Repsell Internacional.
               </span>
             </div>

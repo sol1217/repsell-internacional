@@ -160,7 +160,7 @@ const Contact = () => {
                       <textarea
                         name="message"
                         rows={5}
-                        placeholder="¿Cómo podemos ayudarte?"
+                        placeholder="¿Cómo podemos ayudarle?"
                         className="w-full resize-none rounded-md border border-white/10 bg-[#1a1f33] px-5 py-3 text-sm text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-red-700"
                       ></textarea>
                     </div>
