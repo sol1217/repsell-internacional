@@ -71,7 +71,7 @@ const SingleRecognitions = () => {
               recognitions.map((item) => (
                 <div
                   key={item.id}
-                  className="w-[360px] rounded-xl bg-[#101933]/60 text-white shadow-xl backdrop-blur-md transition hover:shadow-red-500/30"
+                  className="w-[360px] rounded-xl bg-red-600 text-white shadow-xl backdrop-blur-md transition hover:shadow-red-500/30"
                 >
                   <div
                     className="relative rounded-t-xl overflow-hidden"

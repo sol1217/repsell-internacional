@@ -2,13 +2,19 @@
 
 import { useTheme } from "next-themes";
 import { FaWaze } from "react-icons/fa";
-import { Facebook, Instagram, MessageCircle } from "lucide-react";
+import {Facebook, Instagram, MessageCircle, PhoneIcon} from "lucide-react";
+import {useState} from "react";
 
 const NewsLatterBox = () => {
   const { theme } = useTheme();
+  const [isShowPhone, setIsShowPhone] = useState(false);
+
+  const handleClick = () => {
+    setIsShowPhone(!isShowPhone);
+  };
 
   return (
-    <div className="relative z-10 flex h-full flex-col items-center justify-center rounded-xl bg-[#101933] text-center shadow-lg backdrop-blur-md">
+    <div className="relative p-10 z-10 flex h-full flex-col items-center justify-center rounded-xl bg-[#101933] text-center shadow-lg backdrop-blur-md">
       <h3 className="mb-4 text-2xl font-bold text-white">
         Horario de atención:
       </h3>
@@ -16,8 +22,6 @@ const NewsLatterBox = () => {
       <p className="mb-10 border-b border-white/20 pb-6 text-white/80">
         Lunes a viernes de 8:00 a.m. a 5:15 p.m.
       </p>
-
-      <p className="text-white font-bold">2221 2827</p>
 
       <div className="mb-8 mt-8 flex items-center gap-6">
         <a
@@ -36,14 +40,16 @@ const NewsLatterBox = () => {
         >
           <Facebook size={36} />
         </a>
-        <a
-          href="https://wa.link/7otvpd"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-white transition hover:text-green-500"
+        <button
+          onClick={handleClick}
+          className="flex items-center text-white transition hover:text-green-500"
         >
-          <MessageCircle size={36} />
-        </a>
+          {isShowPhone ? (
+            <p className="text-white font-bold">2221 2827</p>
+          ) : (
+            <PhoneIcon size={36} />
+          )}
+        </button>
         <a
           href="https://www.google.com/maps/place/WWG4%2BG3H"
           target="_blank"

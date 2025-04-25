@@ -42,7 +42,7 @@ const LandingVideo = () => {
               Atención Personalizada
             </h4>
             <p className="text-sm text-white/70">
-              Te guiamos para encontrar el reconocimiento ideal para tu evento o
+              Le guiamos para encontrar el reconocimiento ideal para tu evento o
               institución.
             </p>
           </div>
@@ -59,7 +59,7 @@ const LandingVideo = () => {
               Experiencia Profesional
             </h4>
             <p className="text-sm text-white/70">
-              Nuestro personal está altamente capacitado para brindarte un
+              Nuestro personal está altamente capacitado para brindarle un
               servicio ágil y confiable.
             </p>
           </div>

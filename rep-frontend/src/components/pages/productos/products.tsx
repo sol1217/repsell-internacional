@@ -231,7 +231,14 @@ const ProductMain = () => {
                 </h2>
 
                 <p className="mb-8 text-center text-sm font-bold text-green-600 drop-shadow">
-                  Ejemplo: #004AAD o linear-gradient(90deg, #1E3A8A ,#c8101c)
+                  Ejemplo un solo color: <b>#004AAD</b><br/>
+                  Ejemplo degradados lineales: <b>linear-gradient(90deg, #1E3A8A ,#c8101c)</b><br/>
+                  Ejemplo circular: <b>radial-gradient(circle at bottom, #000000 30% ,#004AAD 70%)</b><br/>
+                  Ejemplo diagonal: <b>linear-gradient(45deg, #00C9FF, #92FE9D)</b><br/>
+                  Ejemplo fondo arcoíris: <b>linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)</b><br/>
+                  Ejemplo con transparencia: <b>rgba(0, 74, 173, 0.5)</b><br/>
+                  Ejemplo con fondo repetido: <b>repeating-linear-gradient(45deg, #444, #444 10px, #888 10px, #888 20px)</b><br/>
+                  Ejemplo radial con transparencia: <b>radial-gradient(circle, rgba(0,0,0,0.6), transparent)</b><br/>
                 </p>
 
                 <div className="mb-10 space-y-4">

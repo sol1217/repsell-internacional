@@ -60,7 +60,7 @@ const Contact = () => {
           <div className="w-full px-4 lg:w-7/12 xl:w-8/12">
             <div className="contact-form  rounded-xl bg-[#101933] p-8  shadow-md backdrop-blur-md lg:mb-5">
               <h2 className="mb-3 text-3xl font-bold text-white">
-                Nuestro equipo está aquí para ayudarle
+                ¿Tiene alguna consulta o necesita asesoría sobre nuestros productos?
               </h2>
               <p className="mb-10 text-base text-white/80">
                 ¿Tienes alguna consulta o necesitas asesoría sobre nuestros
