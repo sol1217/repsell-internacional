@@ -2,25 +2,20 @@
 
 import { useTheme } from "next-themes";
 import { FaWaze } from "react-icons/fa";
-import {Facebook, Instagram, MessageCircle, PhoneIcon} from "lucide-react";
-import {useState} from "react";
+import { Facebook, Instagram } from "lucide-react";
+import { AiOutlineWhatsApp } from "react-icons/ai";
 
 const NewsLatterBox = () => {
   const { theme } = useTheme();
-  const [isShowPhone, setIsShowPhone] = useState(false);
-
-  const handleClick = () => {
-    setIsShowPhone(!isShowPhone);
-  };
 
   return (
-    <div className="relative p-10 z-10 flex h-full flex-col items-center justify-center rounded-xl bg-[#101933] text-center shadow-lg backdrop-blur-md">
+    <div className="relative z-10 flex h-full flex-col items-center justify-center rounded-xl bg-[#101933] p-10 text-center shadow-lg backdrop-blur-md">
       <h3 className="mb-4 text-2xl font-bold text-white">
         Horario de atención:
       </h3>
 
       <p className="mb-10 border-b border-white/20 pb-6 text-white/80">
-        Lunes a viernes de 8:00 a.m. a 5:15 p.m.
+        Lunes a viernes de 8:00 a.m. a 5:20 p.m.
       </p>
 
       <div className="mb-8 mt-8 flex items-center gap-6">
@@ -40,16 +35,12 @@ const NewsLatterBox = () => {
         >
           <Facebook size={36} />
         </a>
-        <button
-          onClick={handleClick}
+        <a
+          href="https://wa.link/26xce4"
           className="flex items-center text-white transition hover:text-green-500"
         >
-          {isShowPhone ? (
-            <p className="text-white font-bold">2221 2827</p>
-          ) : (
-            <PhoneIcon size={36} />
-          )}
-        </button>
+          <AiOutlineWhatsApp size={36} />
+        </a>
         <a
           href="https://www.google.com/maps/place/WWG4%2BG3H"
           target="_blank"
@@ -64,10 +55,10 @@ const NewsLatterBox = () => {
         href="https://wa.link/7otvpd"
         className="mb-6 inline-block w-full max-w-[360px] rounded-full bg-[#e11b24] px-8 py-4 text-base font-medium text-white shadow-lg transition hover:bg-[#e11b25]/90"
       >
-        Whatsapp 8968-2121
+        Teléfono 2221-2827
       </a>
 
-      <p className="text-sm p-6 text-white/80">
+      <p className="p-6 text-sm text-white/80">
         Nos ubicamos en Avenida 16, calle 34, Barrio Corazón de Jesús, San José,
         Costa Rica
       </p>

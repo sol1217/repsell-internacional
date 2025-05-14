@@ -16,9 +16,6 @@ const LandingVideo = () => {
       }}
     >
       <div className="container mx-auto px-4 text-center text-white">
-        <h3 className="mb-2 text-base font-semibold uppercase text-[#e11b24]">
-          Nuestro Equipo
-        </h3>
         <h2 className="mx-auto mb-6 flex max-w-3xl flex-wrap justify-center text-center font-mono text-4xl font-bold leading-relaxed text-white drop-shadow">
           Nuestro personal está siempre dispuesto a ayudarle
         </h2>

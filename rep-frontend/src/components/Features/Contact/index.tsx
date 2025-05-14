@@ -5,7 +5,10 @@ import emailjs from "@emailjs/browser";
 import NewsLatterBox from "@/components/Features/Contact/NewsLatterBox";
 
 const Contact = () => {
-  const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "warning" } | null>(null);
+  const [globalMessage, setGlobalMessage] = useState<{
+    text: string;
+    type: "success" | "warning";
+  } | null>(null);
   const form = useRef<HTMLFormElement>(null);
   const [buttonText, setButtonText] = useState("Enviar Mensaje");
   const [isSent, setIsSent] = useState(false);
@@ -60,11 +63,12 @@ const Contact = () => {
           <div className="w-full px-4 lg:w-7/12 xl:w-8/12">
             <div className="contact-form  rounded-xl bg-[#101933] p-8  shadow-md backdrop-blur-md lg:mb-5">
               <h2 className="mb-3 text-3xl font-bold text-white">
-                ¿Tiene alguna consulta o necesita asesoría sobre nuestros productos?
+                ¿Tiene alguna consulta o necesita asesoría sobre nuestros
+                productos?
               </h2>
               <p className="mb-10 text-base text-white/80">
-                ¿Tienes alguna consulta o necesitas asesoría sobre nuestros
-                productos?
+                Complete los siguientes datos y le contactaremos en la brevedad
+                posible
               </p>
               <form ref={form} onSubmit={sendEmail}>
                 <div className="-mx-4 flex flex-wrap">
@@ -179,22 +183,22 @@ const Contact = () => {
                   {globalMessage && (
                     <div
                       className={`px-6 py-4 text-center text-base font-medium shadow-lg ${
-                        globalMessage.type === "success" ? "bg-green-800 text-green-200" : "bg-yellow-700 text-yellow-100"
+                        globalMessage.type === "success"
+                          ? "bg-green-800 text-green-200"
+                          : "bg-yellow-700 text-yellow-100"
                       }`}
                     >
                       {globalMessage.text}
                     </div>
                   )}
-
                 </div>
               </form>
             </div>
           </div>
 
-          <div className="w-full px-4 lg:w-5/12 xl:w-4/12 mt-10 lg:mt-0">
+          <div className="mt-10 w-full px-4 lg:mt-0 lg:w-5/12 xl:w-4/12">
             <NewsLatterBox />
           </div>
-
         </div>
       </div>
     </section>

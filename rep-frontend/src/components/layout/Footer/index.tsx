@@ -24,10 +24,11 @@ const Footer = () => {
                 </p>
               </div>
               <p className="mb-3 text-sm text-[#ffffff]/80">
-                Horario de atención: Lunes a viernes de 8:00a.m a 5:15pm
+                Horario de atención: Lunes a viernes de 8:00a.m a 5:20pm
               </p>
               <p className="mb-3 text-sm text-[#ffffff]/80 drop-shadow-md">
-                Nos ubicamos en Barrio Corazón de Jesús, San José, Costa Rica
+                Nos ubicamos en Avenida 16, calle 34, Barrio Corazón de Jesús,
+                San José, Costa Rica
               </p>
               <p className="mb-4 text-sm text-[#ffffff]/80 drop-shadow-md">
                 info@gruposelley.com

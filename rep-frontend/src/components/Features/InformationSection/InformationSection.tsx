@@ -24,14 +24,13 @@ const InformationSection = () => {
             SOMOS LÍDER PREMIAMOS SU ESFUERZO
           </h2>
           <p className="mb-8 text-base leading-relaxed text-white/80">
-            En premiaciones y reconocimientos con nuevas tendencias y productos.
-            <br />
-            Al ir de la mano con la innovación y diseño, garantizamos una
-            experiencia única para nuestros clientes.
+            Premiaciones y reconocimientos que marcan tendencia, gracias a la
+            innovación y el diseño, ofreciendo una experiencia única a cada
+            cliente.
           </p>
           <a
             href="/trophiesAndCups"
-            className="text-center inline-block rounded-full bg-[#e11b24] px-8 py-3 text-base font-medium text-white shadow-xl transition duration-300 hover:bg-[#c7181f]"
+            className="inline-block rounded-full bg-[#e11b24] px-8 py-3 text-center text-base font-medium text-white shadow-xl transition duration-300 hover:bg-[#c7181f]"
           >
             Conoce nuestros productos: Copas y Trofeos
           </a>
@@ -49,7 +48,9 @@ const InformationSection = () => {
             className="w-[400px] drop-shadow-lg sm:w-[300px]"
           />
 
-          <p className="text-lg font-bold text-white">Visita nuestras redes sociales:</p>
+          <p className="text-lg font-bold text-white">
+            Visita nuestras redes sociales:
+          </p>
           <div className="mt-8 flex items-center gap-6">
             <a
               href="https://www.instagram.com/repsellcr?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
