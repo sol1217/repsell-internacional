@@ -12,6 +12,8 @@ import axiosInstance from "@/utils/axiosInstance";
 
 const EditProducts = () => {
   const [editNombre, setEditNombre] = useState("");
+  const [editHeight, setEditHeight] = useState("");
+  const [editCategory, setEditCategory] = useState("");
   const [editDescripcion, setEditDescripcion] = useState("");
   const [editImage, setEditImage] = useState("");
   const [editColor, setEditColor] = useState("");
@@ -88,7 +90,14 @@ const EditProducts = () => {
     formData.append("category", data.get("category"));
 
     // transform formData to object (json)
-    const body = Object.fromEntries(formData.entries());
+    const body = {
+      name: editNombre,
+      description: editDescripcion,
+      height: editHeight,
+      color: editColor,
+      image: preview,
+      category: editCategory,
+    };
 
     try {
       const response = await axiosInstance.patch(
