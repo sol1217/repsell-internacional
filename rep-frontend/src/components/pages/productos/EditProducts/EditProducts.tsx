@@ -173,6 +173,13 @@ const EditProducts = () => {
                           placeholder="Nuevo color"
                           className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
                         />
+                        <input
+                          type="text"
+                          name="category"
+                          defaultValue={dataSelected.category}
+                          placeholder="Nueva categoria"
+                          className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
+                        />
                       </>
                     )}
 

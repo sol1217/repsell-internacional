@@ -1,6 +1,6 @@
 export const categorias = [
   { value: "", label: "Elegir Categoria", href: "" },
-  { value: "medallas", label: "medallas", href: "/medals" },
+  { value: "medals", label: "medallas", href: "/medals" },
   {
     value: "recognitions",
     label: "Reconocimientos",
