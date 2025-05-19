@@ -12,11 +12,11 @@ import axiosInstance from "@/utils/axiosInstance";
 
 const EditProducts = () => {
   const [editNombre, setEditNombre] = useState("");
-  const [editHeight, setEditHeight] = useState("");
-  const [editCategory, setEditCategory] = useState("");
   const [editDescripcion, setEditDescripcion] = useState("");
+  const [editHeight, setEditHeight] = useState("");
   const [editImage, setEditImage] = useState("");
   const [editColor, setEditColor] = useState("");
+  const [editCategory, setEditCategory] = useState("");
   const [dataSelected, setDataSelected] = useState(null);
   const [globalMessage, setGlobalMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
   const [preview, setPreview] = useState(null);
@@ -33,20 +33,14 @@ const EditProducts = () => {
           `${api}/products/${data.get("category")}/${data.get("id")}`,
         )
       ).data;
-      setDataSelected(
-        product || {
-          name: "",
-          description: "",
-          height: "",
-          color: "",
-          image: "",
-        },
-      );
+      setDataSelected(product);
       setEditNombre(product.name);
       setEditDescripcion(product.description);
       setEditDescripcion(product.height);
+      setEditHeight(product.height);
       setEditColor(product.color);
       setEditImage(product.image);
+      setEditCategory(product.category);
       setPreview(product.image);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -87,17 +81,10 @@ const EditProducts = () => {
 
     const formData = new FormData(e.target);
     formData.append("image", preview);
-    formData.append("category", data.get("category"));
+    formData.set("category", editCategory);
 
     // transform formData to object (json)
-    const body = {
-      name: editNombre,
-      description: editDescripcion,
-      height: editHeight,
-      color: editColor,
-      image: preview,
-      category: editCategory,
-    };
+    const body = Object.fromEntries(formData.entries());
 
     try {
       const response = await axiosInstance.patch(
@@ -185,8 +172,9 @@ const EditProducts = () => {
                         <input
                           type="text"
                           name="category"
-                          defaultValue={dataSelected.category}
-                          placeholder="Nueva categoria"
+                          value={editCategory}
+                          onChange={e => setEditCategory(e.target.value)}
+                          placeholder="Nueva categoría"
                           className="w-full rounded-md bg-[#1a1f33] px-4 py-3 text-sm text-white placeholder-white/50"
                         />
                       </>
