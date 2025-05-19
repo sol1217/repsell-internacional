@@ -66,7 +66,7 @@ const NewBlog = () => {
       }
     } catch (error) {
       console.error("Error al crear blog:", error);
-      setGlobalMessage({ text: "❌Hubo un error al crear el nuevo blog. Intenta nuevamente.", type: "error" });
+      setGlobalMessage({ text: "❌Hubo un error al crear el nuevo blog. (Revisa los datos ingresados e intenta nuevamente).", type: "error" });
     } finally {
       setLoading(false);
       setTimeout(() => setGlobalMessage(null), 3000);

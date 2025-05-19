@@ -74,7 +74,7 @@ const EditBlogs = () => {
       }
     } catch (error) {
       console.error("Error actualizando blog:", error);
-      setGlobalMessage({ text: "❌ Error en la conexión al servidor.", type: "error" });
+      setGlobalMessage({ text: "Error en conexión o/y datos incorrectos, (Revisa los datos ingresados)", type: "error" });
     } finally {
       setLoading(false);
       setTimeout(() => setGlobalMessage(null), 3000);

@@ -11,7 +11,7 @@ export const categorias = [
     label: "Trofeos y Copas",
     href: "/trophiesAndCups",
   },
-  { value: "promotional", label: "Promocionales", href: "/promotiona´" },
+  { value: "promotional", label: "Promocionales", href: "/promotional" },
   { value: "impression", label: "Impresiones", href: "/impression" },
 ];
 
@@ -20,7 +20,7 @@ export const categoriesProducts = [
   { value: "medals", label: "Medallas" },
   { value: "recognitions", label: "Reconocimientos" },
   { value: "trophies", label: "Trofeos y Copas" },
-  { value: "promotionals", label: "Promocionales" },
+  { value: "promotional", label: "Promocionales" },
   { value: "prints", label: "Impresiones" },
 ];
 
